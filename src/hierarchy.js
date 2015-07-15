@@ -46,6 +46,7 @@ export default function() {
         nodes = [],
         node;
 
+    root.parent = null;
     root.depth = 0;
 
     while ((node = stack.pop()) != null) {

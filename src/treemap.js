@@ -1,4 +1,4 @@
-import {default as newHierarchy, rebind} from "./hierarchy";
+import {default as hierarchy, rebind} from "./hierarchy";
 
 var phi = (1 + Math.sqrt(5)) / 2; // golden ratio
 
@@ -26,7 +26,7 @@ var modes = {
 // Squarified Treemaps by Mark Bruls, Kees Huizing, and Jarke J. van Wijk.
 // Modified to support a target aspect ratio by Jeff Heer.
 export default function() {
-  var hierarchy = newHierarchy(),
+  var layout = hierarchy(),
       round = Number,
       size = [1, 1], // width, height
       padding = null,
@@ -179,13 +179,13 @@ export default function() {
   }
 
   function treemap(d) {
-    var nodes = stickies || hierarchy(d),
+    var nodes = stickies || layout(d),
         root = nodes[0];
     root.x = 0;
     root.y = 0;
     root.dx = size[0];
     root.dy = size[1];
-    if (stickies) hierarchy.revalue(root);
+    if (stickies) layout.revalue(root);
     scale([root], root.dx * root.dy / root.value);
     (stickies ? stickify : squarify)(root);
     if (sticky) stickies = nodes;
@@ -232,5 +232,5 @@ export default function() {
     return treemap;
   };
 
-  return rebind(treemap, hierarchy);
+  return rebind(treemap, layout);
 };
