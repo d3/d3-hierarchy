@@ -1,9 +1,9 @@
 import {default as hierarchy, rebind} from "./hierarchy";
 import {visitAfter, visitBefore} from "./visit";
 
-function defaultSeparation(a, b) {
+export function defaultSeparation(a, b) {
   return a.parent === b.parent ? 1 : 2;
-}
+};
 
 // function radialSeparation(a, b) {
 //   return (a.parent === b.parent ? 1 : 2) / a.depth;
