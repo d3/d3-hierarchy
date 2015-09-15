@@ -1,3 +1,4 @@
+import {default as enclosingCircle} from "./enclosingCircle";
 import {default as hierarchy, rebind} from "./hierarchy";
 import {visitAfter} from "./visit";
 
@@ -29,18 +30,7 @@ function packChildren(node) {
   if (!(nodes = node.children) || !(n = nodes.length)) return;
 
   var nodes,
-      xMin = Infinity,
-      xMax = -Infinity,
-      yMin = Infinity,
-      yMax = -Infinity,
       a, b, c, i, j, k, n;
-
-  function bound(node) {
-    xMin = Math.min(node.x - node.r, xMin);
-    xMax = Math.max(node.x + node.r, xMax);
-    yMin = Math.min(node.y - node.r, yMin);
-    yMax = Math.max(node.y + node.r, yMax);
-  }
 
   // Create node links.
   nodes.forEach(link);
@@ -49,20 +39,17 @@ function packChildren(node) {
   a = nodes[0];
   a.x = -a.r;
   a.y = 0;
-  bound(a);
 
   // Create second node.
   if (n > 1) {
     b = nodes[1];
     b.x = b.r;
     b.y = 0;
-    bound(b);
 
     // Create third node and build chain.
     if (n > 2) {
       c = nodes[2];
       place(a, b, c);
-      bound(c);
       insert(a, c);
       a._pack_prev = c;
       insert(c, b);
@@ -96,23 +83,19 @@ function packChildren(node) {
         } else {
           insert(a, c);
           b = c;
-          bound(c);
         }
       }
     }
   }
 
   // Re-center the circles and compute the encompassing radius.
-  var cx = (xMin + xMax) / 2,
-      cy = (yMin + yMax) / 2,
-      cr = 0;
-  for (i = 0; i < n; i++) {
-    c = nodes[i];
-    c.x -= cx;
-    c.y -= cy;
-    cr = Math.max(cr, c.r + Math.sqrt(c.x * c.x + c.y * c.y));
+  var c = enclosingCircle(nodes);
+  for (i = 0; i < n; ++i) {
+    a = nodes[i];
+    a.x -= c.x;
+    a.y -= c.y;
   }
-  node.r = cr;
+  node.r = c.r;
 
   // Remove node links.
   nodes.forEach(unlink);
