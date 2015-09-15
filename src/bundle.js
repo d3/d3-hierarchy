@@ -1,17 +1,16 @@
 export default function() {
   return function(links) {
-    var paths = [],
-        i = -1,
-        n = links.length;
-    while (++i < n) paths.push(bundlePath(links[i]));
+    var i = -1,
+        n = links.length,
+        link,
+        paths = new Array(n);
+    while (++i < n) link = links[i], paths[i] = path(link.source, link.end);
     return paths;
   };
 };
 
-function bundlePath(link) {
-  var start = link.source,
-      end = link.target,
-      lca = leastCommonAncestor(start, end),
+function path(start, end) {
+  var lca = leastCommonAncestor(start, end),
       points = [start];
   while (start !== lca) {
     start = start.parent;
