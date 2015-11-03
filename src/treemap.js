@@ -71,45 +71,45 @@ export default function() {
           kx,
           ky,
           value = parent.value,
-          rowValue,
-          rowMinValue,
-          rowMaxValue,
-          rowAlpha,
-          rowBeta,
-          rowRatio,
+          sumValue,
+          minValue,
+          maxValue,
+          alpha,
+          beta,
+          newRatio,
           minRatio;
 
       for (i0 = 0; i0 < n; i0 = i1) {
         cx = x, cy = y;
-        rowValue = rowMinValue = rowMaxValue = childValue = children[i0].value;
-        rowAlpha = Math.max(dy / dx, dx / dy) / (value * ratio);
-        rowBeta = rowValue * rowValue * rowAlpha;
-        minRatio = Math.max(rowMaxValue / rowBeta, rowBeta / rowMinValue);
+        sumValue = minValue = maxValue = childValue = children[i0].value;
+        alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
+        beta = sumValue * sumValue * alpha;
+        minRatio = Math.max(maxValue / beta, beta / minValue);
 
         // Keep adding nodes while the aspect ratio maintains or improves.
         for (i1 = i0 + 1; i1 < n; ++i1) {
-          rowValue += childValue = children[i1].value;
-          if (childValue < rowMinValue) rowMinValue = childValue;
-          if (childValue > rowMaxValue) rowMaxValue = childValue;
-          rowBeta = rowValue * rowValue * rowAlpha;
-          rowRatio = Math.max(rowMaxValue / rowBeta, rowBeta / rowMinValue);
-          if (rowRatio > minRatio) { rowValue -= childValue; break; }
-          minRatio = rowRatio;
+          sumValue += childValue = children[i1].value;
+          if (childValue < minValue) minValue = childValue;
+          if (childValue > maxValue) maxValue = childValue;
+          beta = sumValue * sumValue * alpha;
+          newRatio = Math.max(maxValue / beta, beta / minValue);
+          if (newRatio > minRatio) { sumValue -= childValue; break; }
+          minRatio = newRatio;
         }
 
         // Position the row horizontally along the top of the rect.
-        if (dx < dy) for (kx = dx / rowValue, ky = dy * rowValue / value, y += ky, dy -= ky; i0 < i1; ++i0) {
+        if (dx < dy) for (kx = dx / sumValue, ky = dy * sumValue / value, y += ky, dy -= ky; i0 < i1; ++i0) {
           child = children[i0], child.x = cx, child.y = cy, child.dy = ky;
           cx += child.dx = child.value * kx;
         }
 
         // Position the row vertically along the left of the rect.
-        else for (ky = dy / rowValue, kx = dx * rowValue / value, x += kx, dx -= kx; i0 < i1; ++i0) {
+        else for (ky = dy / sumValue, kx = dx * sumValue / value, x += kx, dx -= kx; i0 < i1; ++i0) {
           child = children[i0], child.x = cx, child.y = cy, child.dx = kx;
           cy += child.dy = child.value * ky;
         }
 
-        value -= rowValue;
+        value -= sumValue;
       }
 
       children.forEach(squarify);
