@@ -23,54 +23,40 @@ function padStandard(node, padding) {
   return {x: x, y: y, dx: dx, dy: dy};
 }
 
-// Places the specified array of *nodes* as a row along the top or left of the
-// specified *rect*, whose total area represents the specified *value*. Modifies
-// the rect, subtracting the area consumed by the new row.
-//
-// TODO rounding
-// TODO avoid recomputation
-function layoutRow(nodes, rect, value) {
-  var i = -1,
-      n = nodes.length,
+// Positions a slice [i0:i1] of *nodes*, whose total value is *nodesValue*, as a
+// new horizontal row along the top of the specified *rect*, whose total area
+// represents the specified *rectValue*. Modifies the rect, subtracting the area
+// consumed by the new row.
+function rowHorizontal(nodes, i0, i1, nodesValue, rect, rectValue) {
+  var i,
+      x = rect.x,
+      y = rect.y,
+      kx = rect.dx / nodesValue,
+      dy = rect.dy,
+      node;
+  dy *= nodesValue / rectValue, rect.y += dy, rect.dy -= dy;
+  for (i = i0; i < i1; ++i) {
+    node = nodes[i], node.x = x, node.y = y, node.dy = dy;
+    x += node.dx = node.value * kx;
+  }
+}
+
+// Positions a slice [i0:i1] of *nodes*, whose total value is *nodesValue*, as a
+// new vertical row along the left of the specified *rect*, whose total area
+// represents the specified *rectValue*. Modifies the rect, subtracting the area
+// consumed by the new row.
+function rowVertical(nodes, i0, i1, nodesValue, rect, rectValue) {
+  var i,
       x = rect.x,
       y = rect.y,
       dx = rect.dx,
-      dy = rect.dy,
-      node,
-      sum = 0;
-
-  for (i = 0; i < n; ++i) {
-    node = nodes[i];
-    sum += node.value;
+      ky = rect.dy / nodesValue,
+      node;
+  dx *= nodesValue / rectValue, rect.x += dx, rect.dx -= dx;
+  for (i = i0; i < i1; ++i) {
+    node = nodes[i], node.x = x, node.y = y, node.dx = dx;
+    y += node.dy = node.value * ky;
   }
-
-  if (dx < dy) {
-    dy *= sum / value;
-    rect.y += dy;
-    rect.dy -= dy;
-
-    for (i = 0; i < n; ++i) {
-      node = nodes[i];
-      node.x = x;
-      node.y = y;
-      x += node.dx = node.value / sum * dx;
-      node.dy = dy;
-    }
-  } else {
-    dx *= sum / value;
-    rect.x += dx;
-    rect.dx -= dx;
-
-    for (i = 0; i < n; ++i) {
-      node = nodes[i];
-      node.x = x;
-      node.y = y;
-      node.dx = dx;
-      y += node.dy = node.value / sum * dy;
-    }
-  }
-
-  return sum;
 }
 
 // Squarified Treemaps by Mark Bruls, Kees Huizing, and Jarke J. van Wijk.
@@ -97,74 +83,75 @@ export default function() {
     return padStandard(node, padding);
   }
 
-  // Computes the worst aspect ratio for a row of squarified nodes, given the
-  // remaining rectangle within which to layout the nodes, and its value.
-  // Ρeturns a value greater than or equal to one; a lower value is better.
-  function worstRatio(rowNodes, remainingRect, remainingValue) {
-    var i = -1,
-        n = rowNodes.length,
-        r,
-        rmax = 0,
-        rmin = Infinity,
-        s = 0;
-
-    while (++i < n) {
-      r = rowNodes[i].value;
-      if (!r) continue; // ignore zero-area nodes
-      if (r < rmin) rmin = r;
-      if (r > rmax) rmax = r;
-      s += r;
-    }
-
-    // XXX
-    var scale = (remainingRect.dx * remainingRect.dy) / remainingValue,
-        w = Math.min(remainingRect.dx, remainingRect.dy);
-    s *= scale;
-    rmax *= scale;
-    rmin *= scale;
-
-    return Math.max(
-      (w * w * rmax * ratio) / (s * s),
-      (s * s) / (w * w * rmin * ratio)
-    );
-  }
-
   // mode === "slice" ? rowVertical
   // : mode === "dice" ? rowVertical
-  // : mode === "slice-dice" ? node.depth & 1 ? placeVertical : placeVertical
+  // : mode === "slice-dice" ? node.depth & 1 ? rowVertical : rowVertical
 
   // Recursively arranges the specified node’s children into squarified rows.
   // TODO implement other modes using another method, not squarify
   function squarify(parent) {
     var children = parent.children;
     if (children && (n = children.length)) {
-      var i = -1,
+      var i0 = 0,
+          i1 = -1,
           n,
           child,
+          childValue,
           remainingRect = pad(parent),
           remainingValue = parent.value,
-          rowNodes = [],
+          scale = (remainingRect.dx * remainingRect.dy) / remainingValue,
+          row,
+          rowLength,
+          rowValue = 0,
+          rowMinValue = Infinity,
+          rowMaxValue = 0,
           rowRatio,
           minRatio = Infinity;
 
-      while (++i < n) {
-        child = children[i];
-        rowNodes.push(child);
-        rowRatio = worstRatio(rowNodes, remainingRect, remainingValue);
-        if (rowRatio <= minRatio) { // continue with this orientation
+      if (remainingRect.dx < remainingRect.dy) {
+        row = rowHorizontal;
+        rowLength = remainingRect.dx;
+      } else {
+        row = rowVertical;
+        rowLength = remainingRect.dy;
+      }
+
+      while (++i1 < n) {
+        child = children[i1];
+        rowValue += childValue = child.value;
+        if (childValue < rowMinValue) rowMinValue = childValue;
+        if (childValue > rowMaxValue) rowMaxValue = childValue;
+
+        rowRatio = Math.max(
+          (rowLength * rowLength * rowMaxValue * ratio) / (rowValue * rowValue * scale),
+          (rowValue * rowValue * scale) / (rowLength * rowLength * rowMinValue * ratio)
+        );
+
+        if (rowRatio <= minRatio) { // add this node to the current row
           minRatio = rowRatio;
-        } else { // abort and try a different orientation
-          --i;
-          rowNodes.pop();
-          remainingValue -= layoutRow(rowNodes, remainingRect, remainingValue);
+        } else { // place this node in a new row
+          rowValue -= childValue;
+          row(children, i0, i1, rowValue, remainingRect, remainingValue);
+          remainingValue -= rowValue;
+          i0 = i1--;
+
+          // TODO better reset
+          if (remainingRect.dx < remainingRect.dy) {
+            row = rowHorizontal;
+            rowLength = remainingRect.dx;
+          } else {
+            row = rowVertical;
+            rowLength = remainingRect.dy;
+          }
+
+          rowValue = 0;
+          rowMinValue = Infinity;
+          rowMaxValue = 0;
           minRatio = Infinity;
-          rowNodes = [];
         }
       }
 
-      if (rowNodes.length) {
-        layoutRow(rowNodes, remainingRect, remainingValue);
-      }
+      if (i0 < n) row(children, i0, n, rowValue, remainingRect, remainingValue);
 
       children.forEach(squarify);
     }
