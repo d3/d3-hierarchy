@@ -62,14 +62,10 @@ export default function() {
           child,
           childValue,
           rect = pad(parent),
-          x = rect.x,
-          y = rect.y,
-          dx = rect.dx,
-          dy = rect.dy,
-          cx,
-          cy,
-          kx,
-          ky,
+          x = rect.x, y = rect.y,
+          dx = rect.dx, dy = rect.dy,
+          cx, cy,
+          kx, ky,
           value = parent.value,
           sumValue,
           minValue,
@@ -81,7 +77,7 @@ export default function() {
 
       for (i0 = 0; i0 < n; i0 = i1) {
         cx = x, cy = y;
-        sumValue = minValue = maxValue = childValue = children[i0].value;
+        sumValue = minValue = maxValue = children[i0].value;
         alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
         beta = sumValue * sumValue * alpha;
         minRatio = Math.max(maxValue / beta, beta / minValue);
