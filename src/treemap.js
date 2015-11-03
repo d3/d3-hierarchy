@@ -1,6 +1,13 @@
-import {default as hierarchy, rebind} from "./hierarchy";
+import hierarchy, {rebind} from "./hierarchy";
 
 var phi = (1 + Math.sqrt(5)) / 2; // golden ratio
+
+var modes = {
+  "slice": 1,
+  "dice": 1,
+  "slice-dice": 1,
+  "squarify": 1
+};
 
 function padNone(node) {
   return {x: node.x, y: node.y, dx: node.dx, dy: node.dy};
@@ -11,17 +18,60 @@ function padStandard(node, padding) {
       y = node.y + padding[0],
       dx = node.dx - padding[1] - padding[3],
       dy = node.dy - padding[0] - padding[2];
-  if (dx < 0) { x += dx / 2; dx = 0; }
-  if (dy < 0) { y += dy / 2; dy = 0; }
+  if (dx < 0) x += dx / 2, dx = 0;
+  if (dy < 0) y += dy / 2, dy = 0;
   return {x: x, y: y, dx: dx, dy: dy};
 }
 
-var modes = {
-  "slice": 1,
-  "dice": 1,
-  "slice-dice": 1,
-  "squarify": 1
-};
+// Places the specified array of *nodes* as a row along the top or left of the
+// specified *rect*, whose total area represents the specified *value*. Modifies
+// the rect, subtracting the area consumed by the new row.
+//
+// TODO rounding
+// TODO avoid recomputation
+function layoutRow(nodes, rect, value) {
+  var i = -1,
+      n = nodes.length,
+      x = rect.x,
+      y = rect.y,
+      dx = rect.dx,
+      dy = rect.dy,
+      node,
+      sum = 0;
+
+  for (i = 0; i < n; ++i) {
+    node = nodes[i];
+    sum += node.value;
+  }
+
+  if (dx < dy) {
+    dy *= sum / value;
+    rect.y += dy;
+    rect.dy -= dy;
+
+    for (i = 0; i < n; ++i) {
+      node = nodes[i];
+      node.x = x;
+      node.y = y;
+      x += node.dx = node.value / sum * dx;
+      node.dy = dy;
+    }
+  } else {
+    dx *= sum / value;
+    rect.x += dx;
+    rect.dx -= dx;
+
+    for (i = 0; i < n; ++i) {
+      node = nodes[i];
+      node.x = x;
+      node.y = y;
+      node.dx = dx;
+      y += node.dy = node.value / sum * dy;
+    }
+  }
+
+  return sum;
+}
 
 // Squarified Treemaps by Mark Bruls, Kees Huizing, and Jarke J. van Wijk.
 // Modified to support a target aspect ratio by Jeff Heer.
@@ -47,136 +97,101 @@ export default function() {
     return padStandard(node, padding);
   }
 
-  // Compute the area for each child based on value & scale.
-  function scale(children, k) {
+  // Computes the worst aspect ratio for a row of squarified nodes, given the
+  // remaining rectangle within which to layout the nodes, and its value.
+  // Ρeturns a value greater than or equal to one; a lower value is better.
+  function worstRatio(rowNodes, remainingRect, remainingValue) {
     var i = -1,
-        n = children.length,
-        child,
-        area;
+        n = rowNodes.length,
+        r,
+        rmax = 0,
+        rmin = Infinity,
+        s = 0;
+
     while (++i < n) {
-      area = (child = children[i]).value * (k < 0 ? 0 : k);
-      child.area = isNaN(area) || area <= 0 ? 0 : area;
+      r = rowNodes[i].value;
+      if (!r) continue; // ignore zero-area nodes
+      if (r < rmin) rmin = r;
+      if (r > rmax) rmax = r;
+      s += r;
     }
+
+    // XXX
+    var scale = (remainingRect.dx * remainingRect.dy) / remainingValue,
+        w = Math.min(remainingRect.dx, remainingRect.dy);
+    s *= scale;
+    rmax *= scale;
+    rmin *= scale;
+
+    return Math.max(
+      (w * w * rmax * ratio) / (s * s),
+      (s * s) / (w * w * rmin * ratio)
+    );
   }
 
-  // Recursively arranges the specified node's children into squarified rows.
-  function squarify(node) {
-    var children = node.children;
-    if (children && children.length) {
-      var rect = pad(node),
-          row = [],
-          remaining = children.slice(), // copy-on-write
+  // mode === "slice" ? rowVertical
+  // : mode === "dice" ? rowVertical
+  // : mode === "slice-dice" ? node.depth & 1 ? placeVertical : placeVertical
+
+  // Recursively arranges the specified node’s children into squarified rows.
+  // TODO implement other modes using another method, not squarify
+  function squarify(parent) {
+    var children = parent.children;
+    if (children && (n = children.length)) {
+      var i = -1,
+          n,
           child,
-          best = Infinity, // the best row score so far
-          score, // the current row score
-          u = mode === "slice" ? rect.dx
-            : mode === "dice" ? rect.dy
-            : mode === "slice-dice" ? node.depth & 1 ? rect.dy : rect.dx
-            : Math.min(rect.dx, rect.dy), // initial orientation
-          n;
-      scale(remaining, rect.dx * rect.dy / node.value);
-      row.area = 0;
-      while ((n = remaining.length) > 0) {
-        row.push(child = remaining[n - 1]);
-        row.area += child.area;
-        if (mode !== "squarify" || (score = worst(row, u)) <= best) { // continue with this orientation
-          remaining.pop();
-          best = score;
-        } else { // abort, and try a different orientation
-          row.area -= row.pop().area;
-          position(row, u, rect, false);
-          u = Math.min(rect.dx, rect.dy);
-          row.length = row.area = 0;
-          best = Infinity;
+          remainingRect = pad(parent),
+          remainingValue = parent.value,
+          rowNodes = [],
+          rowRatio,
+          minRatio = Infinity;
+
+      while (++i < n) {
+        child = children[i];
+        rowNodes.push(child);
+        rowRatio = worstRatio(rowNodes, remainingRect, remainingValue);
+        if (rowRatio <= minRatio) { // continue with this orientation
+          minRatio = rowRatio;
+        } else { // abort and try a different orientation
+          --i;
+          rowNodes.pop();
+          remainingValue -= layoutRow(rowNodes, remainingRect, remainingValue);
+          minRatio = Infinity;
+          rowNodes = [];
         }
       }
-      if (row.length) {
-        position(row, u, rect, true);
-        row.length = row.area = 0;
+
+      if (rowNodes.length) {
+        layoutRow(rowNodes, remainingRect, remainingValue);
       }
+
       children.forEach(squarify);
     }
   }
 
-  // Recursively resizes the specified node's children into existing rows.
-  // Preserves the existing layout!
-  function stickify(node) {
-    var children = node.children;
-    if (children && children.length) {
-      var rect = pad(node),
-          remaining = children.slice(), // copy-on-write
-          child,
-          row = [];
-      scale(remaining, rect.dx * rect.dy / node.value);
-      row.area = 0;
-      while (child = remaining.pop()) {
-        row.push(child);
-        row.area += child.area;
-        if (child.z != null) {
-          position(row, child.z ? rect.dx : rect.dy, rect, !remaining.length);
-          row.length = row.area = 0;
-        }
-      }
-      children.forEach(stickify);
-    }
-  }
-
-  // Computes the score for the specified row, as the worst aspect ratio.
-  function worst(row, u) {
-    var s = row.area,
-        r,
-        rmax = 0,
-        rmin = Infinity,
-        i = -1,
-        n = row.length;
-    while (++i < n) {
-      if (!(r = row[i].area)) continue;
-      if (r < rmin) rmin = r;
-      if (r > rmax) rmax = r;
-    }
-    s *= s;
-    u *= u;
-    return s
-        ? Math.max((u * rmax * ratio) / s, s / (u * rmin * ratio))
-        : Infinity;
-  }
-
-  // Positions the specified row of nodes. Modifies `rect`.
-  function position(row, u, rect, flush) {
-    var i = -1,
-        n = row.length,
-        x = rect.x,
-        y = rect.y,
-        v = u ? round(row.area / u) : 0,
-        o;
-    if (u == rect.dx) { // horizontal subdivision
-      if (flush || v > rect.dy) v = rect.dy; // over+underflow
-      while (++i < n) {
-        o = row[i];
-        o.x = x;
-        o.y = y;
-        o.dy = v;
-        x += o.dx = Math.min(rect.x + rect.dx - x, v ? round(o.area / v) : 0);
-      }
-      o.z = true;
-      o.dx += rect.x + rect.dx - x; // rounding error
-      rect.y += v;
-      rect.dy -= v;
-    } else { // vertical subdivision
-      if (flush || v > rect.dx) v = rect.dx; // over+underflow
-      while (++i < n) {
-        o = row[i];
-        o.x = x;
-        o.y = y;
-        o.dx = v;
-        y += o.dy = Math.min(rect.y + rect.dy - y, v ? round(o.area / v) : 0);
-      }
-      o.z = false;
-      o.dy += rect.y + rect.dy - y; // rounding error
-      rect.x += v;
-      rect.dx -= v;
-    }
-  }
+  // // Recursively resizes the specified node's children into existing rows.
+  // // Preserves the existing layout!
+  // function stickify(node) {
+  //   var children = node.children;
+  //   if (children && children.length) {
+  //     var rect = pad(node),
+  //         remaining = children.slice(), // copy-on-write
+  //         child,
+  //         row = [];
+  //     scale(remaining, rect.dx * rect.dy / node.value);
+  //     row.area = 0;
+  //     while (child = remaining.pop()) {
+  //       row.push(child);
+  //       row.area += child.area;
+  //       if (child.z != null) {
+  //         position(row, child.z ? rect.dx : rect.dy, rect, !remaining.length);
+  //         row.length = row.area = 0;
+  //       }
+  //     }
+  //     children.forEach(stickify);
+  //   }
+  // }
 
   function treemap(d) {
     var nodes = stickies || layout(d),
@@ -186,7 +201,7 @@ export default function() {
     root.dx = size[0];
     root.dy = size[1];
     if (stickies) layout.revalue(root);
-    scale([root], root.dx * root.dy / root.value);
+    // scale([root], root.dx * root.dy / root.value);
     (stickies ? stickify : squarify)(root);
     if (sticky) stickies = nodes;
     return nodes;
