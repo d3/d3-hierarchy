@@ -23,7 +23,7 @@ function padStandard(node, padding) {
   return {x: x, y: y, dx: dx, dy: dy};
 }
 
-function slice(nodes, rect, value) {
+function nodeSlice(nodes, rect, value) {
   var i0 = -1,
       n = nodes.length,
       node,
@@ -37,7 +37,7 @@ function slice(nodes, rect, value) {
   }
 }
 
-function dice(nodes, rect, value) {
+function nodeDice(nodes, rect, value) {
   var i0 = -1,
       n = nodes.length,
       node,
@@ -51,9 +51,14 @@ function dice(nodes, rect, value) {
   }
 }
 
+function nodeRound(node) {
+  node.dx = Math.round(node.x + node.dx) - (node.x = Math.round(node.x));
+  node.dy = Math.round(node.y + node.dy) - (node.y = Math.round(node.y));
+}
+
 export default function() {
   var layout = hierarchy(),
-      round = Number,
+      round = false,
       size = [1, 1],
       padding = null,
       pad = padNone,
@@ -73,8 +78,7 @@ export default function() {
     return padStandard(node, padding);
   }
 
-
-  function squarify(nodes, rect, value) {
+  function nodeSquarify(nodes, rect, value) {
     var i0 = 0,
         i1,
         n = nodes.length,
@@ -129,10 +133,11 @@ export default function() {
   function recurse(parent) {
     var children = parent.children;
     if (children) {
-      (mode === "slice" ? slice
-          : mode === "dice" ? dice
-          : mode === "slice-dice" ? parent.depth & 1 ? slice : dice
-          : squarify)(children, pad(parent), parent.value);
+      (mode === "slice" ? nodeSlice
+          : mode === "dice" ? nodeDice
+          : mode === "slice-dice" ? parent.depth & 1 ? nodeSlice : nodeDice
+          : nodeSquarify)(children, pad(parent), parent.value);
+      if (round) children.forEach(nodeRound);
       children.forEach(recurse);
     }
   }
@@ -191,8 +196,8 @@ export default function() {
   };
 
   treemap.round = function(x) {
-    if (!arguments.length) return round !== Number;
-    round = x ? Math.round : Number;
+    if (!arguments.length) return round;
+    round = !!x;
     return treemap;
   };
 
