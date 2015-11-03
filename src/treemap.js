@@ -23,42 +23,6 @@ function padStandard(node, padding) {
   return {x: x, y: y, dx: dx, dy: dy};
 }
 
-// Positions a slice [i0:i1] of *nodes*, whose total value is *nodesValue*, as a
-// new horizontal row along the top of the specified *rect*, whose total area
-// represents the specified *rectValue*. Modifies the rect, subtracting the area
-// consumed by the new row.
-function rowHorizontal(nodes, i0, i1, nodesValue, rect, rectValue) {
-  var i,
-      x = rect.x,
-      y = rect.y,
-      kx = rect.dx / nodesValue,
-      dy = rect.dy,
-      node;
-  dy *= nodesValue / rectValue, rect.y += dy, rect.dy -= dy;
-  for (i = i0; i < i1; ++i) {
-    node = nodes[i], node.x = x, node.y = y, node.dy = dy;
-    x += node.dx = node.value * kx;
-  }
-}
-
-// Positions a slice [i0:i1] of *nodes*, whose total value is *nodesValue*, as a
-// new vertical row along the left of the specified *rect*, whose total area
-// represents the specified *rectValue*. Modifies the rect, subtracting the area
-// consumed by the new row.
-function rowVertical(nodes, i0, i1, nodesValue, rect, rectValue) {
-  var i,
-      x = rect.x,
-      y = rect.y,
-      dx = rect.dx,
-      ky = rect.dy / nodesValue,
-      node;
-  dx *= nodesValue / rectValue, rect.x += dx, rect.dx -= dx;
-  for (i = i0; i < i1; ++i) {
-    node = nodes[i], node.x = x, node.y = y, node.dx = dx;
-    y += node.dy = node.value * ky;
-  }
-}
-
 // Squarified Treemaps by Mark Bruls, Kees Huizing, and Jarke J. van Wijk.
 // Modified to support a target aspect ratio by Jeff Heer.
 export default function() {
@@ -92,54 +56,61 @@ export default function() {
   function squarify(parent) {
     var children = parent.children;
     if (children && (n = children.length)) {
-      var i0 = 0,
-          i1 = -1,
+      var i0,
+          i1,
           n,
           child,
           childValue,
           rect = pad(parent),
+          x = rect.x,
+          y = rect.y,
+          dx = rect.dx,
+          dy = rect.dy,
+          cx,
+          cy,
+          kx,
+          ky,
           value = parent.value,
-          row,
-          rowScale,
-          rowValue = 0,
-          rowArea2,
-          rowMinValue = Infinity,
-          rowMaxValue = 0,
+          rowValue,
+          rowMinValue,
+          rowMaxValue,
+          rowAlpha,
+          rowBeta,
           rowRatio,
-          minRatio = Infinity;
+          minRatio;
 
-      if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (rect.dx * value * ratio);
-      else row = rowVertical, rowScale = rect.dx / (rect.dy * value * ratio);
+      for (i0 = 0; i0 < n; i0 = i1) {
+        cx = x, cy = y;
+        rowValue = rowMinValue = rowMaxValue = childValue = children[i0].value;
+        rowAlpha = Math.max(dy / dx, dx / dy) / (value * ratio);
+        rowBeta = rowValue * rowValue * rowAlpha;
+        minRatio = Math.max(rowMaxValue / rowBeta, rowBeta / rowMinValue);
 
-      while (++i1 < n) {
-        child = children[i1];
-        rowValue += childValue = child.value;
-        if (childValue < rowMinValue) rowMinValue = childValue;
-        if (childValue > rowMaxValue) rowMaxValue = childValue;
-        rowArea2 = rowValue * rowValue * rowScale;
-        rowRatio = Math.max(rowMaxValue / rowArea2, rowArea2 / rowMinValue);
-
-        // If this node doesn’t worsen the current row’s aspect ratio, add it.
-        if (rowRatio <= minRatio) minRatio = rowRatio;
-
-        // Otherwise, finish the current row and add this node to a new row.
-        else {
-          row(children, i0, i1, rowValue -= childValue, rect, value);
-          value -= rowValue;
-          i0 = i1--;
-
-          // TODO better reset
-          if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (rect.dx * value * ratio);
-          else row = rowVertical, rowScale = rect.dx / (rect.dy * value * ratio);
-
-          rowValue = 0;
-          rowMinValue = Infinity;
-          rowMaxValue = 0;
-          minRatio = Infinity;
+        // Keep adding nodes while the aspect ratio maintains or improves.
+        for (i1 = i0 + 1; i1 < n; ++i1) {
+          rowValue += childValue = children[i1].value;
+          if (childValue < rowMinValue) rowMinValue = childValue;
+          if (childValue > rowMaxValue) rowMaxValue = childValue;
+          rowBeta = rowValue * rowValue * rowAlpha;
+          rowRatio = Math.max(rowMaxValue / rowBeta, rowBeta / rowMinValue);
+          if (rowRatio <= minRatio) minRatio = rowRatio;
+          else { rowValue -= childValue; break; }
         }
-      }
 
-      if (i0 < n) row(children, i0, n, rowValue, rect, value);
+        // Position the row horizontally along the top of the rect.
+        if (dx < dy) for (kx = dx / rowValue, ky = dy * rowValue / value, y += ky, dy -= ky; i0 < i1; ++i0) {
+          child = children[i0], child.x = cx, child.y = cy, child.dy = ky;
+          cx += child.dx = child.value * kx;
+        }
+
+        // Position the row vertically along the left of the rect.
+        else for (ky = dy / rowValue, kx = dx * rowValue / value, x += kx, dx -= kx; i0 < i1; ++i0) {
+          child = children[i0], child.x = cx, child.y = cy, child.dx = kx;
+          cy += child.dy = child.value * ky;
+        }
+
+        value -= rowValue;
+      }
 
       children.forEach(squarify);
     }
