@@ -97,9 +97,9 @@ export default function() {
           n,
           child,
           childValue,
-          remainingRect = pad(parent),
-          remainingValue = parent.value,
-          scale = (remainingRect.dx * remainingRect.dy) / remainingValue,
+          rect = pad(parent),
+          value = parent.value,
+          scale = (rect.dx * rect.dy) / value,
           row,
           rowLength,
           rowValue = 0,
@@ -108,13 +108,8 @@ export default function() {
           rowRatio,
           minRatio = Infinity;
 
-      if (remainingRect.dx < remainingRect.dy) {
-        row = rowHorizontal;
-        rowLength = remainingRect.dx;
-      } else {
-        row = rowVertical;
-        rowLength = remainingRect.dy;
-      }
+      if (rect.dx < rect.dy) row = rowHorizontal, rowLength = rect.dx;
+      else row = rowVertical, rowLength = rect.dy;
 
       while (++i1 < n) {
         child = children[i1];
@@ -131,18 +126,13 @@ export default function() {
           minRatio = rowRatio;
         } else { // place this node in a new row
           rowValue -= childValue;
-          row(children, i0, i1, rowValue, remainingRect, remainingValue);
-          remainingValue -= rowValue;
+          row(children, i0, i1, rowValue, rect, value);
+          value -= rowValue;
           i0 = i1--;
 
           // TODO better reset
-          if (remainingRect.dx < remainingRect.dy) {
-            row = rowHorizontal;
-            rowLength = remainingRect.dx;
-          } else {
-            row = rowVertical;
-            rowLength = remainingRect.dy;
-          }
+          if (rect.dx < rect.dy) row = rowHorizontal, rowLength = rect.dx;
+          else row = rowVertical, rowLength = rect.dy;
 
           rowValue = 0;
           rowMinValue = Infinity;
@@ -151,7 +141,7 @@ export default function() {
         }
       }
 
-      if (i0 < n) row(children, i0, n, rowValue, remainingRect, remainingValue);
+      if (i0 < n) row(children, i0, n, rowValue, rect, value);
 
       children.forEach(squarify);
     }
