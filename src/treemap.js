@@ -108,8 +108,8 @@ export default function() {
           rowRatio,
           minRatio = Infinity;
 
-      if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (value * ratio * rect.dx);
-      else row = rowVertical, rowScale = rect.dx / (value * ratio * rect.dy);
+      if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (rect.dx * value * ratio);
+      else row = rowVertical, rowScale = rect.dx / (rect.dy * value * ratio);
 
       while (++i1 < n) {
         child = children[i1];
@@ -129,8 +129,8 @@ export default function() {
           i0 = i1--;
 
           // TODO better reset
-          if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (value * ratio * rect.dx);
-          else row = rowVertical, rowScale = rect.dx / (value * ratio * rect.dy);
+          if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (rect.dx * value * ratio);
+          else row = rowVertical, rowScale = rect.dx / (rect.dy * value * ratio);
 
           rowValue = 0;
           rowMinValue = Infinity;
