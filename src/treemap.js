@@ -56,7 +56,7 @@ export default function() {
   function squarify(parent) {
     var children = parent.children;
     if (children && (n = children.length)) {
-      var i0,
+      var i0 = 0,
           i1,
           n,
           child,
@@ -75,7 +75,7 @@ export default function() {
           newRatio,
           minRatio;
 
-      for (i0 = 0; i0 < n; i0 = i1) {
+      while (i0 < n) {
         cx = x, cy = y;
         sumValue = minValue = maxValue = children[i0].value;
         alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
