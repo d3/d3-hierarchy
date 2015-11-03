@@ -93,8 +93,8 @@ export default function() {
           if (childValue > rowMaxValue) rowMaxValue = childValue;
           rowBeta = rowValue * rowValue * rowAlpha;
           rowRatio = Math.max(rowMaxValue / rowBeta, rowBeta / rowMinValue);
-          if (rowRatio <= minRatio) minRatio = rowRatio;
-          else { rowValue -= childValue; break; }
+          if (rowRatio > minRatio) { rowValue -= childValue; break; }
+          minRatio = rowRatio;
         }
 
         // Position the row horizontally along the top of the rect.
