@@ -102,36 +102,35 @@ export default function() {
           row,
           rowScale,
           rowValue = 0,
+          rowArea2,
           rowMinValue = Infinity,
           rowMaxValue = 0,
           rowRatio,
           minRatio = Infinity;
 
-      if (rect.dx < rect.dy) row = rowHorizontal, rowScale = value * ratio * rect.dx / rect.dy;
-      else row = rowVertical, rowScale = value * ratio * rect.dy / rect.dx;
+      if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (value * ratio * rect.dx);
+      else row = rowVertical, rowScale = rect.dx / (value * ratio * rect.dy);
 
       while (++i1 < n) {
         child = children[i1];
         rowValue += childValue = child.value;
         if (childValue < rowMinValue) rowMinValue = childValue;
         if (childValue > rowMaxValue) rowMaxValue = childValue;
+        rowArea2 = rowValue * rowValue * rowScale;
+        rowRatio = Math.max(rowMaxValue / rowArea2, rowArea2 / rowMinValue);
 
-        rowRatio = Math.max(
-          (rowScale * rowMaxValue) / (rowValue * rowValue),
-          (rowValue * rowValue) / (rowScale * rowMinValue)
-        );
+        // If this node doesn’t worsen the current row’s aspect ratio, add it.
+        if (rowRatio <= minRatio) minRatio = rowRatio;
 
-        if (rowRatio <= minRatio) { // add this node to the current row
-          minRatio = rowRatio;
-        } else { // place this node in a new row
-          rowValue -= childValue;
-          row(children, i0, i1, rowValue, rect, value);
+        // Otherwise, finish the current row and add this node to a new row.
+        else {
+          row(children, i0, i1, rowValue -= childValue, rect, value);
           value -= rowValue;
           i0 = i1--;
 
           // TODO better reset
-          if (rect.dx < rect.dy) row = rowHorizontal, rowScale = value * ratio * rect.dx / rect.dy;
-          else row = rowVertical, rowScale = value * ratio * rect.dy / rect.dx;
+          if (rect.dx < rect.dy) row = rowHorizontal, rowScale = rect.dy / (value * ratio * rect.dx);
+          else row = rowVertical, rowScale = rect.dx / (value * ratio * rect.dy);
 
           rowValue = 0;
           rowMinValue = Infinity;
