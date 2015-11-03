@@ -1,6 +1,6 @@
 import hierarchy, {rebind} from "./hierarchy";
 
-var phi = (1 + Math.sqrt(5)) / 2; // golden ratio
+var phi = (1 + Math.sqrt(5)) / 2;
 
 var modes = {
   "slice": 1,
@@ -23,12 +23,38 @@ function padStandard(node, padding) {
   return {x: x, y: y, dx: dx, dy: dy};
 }
 
-// Squarified Treemaps by Mark Bruls, Kees Huizing, and Jarke J. van Wijk.
-// Modified to support a target aspect ratio by Jeff Heer.
+function slice(nodes, rect, value) {
+  var i0 = -1,
+      n = nodes.length,
+      node,
+      x = rect.x, y = rect.y,
+      dx = rect.dx, dy = rect.dy,
+      ky = dy / value;
+
+  while (++i0 < n) {
+    node = nodes[i0], node.x = x, node.y = y, node.dx = dx;
+    y += node.dy = node.value * ky;
+  }
+}
+
+function dice(nodes, rect, value) {
+  var i0 = -1,
+      n = nodes.length,
+      node,
+      x = rect.x, y = rect.y,
+      dx = rect.dx, dy = rect.dy,
+      kx = dx / value;
+
+  while (++i0 < n) {
+    node = nodes[i0], node.x = x, node.y = y, node.dy = dy;
+    x += node.dx = node.value * kx;
+  }
+}
+
 export default function() {
   var layout = hierarchy(),
       round = Number,
-      size = [1, 1], // width, height
+      size = [1, 1],
       padding = null,
       pad = padNone,
       sticky = false,
@@ -47,68 +73,67 @@ export default function() {
     return padStandard(node, padding);
   }
 
-  // mode === "slice" ? rowVertical
-  // : mode === "dice" ? rowVertical
-  // : mode === "slice-dice" ? node.depth & 1 ? rowVertical : rowVertical
 
-  // Recursively arranges the specified node’s children into squarified rows.
-  // TODO implement other modes using another method, not squarify
-  function squarify(parent) {
-    var children = parent.children;
-    if (children && (n = children.length)) {
-      var i0 = 0,
-          i1,
-          n,
-          child,
-          childValue,
-          rect = pad(parent),
-          x = rect.x, y = rect.y,
-          dx = rect.dx, dy = rect.dy,
-          cx, cy,
-          kx, ky,
-          value = parent.value,
-          sumValue,
-          minValue,
-          maxValue,
-          alpha,
-          beta,
-          newRatio,
-          minRatio;
+  function squarify(nodes, rect, value) {
+    var i0 = 0,
+        i1,
+        n = nodes.length,
+        node,
+        nodeValue,
+        x = rect.x, y = rect.y,
+        dx = rect.dx, dy = rect.dy,
+        cx, cy,
+        kx, ky,
+        sumValue,
+        minValue,
+        maxValue,
+        alpha,
+        beta,
+        newRatio,
+        minRatio;
 
-      while (i0 < n) {
-        cx = x, cy = y;
-        sumValue = minValue = maxValue = children[i0].value;
-        alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
+    while (i0 < n) {
+      cx = x, cy = y;
+      sumValue = minValue = maxValue = nodes[i0].value;
+      alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
+      beta = sumValue * sumValue * alpha;
+      minRatio = Math.max(maxValue / beta, beta / minValue);
+
+      // Keep adding nodes while the aspect ratio maintains or improves.
+      for (i1 = i0 + 1; i1 < n; ++i1) {
+        sumValue += nodeValue = nodes[i1].value;
+        if (nodeValue < minValue) minValue = nodeValue;
+        if (nodeValue > maxValue) maxValue = nodeValue;
         beta = sumValue * sumValue * alpha;
-        minRatio = Math.max(maxValue / beta, beta / minValue);
-
-        // Keep adding nodes while the aspect ratio maintains or improves.
-        for (i1 = i0 + 1; i1 < n; ++i1) {
-          sumValue += childValue = children[i1].value;
-          if (childValue < minValue) minValue = childValue;
-          if (childValue > maxValue) maxValue = childValue;
-          beta = sumValue * sumValue * alpha;
-          newRatio = Math.max(maxValue / beta, beta / minValue);
-          if (newRatio > minRatio) { sumValue -= childValue; break; }
-          minRatio = newRatio;
-        }
-
-        // Position the row horizontally along the top of the rect.
-        if (dx < dy) for (kx = dx / sumValue, ky = dy * sumValue / value, y += ky, dy -= ky; i0 < i1; ++i0) {
-          child = children[i0], child.x = cx, child.y = cy, child.dy = ky;
-          cx += child.dx = child.value * kx;
-        }
-
-        // Position the row vertically along the left of the rect.
-        else for (ky = dy / sumValue, kx = dx * sumValue / value, x += kx, dx -= kx; i0 < i1; ++i0) {
-          child = children[i0], child.x = cx, child.y = cy, child.dx = kx;
-          cy += child.dy = child.value * ky;
-        }
-
-        value -= sumValue;
+        newRatio = Math.max(maxValue / beta, beta / minValue);
+        if (newRatio > minRatio) { sumValue -= nodeValue; break; }
+        minRatio = newRatio;
       }
 
-      children.forEach(squarify);
+      // Position the row horizontally along the top of the rect.
+      if (dx < dy) for (kx = dx / sumValue, ky = dy * sumValue / value, y += ky, dy -= ky; i0 < i1; ++i0) {
+        node = nodes[i0], node.x = cx, node.y = cy, node.dy = ky;
+        cx += node.dx = node.value * kx;
+      }
+
+      // Position the row vertically along the left of the rect.
+      else for (ky = dy / sumValue, kx = dx * sumValue / value, x += kx, dx -= kx; i0 < i1; ++i0) {
+        node = nodes[i0], node.x = cx, node.y = cy, node.dx = kx;
+        cy += node.dy = node.value * ky;
+      }
+
+      value -= sumValue;
+    }
+  }
+
+  function recurse(parent) {
+    var children = parent.children;
+    if (children) {
+      (mode === "slice" ? slice
+          : mode === "dice" ? dice
+          : mode === "slice-dice" ? parent.depth & 1 ? slice : dice
+          : squarify)(children, pad(parent), parent.value);
+      children.forEach(recurse);
     }
   }
 
@@ -144,7 +169,7 @@ export default function() {
     root.dy = size[1];
     if (stickies) layout.revalue(root);
     // scale([root], root.dx * root.dy / root.value);
-    (stickies ? stickify : squarify)(root);
+    (stickies ? stickify : recurse)(root);
     if (sticky) stickies = nodes;
     return nodes;
   }
