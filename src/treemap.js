@@ -99,17 +99,16 @@ export default function() {
           childValue,
           rect = pad(parent),
           value = parent.value,
-          scale = (rect.dx * rect.dy) / value,
           row,
-          rowLength,
+          rowScale,
           rowValue = 0,
           rowMinValue = Infinity,
           rowMaxValue = 0,
           rowRatio,
           minRatio = Infinity;
 
-      if (rect.dx < rect.dy) row = rowHorizontal, rowLength = rect.dx;
-      else row = rowVertical, rowLength = rect.dy;
+      if (rect.dx < rect.dy) row = rowHorizontal, rowScale = value * ratio * rect.dx / rect.dy;
+      else row = rowVertical, rowScale = value * ratio * rect.dy / rect.dx;
 
       while (++i1 < n) {
         child = children[i1];
@@ -118,8 +117,8 @@ export default function() {
         if (childValue > rowMaxValue) rowMaxValue = childValue;
 
         rowRatio = Math.max(
-          (rowLength * rowLength * rowMaxValue * ratio) / (rowValue * rowValue * scale),
-          (rowValue * rowValue * scale) / (rowLength * rowLength * rowMinValue * ratio)
+          (rowScale * rowMaxValue) / (rowValue * rowValue),
+          (rowValue * rowValue) / (rowScale * rowMinValue)
         );
 
         if (rowRatio <= minRatio) { // add this node to the current row
@@ -131,8 +130,8 @@ export default function() {
           i0 = i1--;
 
           // TODO better reset
-          if (rect.dx < rect.dy) row = rowHorizontal, rowLength = rect.dx;
-          else row = rowVertical, rowLength = rect.dy;
+          if (rect.dx < rect.dy) row = rowHorizontal, rowScale = value * ratio * rect.dx / rect.dy;
+          else row = rowVertical, rowScale = value * ratio * rect.dy / rect.dx;
 
           rowValue = 0;
           rowMinValue = Infinity;
