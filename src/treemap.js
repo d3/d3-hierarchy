@@ -137,7 +137,7 @@ function applyRound(node) {
 export default function() {
   var layout = hierarchy(),
       size = [1, 1],
-      parentPadding = 0,
+      childPadding = 0,
       siblingPadding = 0,
       // applyPadding,
       ratio = phi,
@@ -179,7 +179,7 @@ export default function() {
     root.dy = size[1] + siblingPadding;
     visitBefore(root, function(node) {
       if (round) applyRound(node);
-      if (node.children) applyMode(node, pad(node, parentPadding, parentPadding, parentPadding, parentPadding));
+      if (node.children) applyMode(node, pad(node, childPadding, childPadding, childPadding, childPadding));
       node.dx = Math.max(0, node.dx - siblingPadding);
       node.dy = Math.max(0, node.dy - siblingPadding);
     });
@@ -197,9 +197,9 @@ export default function() {
   };
 
   // TODO asymmetric padding
-  treemap.parentPadding = function(x) {
-    if (!arguments.length) return parentPadding;
-    parentPadding = +x;
+  treemap.childPadding = function(x) {
+    if (!arguments.length) return childPadding;
+    childPadding = +x;
     return treemap;
   };
 
