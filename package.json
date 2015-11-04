@@ -16,19 +16,19 @@
     "name": "Mike Bostock",
     "url": "http://bost.ocks.org/mike"
   },
-  "main": "build/hierarchy",
+  "main": "build/hierarchy.cjs",
   "jsnext:main": "index",
   "repository": {
     "type": "git",
     "url": "https://github.com/d3/d3-hierarchy.git"
   },
   "scripts": {
-    "pretest": "mkdir -p build && d3-bundler --format=umd --name=hierarchy -- index.js > build/hierarchy.js",
+    "pretest": "mkdir -p build && d3-bundler -x -f cjs -o build/hierarchy.cjs.js",
     "test": "faucet `find test -name '*-test.js'`",
-    "prepublish": "npm run test && uglifyjs build/hierarchy.js -c -m -o build/hierarchy.min.js && rm -f build/hierarchy.zip && zip -j build/hierarchy.zip -- LICENSE README.md build/hierarchy.js build/hierarchy.min.js"
+    "prepublish": "npm run test && d3-bundler -n hierarchy -o build/hierarchy.js && uglifyjs build/hierarchy.js -c -m -o build/hierarchy.min.js && rm -f build/hierarchy.zip && zip -j build/hierarchy.zip -- LICENSE README.md build/hierarchy.js build/hierarchy.min.js"
   },
   "devDependencies": {
-    "d3-bundler": "~0.2.5",
+    "d3-bundler": "~0.4.0",
     "faucet": "0.0",
     "tape": "4",
     "uglify-js": "2"
