@@ -91,19 +91,20 @@ export default function() {
     return arguments.length ? (value = x, hierarchy) : value;
   };
 
-  hierarchy.revalue = function(root) {
-    if (value) {
-      visitBefore(root, function(node) {
-        if (node.children) node.value = 0;
-      });
-      visitAfter(root, function(node) {
-        var parent;
-        if (!node.children) node.value = +value.call(hierarchy, node, node.depth) || 0;
-        if (parent = node.parent) parent.value += node.value;
-      });
-    }
-    return root;
-  };
+  // TODO
+  // hierarchy.revalue = function(root) {
+  //   if (value) {
+  //     visitBefore(root, function(node) {
+  //       if (node.children) node.value = 0;
+  //     });
+  //     visitAfter(root, function(node) {
+  //       var parent;
+  //       if (!node.children) node.value = +value.call(hierarchy, node, node.depth) || 0;
+  //       if (parent = node.parent) parent.value += node.value;
+  //     });
+  //   }
+  //   return root;
+  // };
 
   return hierarchy;
 };
