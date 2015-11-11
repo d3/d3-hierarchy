@@ -11,7 +11,7 @@
     "infovis"
   ],
   "homepage": "https://github.com/d3/d3-hierarchy",
-  "license" : "BSD-3-Clause",
+  "license": "BSD-3-Clause",
   "author": {
     "name": "Mike Bostock",
     "url": "http://bost.ocks.org/mike"
@@ -26,6 +26,9 @@
     "pretest": "mkdir -p build && node -e 'process.stdout.write(\"var version = \\\"\" + require(\"./package.json\").version + \"\\\"; export * from \\\"../index\\\"; export {version};\");' > build/bundle.js && rollup -f umd -u d3-hierarchy -n d3_hierarchy -o build/d3-hierarchy.js -- build/bundle.js",
     "test": "faucet `find test -name '*-test.js'`",
     "prepublish": "npm run test && uglifyjs build/d3-hierarchy.js -c -m -o build/d3-hierarchy.min.js && rm -f build/d3-hierarchy.zip && zip -j build/d3-hierarchy.zip -- LICENSE README.md build/d3-hierarchy.js build/d3-hierarchy.min.js"
+  },
+  "dependencies": {
+    "d3-arrays": "~0.3.0"
   },
   "devDependencies": {
     "faucet": "0.0",
