@@ -89,7 +89,7 @@ function packChildren(node) {
   }
 
   // Re-center the circles and compute the encompassing radius.
-  var c = enclosingCircle(nodes);
+  c = enclosingCircle(nodes);
   for (i = 0; i < n; ++i) {
     a = nodes[i];
     a.x -= c.x;
@@ -191,4 +191,4 @@ export default function() {
   };
 
   return rebind(pack, layout);
-};
+}

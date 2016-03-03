@@ -1,7 +1,7 @@
 // Returns the smallest circle that contains the specified circles.
 export default function(circles) {
   return enclosingCircleIntersectingCircles(randomizedList(circles), []);
-};
+}
 
 // Returns a linked list from the specified array in random order.
 function randomizedList(array) {

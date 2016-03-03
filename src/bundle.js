@@ -7,7 +7,7 @@ export default function() {
     while (++i < n) link = links[i], paths[i] = path(link.source, link.end);
     return paths;
   };
-};
+}
 
 function path(start, end) {
   var lca = leastCommonAncestor(start, end),

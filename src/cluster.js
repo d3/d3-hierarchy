@@ -1,6 +1,6 @@
 import {default as hierarchy, rebind} from "./hierarchy";
 import {defaultSeparation} from "./tree";
-import {visitAfter, visitBefore} from "./visit";
+import {visitAfter} from "./visit";
 
 function meanX(children) {
   return children.reduce(function(x, c) { return x + c.x; }, 0) / children.length;
@@ -86,4 +86,4 @@ export default function() {
   };
 
   return rebind(cluster, layout);
-};
+}

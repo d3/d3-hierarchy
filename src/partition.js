@@ -44,4 +44,4 @@ export default function() {
   };
 
   return rebind(partition, layout);
-};
+}

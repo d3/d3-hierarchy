@@ -3,7 +3,7 @@ import {visitAfter, visitBefore} from "./visit";
 
 export function defaultSeparation(a, b) {
   return a.parent === b.parent ? 1 : 2;
-};
+}
 
 // function radialSeparation(a, b) {
 //   return (a.parent === b.parent ? 1 : 2) / a.depth;
@@ -229,4 +229,4 @@ export default function() {
   };
 
   return rebind(tree, layout);
-};
+}

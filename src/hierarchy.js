@@ -1,4 +1,4 @@
-import {visitAfter, visitBefore} from "./visit";
+import {visitAfter} from "./visit";
 import links from "./links";
 
 function defaultChildren(d) {
@@ -34,7 +34,7 @@ export function rebind(layout, hierarchy) {
   layout.links = links;
 
   return layout;
-};
+}
 
 export default function() {
   var sort = defaultSort,
@@ -107,4 +107,4 @@ export default function() {
   // };
 
   return hierarchy;
-};
+}

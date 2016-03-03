@@ -8,7 +8,7 @@ export function visitBefore(node, callback) {
       while (--n >= 0) nodes.push(children[n]);
     }
   }
-};
+}
 
 // Post-order traversal.
 export function visitAfter(node, callback) {
@@ -23,4 +23,4 @@ export function visitAfter(node, callback) {
   while ((node = nodes2.pop()) != null) {
     callback(node);
   }
-};
+}
