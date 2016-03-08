@@ -164,6 +164,25 @@ export default function() {
       visitAfter(root, function(d) { d.r += dr; });
       visitAfter(root, packChildren);
       visitAfter(root, function(d) { d.r -= dr; });
+
+      var levels = [];
+      function buildLevels(d, i) {
+        if (!levels[i]) levels[i] = [];
+        levels[i].push(d);
+        if (d.children && d.children.length > 0) {
+          d.children.forEach(function(e) { buildLevels(e, i+1); });
+        }
+      }
+      buildLevels(root, 0);
+      for (var i = levels.length - 2; i >= 0; i--) {
+        levels[i].forEach(function(d) {
+          if (d.children && d.children.length > 0) {
+            d.children.forEach(function(e) { e.r += dr; });
+            packChildren(d);
+            d.children.forEach(function(e) { e.r -= dr; });
+          }
+        });
+      }
     }
 
     // Translate and scale the layout to fit the requested size.
