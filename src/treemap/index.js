@@ -1,14 +1,5 @@
-import hierarchy, {rebind} from "./hierarchy";
-import {visitBefore} from "./visit";
-
-var phi = (1 + Math.sqrt(5)) / 2;
-
-var modeByName = {
-  "slice": slice,
-  "dice": dice,
-  "slice-dice": sliceDice,
-  "squarify": squarify
-};
+import hierarchy, {rebind} from "../hierarchy";
+import {visitBefore} from "../visit";
 
 function pad(node, top, right, bottom, left) {
   var x = node.x + left,
@@ -35,100 +26,6 @@ function pad(node, top, right, bottom, left) {
 //   };
 // }
 
-function sliceDice(parent, rect) {
-  (parent.depth & 1 ? slice : dice)(parent, rect);
-}
-
-function slice(parent, rect) {
-  var nodes = parent.children,
-      node,
-      i = -1,
-      n = nodes.length,
-      x = rect.x,
-      y = rect.y,
-      dx = rect.dx,
-      ky = rect.dy / parent.value;
-
-  while (++i < n) {
-    node = nodes[i], node.x = x, node.y = y, node.dx = dx;
-    y += node.dy = node.value * ky;
-  }
-}
-
-function dice(parent, rect) {
-  var nodes = parent.children,
-      node,
-      i = -1,
-      n = nodes.length,
-      x = rect.x,
-      y = rect.y,
-      dy = rect.dy,
-      kx = rect.dx / parent.value;
-
-  while (++i < n) {
-    node = nodes[i], node.x = x, node.y = y, node.dy = dy;
-    x += node.dx = node.value * kx;
-  }
-}
-
-function squarify(ratio) {
-  return function(parent, rect) {
-    var nodes = parent.children,
-        node,
-        nodeValue,
-        i0 = 0,
-        i1,
-        n = nodes.length,
-        x = rect.x,
-        y = rect.y,
-        dx = rect.dx,
-        dy = rect.dy,
-        cx, cy,
-        kx, ky,
-        value = parent.value,
-        sumValue,
-        minValue,
-        maxValue,
-        alpha,
-        beta,
-        newRatio,
-        minRatio;
-
-    while (i0 < n) {
-      cx = x, cy = y;
-      sumValue = minValue = maxValue = nodes[i0].value;
-      alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
-      beta = sumValue * sumValue * alpha;
-      minRatio = Math.max(maxValue / beta, beta / minValue);
-
-      // Keep adding nodes while the aspect ratio maintains or improves.
-      for (i1 = i0 + 1; i1 < n; ++i1) {
-        sumValue += nodeValue = nodes[i1].value;
-        if (nodeValue < minValue) minValue = nodeValue;
-        if (nodeValue > maxValue) maxValue = nodeValue;
-        beta = sumValue * sumValue * alpha;
-        newRatio = Math.max(maxValue / beta, beta / minValue);
-        if (newRatio > minRatio) { sumValue -= nodeValue; break; }
-        minRatio = newRatio;
-      }
-
-      // Position the row horizontally along the top of the rect.
-      if (dx < dy) for (kx = dx / sumValue, ky = dy * sumValue / value, y += ky, dy -= ky; i0 < i1; ++i0) {
-        node = nodes[i0], node.x = cx, node.y = cy, node.dy = ky;
-        cx += node.dx = node.value * kx;
-      }
-
-      // Position the row vertically along the left of the rect.
-      else for (ky = dy / sumValue, kx = dx * sumValue / value, x += kx, dx -= kx; i0 < i1; ++i0) {
-        node = nodes[i0], node.x = cx, node.y = cy, node.dx = kx;
-        cy += node.dy = node.value * ky;
-      }
-
-      value -= sumValue;
-    }
-  };
-}
-
 function applyRound(node) {
   node.dx = Math.round(node.x + node.dx) - (node.x = Math.round(node.x));
   node.dy = Math.round(node.y + node.dy) - (node.y = Math.round(node.y));
@@ -140,12 +37,10 @@ export default function() {
       childPadding = 0,
       siblingPadding = 0,
       // applyPadding,
-      ratio = phi,
+      tile = squarify,
       round = false,
       // sticky = false,
-      // stickies,
-      modeName = "squarify",
-      applyMode = squarify(ratio);
+      // stickies;
 
   // // Recursively resizes the specified node's children into existing rows.
   // // Preserves the existing layout!
@@ -179,7 +74,7 @@ export default function() {
     root.dy = size[1] + siblingPadding;
     visitBefore(root, function(node) {
       if (round) applyRound(node);
-      if (node.children) applyMode(node, pad(node, childPadding, childPadding, childPadding, childPadding));
+      if (node.children) mode(node, pad(node, childPadding, childPadding, childPadding, childPadding));
       node.dx = Math.max(0, node.dx - siblingPadding);
       node.dy = Math.max(0, node.dy - siblingPadding);
     });
@@ -235,14 +130,14 @@ export default function() {
   //   return treemap;
   // };
 
-  treemap.ratio = function(x) {
-    if (!arguments.length) return ratio;
-    ratio = +x;
-    if (modeName === "squarify") applyMode = squarify(ratio);
-    return treemap;
-  };
+  // treemap.ratio = function(x) {
+  //   if (!arguments.length) return ratio;
+  //   ratio = +x;
+  //   if (modeName === "squarify") applyMode = squarify(ratio);
+  //   return treemap;
+  // };
 
-  treemap.mode = function(x) {
+  treemap.tile = function(x) {
     if (!arguments.length) return modeName;
     modeName = modeByName.hasOwnProperty(x += "") ? x : "squarify";
     applyMode = modeName === "squarify" ? squarify(ratio) : modeByName[modeName];
