@@ -1,26 +1,35 @@
-// Pre-order traversal.
+export function visitBreadth(node, callback) {
+  var current, next = [node], children, depth = -1, i;
+  do {
+    current = next, next = [], ++depth;
+    while ((node = current.pop()) != null) {
+      callback(node, depth), children = node.children;
+      for (i = children.length - 1; i >= 0; --i) {
+        next.push(children[i]);
+      }
+    }
+  } while (next.length);
+}
+
 export function visitBefore(node, callback) {
-  var nodes = [node];
+  var nodes = [node], children, i;
   while ((node = nodes.pop()) != null) {
-    callback(node);
-    if ((children = node.children) && (n = children.length)) {
-      var n, children;
-      while (--n >= 0) nodes.push(children[n]);
+    callback(node), children = node.children;
+    for (i = children.length - 1; i >= 0; --i) {
+      nodes.push(children[i]);
     }
   }
 }
 
-// Post-order traversal.
 export function visitAfter(node, callback) {
-  var nodes = [node], nodes2 = [];
+  var nodes = [node], next = [], children, i;
   while ((node = nodes.pop()) != null) {
-    nodes2.push(node);
-    if ((children = node.children) && (n = children.length)) {
-      var i = -1, n, children;
-      while (++i < n) nodes.push(children[i]);
+    next.push(node), children = node.children;
+    for (i = children.length - 1; i >= 0; --i) {
+      nodes.push(children[i]);
     }
   }
-  while ((node = nodes2.pop()) != null) {
+  while ((node = next.pop()) != null) {
     callback(node);
   }
 }
