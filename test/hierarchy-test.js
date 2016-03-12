@@ -58,6 +58,14 @@ tape("hierarchy(data) does not require the data to have a single root", function
   test.end();
 });
 
+tape("hierarchy(data) throws an error if the hierarchy is cyclical", function(test) {
+  var h = d3_hierarchy.hierarchy(),
+      a = {parent: 1},
+      b = {parent: 0};
+  test.throws(function() { h([a, b]); }, /\bcycle\b/);
+  test.end();
+});
+
 // tape("hierarchy(data) throws an error if multiple nodes have the same id", function(test) {
 //   var h = d3_hierarchy.hierarchy();
 //   test.end();
