@@ -18,6 +18,9 @@
   },
   "main": "build/d3-hierarchy.js",
   "jsnext:main": "index",
+  "bin": {
+    "tree2csv": "./bin/tree2csv"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d3/d3-hierarchy.git"
@@ -29,7 +32,9 @@
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags && cp build/d3-hierarchy.js ../d3.github.com/d3-hierarchy.v0.0.js && cp build/d3-hierarchy.min.js ../d3.github.com/d3-hierarchy.v0.0.min.js && cd ../d3.github.com && git add d3-hierarchy.v0.0.js d3-hierarchy.v0.0.min.js && git commit -m \"d3-hierarchy ${VERSION}\" && git push && cd - && zip -j build/d3-hierarchy.zip -- LICENSE README.md build/d3-hierarchy.js build/d3-hierarchy.min.js"
   },
   "dependencies": {
-    "d3-collection": "~0.1.2"
+    "d3-collection": "~0.1.2",
+    "d3-dsv": "~0.3.0",
+    "rw": "~1.1.1"
   },
   "devDependencies": {
     "faucet": "0.0",
