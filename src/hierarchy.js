@@ -1,6 +1,6 @@
 import {map} from "d3-collection";
 import {visitAfter, visitBreadth} from "./visit";
-import links from "./links";
+// import links from "./links";
 
 function defaultId(d, i) {
   return i;
@@ -45,7 +45,7 @@ export function rebind(layout, hierarchy) {
   };
 
   return layout;
-};
+}
 
 function Node() {
   this.children = [];
@@ -56,6 +56,14 @@ export default function() {
       parentId = defaultParentId,
       value = defaultValue,
       sort = defaultSort;
+
+  function hierarchy(data) {
+    var nodes = computeNodes(data), root = nodes[0], i = -1;
+    visitBreadth(root, assignDepth);
+    visitAfter(root, computeValue(data));
+    visitBreadth(root, function(node) { nodes[++i] = node; });
+    return nodes;
+  }
 
   function computeNodes(data) {
     var i,
@@ -98,14 +106,6 @@ export default function() {
       node.value = v;
       c.sort(sort);
     };
-  }
-
-  function hierarchy(data) {
-    var nodes = computeNodes(data), root = nodes[0], i = -1;
-    visitBreadth(root, assignDepth);
-    visitAfter(root, computeValue(data));
-    visitBreadth(root, function(node) { nodes[++i] = node; });
-    return nodes;
   }
 
   hierarchy.id = function(x) {
