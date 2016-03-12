@@ -1,4 +1,4 @@
-function slice(parent, rect) {
+export default function(parent, rect) {
   var nodes = parent.children,
       node,
       i = -1,

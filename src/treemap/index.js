@@ -38,7 +38,7 @@ export default function() {
       siblingPadding = 0,
       // applyPadding,
       tile = squarify,
-      round = false,
+      round = false;
       // sticky = false,
       // stickies;
 
