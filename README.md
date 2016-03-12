@@ -9,7 +9,3 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 ## API Reference
 
 …
-
-## Changes from D3 3.x:
-
-* The treemap layout no longer rounds to integer pixels by default.
