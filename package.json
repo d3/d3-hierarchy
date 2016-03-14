@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "d3-collection": "~0.1.2",
-    "d3-dsv": "~0.3.0",
+    "d3-dsv": "~0.3.1",
     "rw": "1"
   },
   "devDependencies": {

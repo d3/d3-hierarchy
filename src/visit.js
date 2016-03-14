@@ -4,7 +4,7 @@ export function visitBreadth(node, callback) {
     current = next, next = [], ++depth;
     while ((node = current.pop()) != null) {
       callback(node, depth), children = node.children;
-      for (i = children.length - 1; i >= 0; --i) {
+      if (children) for (i = children.length - 1; i >= 0; --i) {
         next.push(children[i]);
       }
     }
@@ -15,7 +15,7 @@ export function visitBefore(node, callback) {
   var nodes = [node], children, i;
   while ((node = nodes.pop()) != null) {
     callback(node), children = node.children;
-    for (i = children.length - 1; i >= 0; --i) {
+    if (children) for (i = children.length - 1; i >= 0; --i) {
       nodes.push(children[i]);
     }
   }
@@ -25,7 +25,7 @@ export function visitAfter(node, callback) {
   var nodes = [node], next = [], children, i;
   while ((node = nodes.pop()) != null) {
     next.push(node), children = node.children;
-    for (i = children.length - 1; i >= 0; --i) {
+    if (children) for (i = children.length - 1; i >= 0; --i) {
       nodes.push(children[i]);
     }
   }

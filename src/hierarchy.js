@@ -58,9 +58,7 @@ export function rebind(layout, hierarchy) {
   return layout;
 }
 
-function Node() {
-  this.children = [];
-}
+function Node() {}
 
 export default function() {
   var id = defaultId,
@@ -103,7 +101,8 @@ export default function() {
       parent = nodeId == null ? root : nodeById.get(nodeId += "");
       if (!parent) throw new Error("missing: " + nodeId);
       node.parent = parent;
-      parent.children.push(node);
+      if (parent.children) parent.children.push(node);
+      else parent.children = [node];
     }
 
     return nodes;
@@ -111,12 +110,13 @@ export default function() {
 
   function computeValue(data) {
     return function(node) {
-      var v = node.parent ? +value(node.data, node.index, data) || 0 : 0,
-          c = node.children,
-          i = c.length;
-      while (--i >= 0) v += c[i].value;
-      node.value = v;
-      c.sort(sort);
+      var sum = node.parent ? +value(node.data, node.index, data) || 0 : 0,
+          children = node.children, i;
+      if (children) {
+        for (i = children.length - 1; i >= 0; --i) sum += children[i].value;
+        children.sort(sort);
+      }
+      node.value = sum;
     };
   }
 
