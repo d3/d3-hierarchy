@@ -1,8 +1,8 @@
 import {map} from "d3-collection";
 import {visitAfter, visitBreadth} from "./visit";
 
-function defaultId(d, i) {
-  return i;
+function defaultId(d) {
+  return d.id;
 }
 
 function defaultParentId(d) {
@@ -101,7 +101,7 @@ export default function() {
       node = nodes[i + 1];
       nodeId = parentId(d = data[i], i, data);
       parent = nodeId == null ? root : nodeById.get(nodeId += "");
-      if (!parent) throw new Error("not found: " + nodeId);
+      if (!parent) throw new Error("missing: " + nodeId);
       node.parent = parent;
       parent.children.push(node);
     }
