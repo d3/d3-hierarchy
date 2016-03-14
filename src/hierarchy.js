@@ -1,6 +1,5 @@
 import {map} from "d3-collection";
 import {visitAfter, visitBreadth} from "./visit";
-// import links from "./links";
 
 function defaultId(d, i) {
   return i;
