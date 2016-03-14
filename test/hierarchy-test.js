@@ -16,17 +16,18 @@ tape("hierarchy() has the expected defaults", function(test) {
 
 tape("hierarchy(data) returns an array of nodes for each datum, plus the root", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: "a"},
+      root = {id: "root"},
+      a = {id: "a", parent: "root"},
       aa = {id: "aa", parent: "a"},
       ab = {id: "ab", parent: "a"},
       aaa = {id: "aaa", parent: "aa"},
-      nodes = h([a, aa, ab, aaa]),
+      nodes = h([root, a, aa, ab, aaa]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
-      AAA = {data: aaa, index: 3, id: "aaa", depth: 3, value: 0},
-      AB = {data: ab, index: 2, id: "ab", depth: 2, value: 0},
-      AA = {data: aa, index: 1, id: "aa", depth: 2, value: 0, children: [AAA]},
-      A = {data: a, index: 0, id: "a", depth: 1, value: 0, children: [AA, AB]},
-      ROOT = {depth: 0, value: 0, children: [A]};
+      AAA = {data: aaa, index: 4, id: "aaa", depth: 3, value: 0},
+      AB = {data: ab, index: 3, id: "ab", depth: 2, value: 0},
+      AA = {data: aa, index: 2, id: "aa", depth: 2, value: 0, children: [AAA]},
+      A = {data: a, index: 1, id: "a", depth: 1, value: 0, children: [AA, AB]},
+      ROOT = {data: root, index: 0, id: "root", depth: 0, value: 0, children: [A]};
   test.deepEqual(nodes, [ROOT, A, AA, AB, AAA]);
   test.deepEqual(parents, [undefined, ROOT, A, A, AA]);
   test.end();
@@ -34,29 +35,22 @@ tape("hierarchy(data) returns an array of nodes for each datum, plus the root", 
 
 tape("hierarchy(data) does not require the data to be in topological order", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: "a"},
+      root = {id: "root"},
+      a = {id: "a", parent: "root"},
       aa = {id: "aa", parent: "a"},
-      nodes = h([aa, a]),
+      nodes = h([aa, a, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       AA = {data: aa, index: 0, id: "aa", depth: 2, value: 0},
       A = {data: a, index: 1, id: "a", depth: 1, value: 0, children: [AA]},
-      ROOT = {depth: 0, value: 0, children: [A]};
+      ROOT = {data: root, index: 2, id: "root", depth: 0, value: 0, children: [A]};
   test.deepEqual(nodes, [ROOT, A, AA]);
   test.deepEqual(parents, [undefined, ROOT, A]);
   test.end();
 });
 
-tape("hierarchy(data) does not require the data to have a single root", function(test) {
-  var h = d3_hierarchy.hierarchy(),
-      a = {id: "a"},
-      b = {id: "b"},
-      nodes = h([a, b]),
-      parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
-      A = {data: a, index: 0, id: "a", depth: 1, value: 0},
-      B = {data: b, index: 1, id: "b", depth: 1, value: 0},
-      ROOT = {depth: 0, value: 0, children: [A, B]};
-  test.deepEqual(nodes, [ROOT, A, B]);
-  test.deepEqual(parents, [undefined, ROOT, ROOT]);
+tape("hierarchy(data) requires the data to have a single root", function(test) {
+  var h = d3_hierarchy.hierarchy();
+  test.throws(function() { h([{id: "a"}, {id: "b"}]); }, /\bmultiple roots\b/);
   test.end();
 });
 
@@ -89,13 +83,14 @@ tape("hierarchy(data) throws an error if the specified parent is not found", fun
 
 tape("hierarchy(data) coerces the id to a string, even if null", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: null},
+      root = {id: "root"},
+      a = {id: null, parent: "root"},
       aa = {id: "aa", parent: "null"},
-      nodes = h([a, aa]),
+      nodes = h([a, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       AA = {data: aa, index: 1, id: "aa", depth: 2, value: 0},
       A = {data: a, index: 0, id: "null", depth: 1, value: 0, children: [AA]},
-      ROOT = {depth: 0, value: 0, children: [A]};
+      ROOT = {data: root, index: 2, id: "root", depth: 0, value: 0, children: [A]};
   test.deepEqual(nodes, [ROOT, A, AA]);
   test.deepEqual(parents, [undefined, ROOT, A]);
   test.end();
@@ -103,13 +98,14 @@ tape("hierarchy(data) coerces the id to a string, even if null", function(test) 
 
 tape("hierarchy(data) coerces the id to a string, even if undefined", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {},
+      root = {id: "root"},
+      a = {parent: "root"},
       aa = {id: "aa", parent: "undefined"},
-      nodes = h([a, aa]),
+      nodes = h([a, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       AA = {data: aa, index: 1, id: "aa", depth: 2, value: 0},
       A = {data: a, index: 0, id: "undefined", depth: 1, value: 0, children: [AA]},
-      ROOT = {depth: 0, value: 0, children: [A]};
+      ROOT = {data: root, index: 2, id: "root", depth: 0, value: 0, children: [A]};
   test.deepEqual(nodes, [ROOT, A, AA]);
   test.deepEqual(parents, [undefined, ROOT, A]);
   test.end();
@@ -117,13 +113,14 @@ tape("hierarchy(data) coerces the id to a string, even if undefined", function(t
 
 tape("hierarchy(data) coerces the parent id to a string", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: "a"},
+      root = {id: "root"},
+      a = {id: "a", parent: "root"},
       aa = {id: "aa", parent: {toString: function() { return "a"; }}},
-      nodes = h([a, aa]),
+      nodes = h([a, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       AA = {data: aa, index: 1, id: "aa", depth: 2, value: 0},
       A = {data: a, index: 0, id: "a", depth: 1, value: 0, children: [AA]},
-      ROOT = {depth: 0, value: 0, children: [A]};
+      ROOT = {data: root, index: 2, id: "root", depth: 0, value: 0, children: [A]};
   test.deepEqual(nodes, [ROOT, A, AA]);
   test.deepEqual(parents, [undefined, ROOT, A]);
   test.end();
@@ -131,41 +128,40 @@ tape("hierarchy(data) coerces the parent id to a string", function(test) {
 
 tape("hierarchy(data) coerces the value to a number", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: "a", value: {valueOf: function() { return 42; }}},
-      nodes = h([a]),
+      root = {id: "root", value: {valueOf: function() { return 42; }}},
+      nodes = h([root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
-      A = {data: a, index: 0, id: "a", depth: 1, value: 42},
-      ROOT = {depth: 0, value: 42, children: [A]};
-  test.deepEqual(nodes, [ROOT, A]);
-  test.deepEqual(parents, [undefined, ROOT]);
+      ROOT = {data: root, index: 0, id: "root", depth: 0, value: 42};
+  test.deepEqual(nodes, [ROOT]);
+  test.deepEqual(parents, [undefined]);
   test.end();
 });
 
 tape("hierarchy(data) treats NaN values as zero", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: "a", value: NaN},
-      nodes = h([a]),
+      root = {id: "root", value: NaN},
+      nodes = h([root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
-      A = {data: a, index: 0, id: "a", depth: 1, value: 0},
-      ROOT = {depth: 0, value: 0, children: [A]};
-  test.deepEqual(nodes, [ROOT, A]);
-  test.deepEqual(parents, [undefined, ROOT]);
+      ROOT = {data: root, index: 0, id: "root", depth: 0, value: 0};
+  test.deepEqual(nodes, [ROOT]);
+  test.deepEqual(parents, [undefined]);
   test.end();
 });
 
 tape("hierarchy(data) aggregates values from the leaves and internal nodes", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: "a", value: 1},
+      root = {id: "root"},
+      a = {id: "a", value: 1, parent: "root"},
       aa = {id: "aa", value: 3, parent: "a"},
       ab = {id: "ab", value: 7, parent: "a"},
       aaa = {id: "aaa", value: 12, parent: "aa"},
-      nodes = h([a, aa, ab, aaa]),
+      nodes = h([a, aa, ab, aaa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       AAA = {data: aaa, index: 3, id: "aaa", depth: 3, value: 12},
       AB = {data: ab, index: 2, id: "ab", depth: 2, value: 7},
       AA = {data: aa, index: 1, id: "aa", depth: 2, value: 15, children: [AAA]},
       A = {data: a, index: 0, id: "a", depth: 1, value: 23, children: [AA, AB]},
-      ROOT = {depth: 0, value: 23, children: [A]};
+      ROOT = {data: root, index: 4, id: "root", depth: 0, value: 23, children: [A]};
   test.deepEqual(nodes, [ROOT, A, AA, AB, AAA]);
   test.deepEqual(parents, [undefined, ROOT, A, A, AA]);
   test.end();
@@ -173,13 +169,14 @@ tape("hierarchy(data) aggregates values from the leaves and internal nodes", fun
 
 tape("hierarchy(data) sorts nodes by depth and sibling order", function(test) {
   var h = d3_hierarchy.hierarchy(),
-      a = {id: "a"},
+      root = {id: "root"},
+      a = {id: "a", parent: "root"},
       aa = {id: "aa", value: 1, parent: "a"},
       ab = {id: "ab", value: 3, parent: "a"},
       ac = {id: "ac", value: 2, parent: "a"},
       ad = {id: "ad", value: 4, parent: "a"},
-      b = {id: "b"},
-      nodes = h([ab, ac, a, ad, b, aa]),
+      b = {id: "b", parent: "root"},
+      nodes = h([ab, ac, a, ad, b, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       B = {data: b, index: 4, id: "b", depth: 1, value: 0},
       AD = {data: ad, index: 3, id: "ad", depth: 2, value: 4},
@@ -187,7 +184,7 @@ tape("hierarchy(data) sorts nodes by depth and sibling order", function(test) {
       AB = {data: ab, index: 0, id: "ab", depth: 2, value: 3},
       AA = {data: aa, index: 5, id: "aa", depth: 2, value: 1},
       A = {data: a, index: 2, id: "a", depth: 1, value: 10, children: [AD, AB, AC, AA]},
-      ROOT = {depth: 0, value: 10, children: [A, B]};
+      ROOT = {data: root, index: 6, id: "root", depth: 0, value: 10, children: [A, B]};
   test.deepEqual(nodes, [ROOT, A, B, AD, AB, AC, AA]);
   test.deepEqual(parents, [undefined, ROOT, ROOT, A, A, A, A]);
   test.end();
@@ -196,13 +193,14 @@ tape("hierarchy(data) sorts nodes by depth and sibling order", function(test) {
 tape("hierarchy.id(id) observes the specified id function", function(test) {
   var foo = function(d) { return d.foo; },
       h = d3_hierarchy.hierarchy().id(foo),
-      a = {foo: "a"},
+      root = {foo: "root"},
+      a = {foo: "a", parent: "root"},
       aa = {foo: "aa", value: 1, parent: "a"},
       ab = {foo: "ab", value: 3, parent: "a"},
       ac = {foo: "ac", value: 2, parent: "a"},
       ad = {foo: "ad", value: 4, parent: "a"},
-      b = {foo: "b"},
-      nodes = h([ab, ac, a, ad, b, aa]),
+      b = {foo: "b", parent: "root"},
+      nodes = h([ab, ac, a, ad, b, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       B = {data: b, index: 4, id: "b", depth: 1, value: 0},
       AD = {data: ad, index: 3, id: "ad", depth: 2, value: 4},
@@ -210,7 +208,7 @@ tape("hierarchy.id(id) observes the specified id function", function(test) {
       AB = {data: ab, index: 0, id: "ab", depth: 2, value: 3},
       AA = {data: aa, index: 5, id: "aa", depth: 2, value: 1},
       A = {data: a, index: 2, id: "a", depth: 1, value: 10, children: [AD, AB, AC, AA]},
-      ROOT = {depth: 0, value: 10, children: [A, B]};
+      ROOT = {data: root, index: 6, id: "root", depth: 0, value: 10, children: [A, B]};
   test.equal(h.id(), foo);
   test.deepEqual(nodes, [ROOT, A, B, AD, AB, AC, AA]);
   test.deepEqual(parents, [undefined, ROOT, ROOT, A, A, A, A]);
@@ -220,13 +218,14 @@ tape("hierarchy.id(id) observes the specified id function", function(test) {
 tape("hierarchy.parentId(id) observes the specified parent id function", function(test) {
   var foo = function(d) { return d.foo; },
       h = d3_hierarchy.hierarchy().parentId(foo),
-      a = {id: "a"},
+      root = {id: "root"},
+      a = {id: "a", foo: "root"},
       aa = {id: "aa", value: 1, foo: "a"},
       ab = {id: "ab", value: 3, foo: "a"},
       ac = {id: "ac", value: 2, foo: "a"},
       ad = {id: "ad", value: 4, foo: "a"},
-      b = {id: "b"},
-      nodes = h([ab, ac, a, ad, b, aa]),
+      b = {id: "b", foo: "root"},
+      nodes = h([ab, ac, a, ad, b, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       B = {data: b, index: 4, id: "b", depth: 1, value: 0},
       AD = {data: ad, index: 3, id: "ad", depth: 2, value: 4},
@@ -234,7 +233,7 @@ tape("hierarchy.parentId(id) observes the specified parent id function", functio
       AB = {data: ab, index: 0, id: "ab", depth: 2, value: 3},
       AA = {data: aa, index: 5, id: "aa", depth: 2, value: 1},
       A = {data: a, index: 2, id: "a", depth: 1, value: 10, children: [AD, AB, AC, AA]},
-      ROOT = {depth: 0, value: 10, children: [A, B]};
+      ROOT = {data: root, index: 6, id: "root", depth: 0, value: 10, children: [A, B]};
   test.equal(h.parentId(), foo);
   test.deepEqual(nodes, [ROOT, A, B, AD, AB, AC, AA]);
   test.deepEqual(parents, [undefined, ROOT, ROOT, A, A, A, A]);
@@ -244,13 +243,14 @@ tape("hierarchy.parentId(id) observes the specified parent id function", functio
 tape("hierarchy.value(value) observes the specified value function", function(test) {
   var foo = function(d) { return d.foo; },
       h = d3_hierarchy.hierarchy().value(foo),
-      a = {id: "a"},
+      root = {id: "root"},
+      a = {id: "a", parent: "root"},
       aa = {id: "aa", foo: 1, parent: "a"},
       ab = {id: "ab", foo: 3, parent: "a"},
       ac = {id: "ac", foo: 2, parent: "a"},
       ad = {id: "ad", foo: 4, parent: "a"},
-      b = {id: "b"},
-      nodes = h([ab, ac, a, ad, b, aa]),
+      b = {id: "b", parent: "root"},
+      nodes = h([ab, ac, a, ad, b, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       B = {data: b, index: 4, id: "b", depth: 1, value: 0},
       AD = {data: ad, index: 3, id: "ad", depth: 2, value: 4},
@@ -258,7 +258,7 @@ tape("hierarchy.value(value) observes the specified value function", function(te
       AB = {data: ab, index: 0, id: "ab", depth: 2, value: 3},
       AA = {data: aa, index: 5, id: "aa", depth: 2, value: 1},
       A = {data: a, index: 2, id: "a", depth: 1, value: 10, children: [AD, AB, AC, AA]},
-      ROOT = {depth: 0, value: 10, children: [A, B]};
+      ROOT = {data: root, index: 6, id: "root", depth: 0, value: 10, children: [A, B]};
   test.equal(h.value(), foo);
   test.deepEqual(nodes, [ROOT, A, B, AD, AB, AC, AA]);
   test.deepEqual(parents, [undefined, ROOT, ROOT, A, A, A, A]);
@@ -268,13 +268,14 @@ tape("hierarchy.value(value) observes the specified value function", function(te
 tape("hierarchy.sort(sort) observes the specified comparator function", function(test) {
   var ascendingFoo = function(a, b) { return a.data.foo - b.data.foo; },
       h = d3_hierarchy.hierarchy().sort(ascendingFoo),
-      a = {id: "a"},
+      root = {id: "root"},
+      a = {id: "a", parent: "root"},
       aa = {id: "aa", foo: 1, parent: "a"},
       ab = {id: "ab", foo: 3, parent: "a"},
       ac = {id: "ac", foo: 2, parent: "a"},
       ad = {id: "ad", foo: 4, parent: "a"},
-      b = {id: "b"},
-      nodes = h([ab, ac, a, ad, b, aa]),
+      b = {id: "b", parent: "root"},
+      nodes = h([ab, ac, a, ad, b, aa, root]),
       parents = nodes.map(function(d) { var p = d.parent; delete d.parent; return p; }),
       B = {data: b, index: 4, id: "b", depth: 1, value: 0},
       AD = {data: ad, index: 3, id: "ad", depth: 2, value: 0},
@@ -282,7 +283,7 @@ tape("hierarchy.sort(sort) observes the specified comparator function", function
       AB = {data: ab, index: 0, id: "ab", depth: 2, value: 0},
       AA = {data: aa, index: 5, id: "aa", depth: 2, value: 0},
       A = {data: a, index: 2, id: "a", depth: 1, value: 0, children: [AA, AC, AB, AD]},
-      ROOT = {depth: 0, value: 0, children: [A, B]};
+      ROOT = {data: root, index: 6, id: "root", depth: 0, value: 0, children: [A, B]};
   test.equal(h.sort(), ascendingFoo);
   test.deepEqual(nodes, [ROOT, A, B, AA, AC, AB, AD]);
   test.deepEqual(parents, [undefined, ROOT, ROOT, A, A, A, A]);

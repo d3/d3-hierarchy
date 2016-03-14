@@ -24,13 +24,11 @@ function assignDepth(node, depth) {
 function detectCycles(root, n) {
   var visited = new Array(n);
   visitAfter(root, function(node) {
-    if (node === root) return;
     var i = node.index;
     if (visited[i]) throw new Error("cycle");
     visited[i] = 1;
     --n;
   });
-  if (n) throw new Error("cycle");
 }
 
 export function rebind(layout, hierarchy) {
@@ -81,36 +79,42 @@ export default function() {
         d,
         nodeId,
         nodeById = map(),
-        nodes = new Array(n + 1),
+        nodes = new Array(n),
         node,
         parent,
-        root = nodes[0] = new Node;
+        root;
 
     for (i = 0; i < n; ++i) {
       nodeId = id(d = data[i], i, data) + "";
       if (nodeById.has(nodeId)) throw new Error("duplicate: " + nodeId);
-      nodeById.set(nodeId, nodes[i + 1] = node = new Node);
+      nodeById.set(nodeId, nodes[i] = node = new Node);
       node.id = nodeId;
       node.data = d;
       node.index = i;
     }
 
     for (i = 0; i < n; ++i) {
-      node = nodes[i + 1];
+      node = nodes[i];
       nodeId = parentId(d = data[i], i, data);
-      parent = nodeId == null ? root : nodeById.get(nodeId += "");
-      if (!parent) throw new Error("missing: " + nodeId);
-      node.parent = parent;
-      if (parent.children) parent.children.push(node);
-      else parent.children = [node];
+      if (nodeId == null) {
+        if (root) throw new Error("multiple roots");
+        root = nodes[0], nodes[0] = node, nodes[i] = root;
+      } else {
+        parent = nodeById.get(nodeId += "");
+        if (!parent) throw new Error("missing: " + nodeId);
+        node.parent = parent;
+        if (parent.children) parent.children.push(node);
+        else parent.children = [node];
+      }
     }
 
+    if (!root) throw new Error("cycle");
     return nodes;
   }
 
   function computeValue(data) {
     return function(node) {
-      var sum = node.parent ? +value(node.data, node.index, data) || 0 : 0,
+      var sum = +value(node.data, node.index, data) || 0,
           children = node.children, i;
       if (children) {
         for (i = children.length - 1; i >= 0; --i) sum += children[i].value;
