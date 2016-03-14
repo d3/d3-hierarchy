@@ -1,2 +1,2 @@
-export {version} from "./build/version";
+export {version} from "./build/package";
 export {default as hierarchy} from "./src/hierarchy";
