@@ -23,26 +23,28 @@ export default function() {
     root.y0 = -padSibling;
     root.x1 = dx + padSibling;
     root.y1 = dy + padSibling;
-    visitBefore(root, function(node) {
-      var x0 = node.x0 + padSibling,
-          y0 = node.y0 + padSibling,
-          x1 = node.x1 - padSibling,
-          y1 = node.y1 - padSibling;
-      if (x1 < x0) node.x0 = node.x1 = x0 = x1 = (node.x0 + node.x1) / 2;
-      else node.x0 = x0, node.x1 = x1;
-      if (y1 < y0) node.y0 = node.y1 = x0 = x1 = (node.y0 + node.y1) / 2;
-      else node.y0 = y0, node.y1 = y1;
-      if (node.children) {
-        x0 += padChild - padSibling;
-        y0 += padChild - padSibling;
-        x1 -= padChild - padSibling;
-        y1 -= padChild - padSibling;
-        if (x1 < x0) x0 = x1 = (node.x0 + node.x1) / 2;
-        if (y1 < y0) y0 = y1 = (node.y0 + node.y1) / 2;
-        tile(node, x0, y0, x1, y1);
-      }
-    });
+    visitBefore(root, positionNode);
     if (round) visitBefore(root, treemapRound);
+  }
+
+  function positionNode(node) {
+    var x0 = node.x0 + padSibling,
+        y0 = node.y0 + padSibling,
+        x1 = node.x1 - padSibling,
+        y1 = node.y1 - padSibling;
+    if (x1 < x0) node.x0 = node.x1 = x0 = x1 = (node.x0 + node.x1) / 2;
+    else node.x0 = x0, node.x1 = x1;
+    if (y1 < y0) node.y0 = node.y1 = x0 = x1 = (node.y0 + node.y1) / 2;
+    else node.y0 = y0, node.y1 = y1;
+    if (node.children) {
+      x0 += padChild - padSibling;
+      y0 += padChild - padSibling;
+      x1 -= padChild - padSibling;
+      y1 -= padChild - padSibling;
+      if (x1 < x0) x0 = x1 = (node.x0 + node.x1) / 2;
+      if (y1 < y0) y0 = y1 = (node.y0 + node.y1) / 2;
+      tile(node, x0, y0, x1, y1);
+    }
   }
 
   rebind(treemap, layout);
