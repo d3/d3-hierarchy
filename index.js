@@ -4,3 +4,4 @@ export {default as treemap} from "./src/treemap/index";
 export {default as treemapDice} from "./src/treemap/dice";
 export {default as treemapSlice} from "./src/treemap/slice";
 export {default as treemapSliceDice} from "./src/treemap/sliceDice";
+export {default as treemapSquarify} from "./src/treemap/squarify";
