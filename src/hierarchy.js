@@ -44,7 +44,11 @@ export default function() {
     detectCycles(root, data.length);
     visitBreadth(root, assignDepth);
     visitAfter(root, computeValue(data));
-    visitBreadth(root, function(node) { nodes[++i] = node; });
+    visitBreadth(root, function(node) {
+      if (node.children) node.children.sort(sort);
+      nodes[++i] = node;
+    });
+    nodes.data = data;
     return nodes;
   }
 
@@ -90,14 +94,17 @@ export default function() {
   function computeValue(data) {
     return function(node) {
       var sum = +value(node.data, node.index, data) || 0,
-          children = node.children, i;
-      if (children) {
-        for (i = children.length - 1; i >= 0; --i) sum += children[i].value;
-        children.sort(sort);
-      }
+          children = node.children,
+          i = children && children.length;
+      while (--i >= 0) sum += children[i].value;
       node.value = sum;
     };
   }
+
+  hierarchy.revalue = function(nodes) {
+    visitAfter(nodes[0], computeValue(nodes.data));
+    return nodes;
+  };
 
   hierarchy.id = function(x) {
     return arguments.length ? (id = x, hierarchy) : id;

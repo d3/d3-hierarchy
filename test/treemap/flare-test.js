@@ -36,22 +36,18 @@ function test(input, expected, tile) {
           .sort(function(a, b) { return b.value - a.value || a.id.localeCompare(b.id); })
           .size([960, 500]);
 
-      var nodes = treemap(data);
-
-      nodes.forEach(function(d) {
-        d.name = d.id.slice(d.id.lastIndexOf(".") + 1);
-        d.x = round(d.x0);
-        d.y = round(d.y0);
-        d.dx = round(d.x1 - d.x0);
-        d.dy = round(d.y1 - d.y0);
-        delete d.x0;
-        delete d.y0;
-        delete d.x1;
-        delete d.y1;
-        delete d.data;
-        delete d.index;
-        delete d.id;
-        delete d.parent;
+      var nodes = treemap(data).map(function reduce(d) {
+        var copy = {
+          name: d.id.slice(d.id.lastIndexOf(".") + 1),
+          value: d.value,
+          depth: d.depth,
+          x: round(d.x0),
+          y: round(d.y0),
+          dx: round(d.x1 - d.x0),
+          dy: round(d.y1 - d.y0)
+        };
+        if (d.children) copy.children = d.children.map(reduce);
+        return copy;
       });
 
       (function visit(node) {

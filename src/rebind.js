@@ -1,4 +1,5 @@
 export default function(layout, hierarchy) {
+  layout.revalue = hierarchy.revalue;
 
   layout.id = function() {
     var x = hierarchy.id.apply(hierarchy, arguments);
