@@ -1,6 +1,4 @@
-var fs = require("fs"),
-    tape = require("tape"),
-    d3_dsv = require("d3-dsv"),
+var tape = require("tape"),
     d3_hierarchy = require("../");
 
 tape("hierarchy() has the expected defaults", function(test) {

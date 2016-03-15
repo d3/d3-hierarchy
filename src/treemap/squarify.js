@@ -1,4 +1,4 @@
-export default (function ratio(phi) {
+export default (function custom(ratio) {
 
   function squarify(parent, x0, y0, x1, y1) {
     var nodes = parent.children,
@@ -21,7 +21,7 @@ export default (function ratio(phi) {
     while (i0 < n) {
       dx = x1 - x0, dy = y1 - y0;
       sumValue = minValue = maxValue = nodes[i0].value;
-      alpha = Math.max(dy / dx, dx / dy) / (value * phi);
+      alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
       beta = sumValue * sumValue * alpha;
       minRatio = Math.max(maxValue / beta, beta / minValue);
 
@@ -58,7 +58,9 @@ export default (function ratio(phi) {
     }
   }
 
-  squarify.ratio = ratio;
+  squarify.ratio = function(x) {
+    return custom((x = +x) > 1 ? x : 1);
+  };
 
   return squarify;
 })((1 + Math.sqrt(5)) / 2);
