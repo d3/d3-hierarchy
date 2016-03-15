@@ -21,14 +21,13 @@ function assignDepth(node, depth) {
   node.depth = depth;
 }
 
-function detectCycles(root, n) {
+function detectCycles(n) {
   var visited = new Array(n);
-  visitAfter(root, function(node) {
+  return function(node) {
     var i = node.index;
     if (visited[i]) throw new Error("cycle");
     visited[i] = 1;
-    --n;
-  });
+  };
 }
 
 function Node() {}
@@ -41,7 +40,7 @@ export default function() {
 
   function hierarchy(data) {
     var nodes = computeNodes(data), root = nodes[0], i = -1;
-    detectCycles(root, data.length);
+    visitAfter(root, detectCycles(data.length));
     visitBreadth(root, assignDepth);
     visitAfter(root, computeValue(data));
     visitBreadth(root, function(node) {
