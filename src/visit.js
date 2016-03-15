@@ -1,10 +1,10 @@
 export function visitBreadth(node, callback) {
-  var current, next = [node], children, depth = -1, i;
+  var current, next = [node], children, depth = -1, i, n;
   do {
-    current = next, next = [], ++depth;
+    current = next.reverse(), next = [], ++depth;
     while ((node = current.pop()) != null) {
       callback(node, depth), children = node.children;
-      if (children) for (i = children.length - 1; i >= 0; --i) {
+      if (children) for (i = 0, n = children.length; i < n; ++i) {
         next.push(children[i]);
       }
     }
