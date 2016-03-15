@@ -1,11 +1,12 @@
-import hierarchy, {rebind} from "../hierarchy";
+import hierarchy from "../hierarchy";
+import rebind from "../rebind";
 import {visitBefore} from "../visit";
-import sliceDice from "./sliceDice";
+import squarify from "./squarify";
 
 export default function() {
   var layout = hierarchy(),
       dx = 1, dy = 1,
-      tile = sliceDice;
+      tile = squarify;
 
   function treemap(d) {
     var nodes = layout(d),

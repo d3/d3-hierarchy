@@ -2,7 +2,7 @@ var fs = require("fs"),
     tape = require("tape"),
     d3_queue = require("d3-queue"),
     d3_dsv = require("d3-dsv"),
-    d3_hierarchy = require("../");
+    d3_hierarchy = require("../../");
 
 tape("treemap(flare) produces the expected result with a squarified ratio of φ", test(
   "test/data/flare.csv",
