@@ -11,6 +11,38 @@ tape("treemap() has the expected defaults", function(test) {
   test.equal(t.sort()({value: 1}, {value: 1}), 0);
   test.equal(t.tile(), d3_hierarchy.treemapSquarify);
   test.deepEqual(t.size(), [1, 1]);
+  test.deepEqual(t.round(), false);
+  test.end();
+});
+
+tape("treemap.round(round) observes the specified rounding", function(test) {
+  var t = d3_hierarchy.treemap().size([600, 400]).round(true),
+      root = {id: "_"},
+      a = {id: "a", parent: "_", value: 6},
+      b = {id: "b", parent: "_", value: 6},
+      c = {id: "c", parent: "_", value: 4},
+      d = {id: "d", parent: "_", value: 3},
+      e = {id: "e", parent: "_", value: 2},
+      f = {id: "f", parent: "_", value: 2},
+      g = {id: "g", parent: "_", value: 1},
+      nodes = t([root, a, b, c, d, e, f, g]).map(position);
+  test.deepEqual(t.round(), true);
+  test.deepEqual(nodes, [
+    {id: "_", x0:   0, x1: 600, y0:   0, y1: 400},
+    {id: "a", x0:   0, x1: 300, y0:   0, y1: 200},
+    {id: "b", x0:   0, x1: 300, y0: 200, y1: 400},
+    {id: "c", x0: 300, x1: 471, y0:   0, y1: 233},
+    {id: "d", x0: 471, x1: 600, y0:   0, y1: 233},
+    {id: "e", x0: 300, x1: 540, y0: 233, y1: 317},
+    {id: "f", x0: 300, x1: 540, y0: 317, y1: 400},
+    {id: "g", x0: 540, x1: 600, y0: 233, y1: 400}
+  ]);
+  test.end();
+});
+
+tape("treemap.round(round) coerces the specified round to boolean", function(test) {
+  var t = d3_hierarchy.treemap().round("yes");
+  test.strictEqual(t.round(), true);
   test.end();
 });
 
