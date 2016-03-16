@@ -24,7 +24,7 @@ export default function() {
     root.x1 = dx + paddingInner;
     root.y1 = dy + paddingInner;
     root.eachBefore(positionNode);
-    if (round) root.eachBefore(treemapRound);
+    if (round) root.eachBefore(roundNode);
   }
 
   function positionNode(node) {
@@ -84,9 +84,9 @@ export default function() {
   return treemap;
 }
 
-function treemapRound(d) {
-  d.x0 = Math.round(d.x0);
-  d.y0 = Math.round(d.y0);
-  d.x1 = Math.round(d.x1);
-  d.y1 = Math.round(d.y1);
+function roundNode(node) {
+  node.x0 = Math.round(node.x0);
+  node.y0 = Math.round(node.y0);
+  node.x1 = Math.round(node.x1);
+  node.y1 = Math.round(node.y1);
 }
