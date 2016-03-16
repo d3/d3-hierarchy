@@ -32,17 +32,19 @@ export default function() {
         y0 = node.y0 + paddingInner,
         x1 = node.x1 - paddingInner,
         y1 = node.y1 - paddingInner;
-    if (x1 < x0) node.x0 = node.x1 = x0 = x1 = (node.x0 + node.x1) / 2;
-    else node.x0 = x0, node.x1 = x1;
-    if (y1 < y0) node.y0 = node.y1 = x0 = x1 = (node.y0 + node.y1) / 2;
-    else node.y0 = y0, node.y1 = y1;
+    if (x1 < x0) x0 = x1 = (x0 + x1) / 2;
+    if (y1 < y0) y0 = y1 = (y0 + y1) / 2;
+    node.x0 = x0;
+    node.y0 = y0;
+    node.x1 = x1;
+    node.y1 = y1;
     if (node.children) {
       x0 += paddingOffset;
       y0 += paddingOffset;
       x1 -= paddingOffset;
       y1 -= paddingOffset;
-      if (x1 < x0) x0 = x1 = (node.x0 + node.x1) / 2;
-      if (y1 < y0) y0 = y1 = (node.y0 + node.y1) / 2;
+      if (x1 < x0) x0 = x1 = (x0 + x1) / 2;
+      if (y1 < y0) y0 = y1 = (y0 + y1) / 2;
       tile(node, x0, y0, x1, y1);
     }
   }
