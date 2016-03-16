@@ -1,5 +1,6 @@
-import {map} from "d3-collection";
 import Node from "./node/index";
+
+var keyPrefix = "$"; // Protect against keys like “__proto__”.
 
 function defaultId(d) {
   return d.id;
@@ -48,16 +49,17 @@ export default function() {
         n = data.length,
         d,
         nodeId,
-        nodeById = map(),
+        nodeKey,
+        nodeByKey = {},
         nodes = new Array(n),
         node,
         parent,
         root;
 
     for (i = 0; i < n; ++i) {
-      nodeId = id(d = data[i], i, data) + "";
-      if (nodeById.has(nodeId)) throw new Error("duplicate: " + nodeId);
-      nodeById.set(nodeId, nodes[i] = node = new Node);
+      nodeKey = keyPrefix + (nodeId = id(d = data[i], i, data) + "");
+      if (nodeByKey[nodeKey]) throw new Error("duplicate: " + nodeId);
+      nodeByKey[nodeKey] = nodes[i] = node = new Node;
       node.id = nodeId;
       node.data = d;
       node.index = i;
@@ -70,7 +72,7 @@ export default function() {
         if (root) throw new Error("multiple roots");
         root = nodes[0], nodes[0] = node, nodes[i] = root;
       } else {
-        parent = nodeById.get(nodeId += "");
+        parent = nodeByKey[keyPrefix + nodeId];
         if (!parent) throw new Error("missing: " + nodeId);
         node.parent = parent;
         if (parent.children) parent.children.push(node);
