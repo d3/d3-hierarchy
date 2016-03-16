@@ -7,8 +7,9 @@ export default function() {
   var layout = hierarchy(),
       dx = 1,
       dy = 1,
-      padSibling = 0,
-      padChild = 0,
+      paddingInner = 0,
+      paddingOuter = 0,
+      paddingOffset = 0,
       tile = squarify,
       round = false;
 
@@ -20,27 +21,27 @@ export default function() {
 
   function position(root) {
     root.x0 =
-    root.y0 = -padSibling;
-    root.x1 = dx + padSibling;
-    root.y1 = dy + padSibling;
+    root.y0 = -paddingInner;
+    root.x1 = dx + paddingInner;
+    root.y1 = dy + paddingInner;
     visitBefore(root, positionNode);
     if (round) visitBefore(root, treemapRound);
   }
 
   function positionNode(node) {
-    var x0 = node.x0 + padSibling,
-        y0 = node.y0 + padSibling,
-        x1 = node.x1 - padSibling,
-        y1 = node.y1 - padSibling;
+    var x0 = node.x0 + paddingInner,
+        y0 = node.y0 + paddingInner,
+        x1 = node.x1 - paddingInner,
+        y1 = node.y1 - paddingInner;
     if (x1 < x0) node.x0 = node.x1 = x0 = x1 = (node.x0 + node.x1) / 2;
     else node.x0 = x0, node.x1 = x1;
     if (y1 < y0) node.y0 = node.y1 = x0 = x1 = (node.y0 + node.y1) / 2;
     else node.y0 = y0, node.y1 = y1;
     if (node.children) {
-      x0 += padChild - padSibling;
-      y0 += padChild - padSibling;
-      x1 -= padChild - padSibling;
-      y1 -= padChild - padSibling;
+      x0 += paddingOffset;
+      y0 += paddingOffset;
+      x1 -= paddingOffset;
+      y1 -= paddingOffset;
       if (x1 < x0) x0 = x1 = (node.x0 + node.x1) / 2;
       if (y1 < y0) y0 = y1 = (node.y0 + node.y1) / 2;
       tile(node, x0, y0, x1, y1);
@@ -67,12 +68,16 @@ export default function() {
     return arguments.length ? (tile = x, treemap) : tile;
   };
 
-  treemap.paddingChild = function(x) {
-    return arguments.length ? (padChild = +x, treemap) : padChild;
+  treemap.padding = function(x) {
+    return arguments.length ? (paddingInner = (paddingOuter = +x) / 2, paddingOffset = paddingInner, treemap) : paddingInner * 2;
   };
 
-  treemap.paddingSibling = function(x) {
-    return arguments.length ? (padSibling = x / 2, treemap) : padSibling * 2;
+  treemap.paddingInner = function(x) {
+    return arguments.length ? (paddingInner = x / 2, paddingOffset = paddingOuter - paddingInner, treemap) : paddingInner * 2;
+  };
+
+  treemap.paddingOuter = function(x) {
+    return arguments.length ? (paddingOuter = +x, paddingOffset = paddingOuter - paddingInner, treemap) : paddingOuter;
   };
 
   return treemap;
