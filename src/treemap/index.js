@@ -1,6 +1,5 @@
 import hierarchy from "../hierarchy";
 import rebind from "../rebind";
-import {visitBefore} from "../visit";
 import squarify from "./squarify";
 
 export default function() {
@@ -24,8 +23,8 @@ export default function() {
     root.y0 = -paddingInner;
     root.x1 = dx + paddingInner;
     root.y1 = dy + paddingInner;
-    visitBefore(root, positionNode);
-    if (round) visitBefore(root, treemapRound);
+    root.eachBefore(positionNode);
+    if (round) root.eachBefore(treemapRound);
   }
 
   function positionNode(node) {

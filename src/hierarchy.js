@@ -1,5 +1,5 @@
 import {map} from "d3-collection";
-import {visitAfter, visitBreadth} from "./visit";
+import Node from "./node/index";
 
 function defaultId(d) {
   return d.id;
@@ -17,20 +17,15 @@ function defaultSort(a, b) {
   return b.value - a.value;
 }
 
-function assignDepth(node, depth) {
-  node.depth = depth;
-}
-
 function detectCycles(n) {
   var visited = new Array(n);
   return function(node) {
     var i = node.index;
     if (visited[i]) throw new Error("cycle");
+    node.depth = node.parent ? node.parent.depth + 1 : 0;
     visited[i] = 1;
   };
 }
-
-function Node() {}
 
 export default function() {
   var id = defaultId,
@@ -40,13 +35,10 @@ export default function() {
 
   function hierarchy(data) {
     var nodes = computeNodes(data), root = nodes[0], i = -1;
-    visitAfter(root, detectCycles(data.length));
-    visitBreadth(root, assignDepth);
-    visitAfter(root, computeValue(data));
-    visitBreadth(root, function(node) {
-      if (node.children) node.children.sort(sort);
-      nodes[++i] = node;
-    });
+    root.eachBefore(detectCycles(data.length));
+    root.eachAfter(computeValue(data));
+    if (sort != null) root.sort(sort);
+    root.each(function(node) { nodes[++i] = node; });
     nodes.data = data;
     return nodes;
   }
@@ -101,7 +93,7 @@ export default function() {
   }
 
   hierarchy.revalue = function(nodes) {
-    visitAfter(nodes[0], computeValue(nodes.data));
+    nodes[0].eachAfter(computeValue(nodes.data));
     return nodes;
   };
 
