@@ -1,13 +1,14 @@
 import enclose from "./enclose";
 
 export default function(parent) {
-  if (!(circles = parent.children) || !(n = circles.length)) return void parent.r = 0;
+  if (!(circles = parent.children)) return void parent.r = 0;
 
   var circles,
-      circle = enclose(place(circles)),
+      circle = enclose(pack(circles)),
       dx = parent.x - circle.x,
       dy = parent.y - circle.y,
-      i = -1;
+      i = -1,
+      n = circles.length;
 
   parent.r = circle.r;
   while (++i < n) {
@@ -45,12 +46,12 @@ function Node(circle) {
   this.circle = circle;
 }
 
-function packCircles(circles) {
+function pack(circles) {
   if (!(n = circles.length)) return;
 
-  var circles,
-      a, b, c,
+  var a, b, c,
       i, j, k,
+      sj, sk,
       n;
 
   a = circles[0], a.x = -a.r, a.y = 0;
