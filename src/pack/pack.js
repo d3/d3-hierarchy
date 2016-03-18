@@ -73,14 +73,24 @@ function pack(circles) {
     c = new Node(circles[i]);
     tangent(a.circle, b.circle, c.circle);
 
-    for (j = b.next, sj = 1; j !== b; j = j.next, ++sj) {
+    // Find first following intersection.
+    for (j = b.next, sj = 1; j !== a; j = j.next, ++sj) {
       if (intersects(j.circle, c.circle)) {
-        for (k = a.previous, sk = 1; k !== j; k = k.previous, ++sk) {
+
+        // If there are only three elements in the front-chain, rotate it!
+        if (a.previous === b.next) {
+          a = a.next, b = b.next, --i;
+          continue pack;
+        }
+
+        // Find first preceding intersection.
+        for (k = a.previous, sk = 0; k !== j; k = k.previous, ++sk) {
           if (intersects(k.circle, c.circle)) {
             break;
           }
         }
-        if (k === j && !--sk) { a = a.next, b = b.next, --i; continue pack; }
+
+        // Splice the front-chain using the closer of the two intersections.
         if (sj < sk || (sj === sk && b.circle.r < a.circle.r)) b = j; else a = k;
         a.next = b, b.previous = a, --i;
         continue pack;
@@ -88,7 +98,6 @@ function pack(circles) {
     }
 
     c.previous = a, c.next = b;
-    a.next = b.previous = c;
-    b = c;
+    b = a.next = b.previous = c;
   }
 }
