@@ -43,7 +43,7 @@ function intersects(a, b) {
 }
 
 function Node(circle) {
-  this.circle = circle;
+  this._ = circle;
 }
 
 function pack(circles) {
@@ -61,21 +61,15 @@ function pack(circles) {
   if (!(n > 2)) return;
 
   tangent(a, b, c = circles[2]);
-  a = new Node(a);
-  b = new Node(b);
-  c = new Node(c);
-  a.next = b.previous = c;
-  c.next = a.previous = b;
-  b.next = c.previous = a;
-  b = c;
+  a = new Node(a), b = new Node(b), c = new Node(c);
+  b.next = c.previous = a, c.next = a.previous = b, b = a.next = b.previous = c;
 
   pack: for (i = 3; i < n; ++i) {
-    c = new Node(circles[i]);
-    tangent(a.circle, b.circle, c.circle);
+    tangent(a._, b._, (c = new Node(circles[i]))._);
 
-    // Find first following intersection.
+    // Find the first following intersection.
     for (j = b.next, sj = 1; j !== a; j = j.next, ++sj) {
-      if (intersects(j.circle, c.circle)) {
+      if (intersects(j._, c._)) {
 
         // If there are only three elements in the front-chain, rotate it!
         if (a.previous === b.next) {
@@ -83,21 +77,20 @@ function pack(circles) {
           continue pack;
         }
 
-        // Find first preceding intersection.
+        // Find the first preceding intersection.
         for (k = a.previous, sk = 0; k !== j; k = k.previous, ++sk) {
-          if (intersects(k.circle, c.circle)) {
+          if (intersects(k._, c._)) {
             break;
           }
         }
 
         // Splice the front-chain using the closer of the two intersections.
-        if (sj < sk || (sj === sk && b.circle.r < a.circle.r)) b = j; else a = k;
+        if (sj < sk || (sj === sk && b._.r < a._.r)) b = j; else a = k;
         a.next = b, b.previous = a, --i;
         continue pack;
       }
     }
 
-    c.previous = a, c.next = b;
-    b = a.next = b.previous = c;
+    c.previous = a, c.next = b, b = a.next = b.previous = c;
   }
 }
