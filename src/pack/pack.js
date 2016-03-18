@@ -1,7 +1,7 @@
 import enclose from "./enclose";
 
 export default function(parent) {
-  if (!(circles = parent.children)) return void parent.r = 0;
+  if (!(circles = parent.children)) return void (parent.r = 0);
 
   var circles,
       circle = enclose(pack(circles)),
