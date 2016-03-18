@@ -75,11 +75,12 @@ function pack(circles) {
 
     for (j = b.next, sj = 1; j !== b; j = j.next, ++sj) {
       if (intersects(j.circle, c.circle)) {
-        for (k = a.previous, sk = 1; k !== j.previous; k = k.previous, ++sk) {
+        for (k = a.previous, sk = 1; k !== j; k = k.previous, ++sk) {
           if (intersects(k.circle, c.circle)) {
             break;
           }
         }
+        if (k === j) --sk;
         if (sj < sk || (sj === sk && b.circle.r < a.circle.r)) b = j;
         else a = k;
         a.next = b, b.previous = a, --i;
