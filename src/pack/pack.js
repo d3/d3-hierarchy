@@ -80,7 +80,7 @@ function pack(circles) {
             break;
           }
         }
-        if (k === j) --sk;
+        if (k === j && !--sk) { a = a.next, b = b.next, --i; continue pack; }
         if (sj < sk || (sj === sk && b.circle.r < a.circle.r)) b = j;
         else a = k;
         a.next = b, b.previous = a, --i;
