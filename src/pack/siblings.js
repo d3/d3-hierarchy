@@ -77,7 +77,11 @@ export default function(circles) {
       } while (j !== k.next);
     }
 
-    // Success! Insert the new circle c between a and b, and set b to c.
-    c.previous = a, c.next = b, b = a.next = b.previous = c;
+    // Success! Insert the new circle c between a and b.
+    c.previous = a, c.next = b, a.next = b.previous = c;
+
+    // If c is closer than a, it becomes the new a.
+    if (c._.x * c._.x + c._.y * c._.y < a._.x * a._.x + a._.y * a._.y) a = c;
+    else b = c;
   }
 }
