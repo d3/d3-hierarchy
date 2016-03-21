@@ -48,10 +48,9 @@ export default function(circles) {
   // Attempt to place each remaining circle…
   pack: for (i = 3; i < n; ++i) {
     place(a._, b._, (c = circles[i])._);
-    j = b.next, k = a.previous;
 
     // If there are only three elements in the front-chain…
-    if (k === j) {
+    if ((k = a.previous) === (j = b.next)) {
       // If the new circle intersects the third circle,
       // rotate the front chain to try the next position.
       if (intersects(j._, c._)) {
