@@ -7,3 +7,4 @@ export {default as treemapDice} from "./src/treemap/dice";
 export {default as treemapSlice} from "./src/treemap/slice";
 export {default as treemapSliceDice} from "./src/treemap/sliceDice";
 export {default as treemapSquarify} from "./src/treemap/squarify";
+export {default as packSiblings} from "./src/pack/siblings";
