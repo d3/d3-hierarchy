@@ -55,7 +55,7 @@ export default function(circles) {
       // If the new circle intersects the third circle,
       // rotate the front chain to try the next position.
       if (intersects(j._, c._)) {
-        a = a.next, b = b.next, --i;
+        a = b, b = j, --i;
         continue pack;
       }
     }
