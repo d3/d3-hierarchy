@@ -16,10 +16,8 @@ function place(a, b, c) {
 }
 
 function intersects(a, b) {
-  var dx = b.x - a.x,
-      dy = b.y - a.y,
-      dr = a.r + b.r;
-  return 0.999 * dr * dr > dx * dx + dy * dy; // relative error within epsilon
+  var dx = b.x - a.x, dy = b.y - a.y, dr = a.r + b.r;
+  return dr * dr > dx * dx + dy * dy;
 }
 
 function newNode(circle) {
