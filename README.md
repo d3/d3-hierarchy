@@ -10,7 +10,121 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 …
 
+### Hierarchies
+
+…
+
+<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
+
+…
+
+<a name="_hierarchy" href="#_hierarchy">#</a> <i>hierarchy</i>(<i>data</i>)
+
+…
+
+<a name="hierarchy_revalue" href="#hierarchy_revalue">#</a> <i>hierarchy</i>.<b>revalue</b>(<i>nodes</i>)
+
+…
+
+<a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>function</i>])
+
+…
+
+<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>function</i>])
+
+…
+
+<a name="hierarchy_value" href="#hierarchy_value">#</a> <i>hierarchy</i>.<b>value</b>([<i>function</i>])
+
+…
+
+<a name="hierarchy_sort" href="#hierarchy_sort">#</a> <i>hierarchy</i>.<b>sort</b>([<i>function</i>])
+
+…
+
+### Treemaps
+
+…
+
+<a name="treemap" href="#treemap">#</a> d3.<b>treemap</b>()
+
+…
+
+<a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>data</i>)
+
+…
+
+<a name="treemap_revalue" href="#treemap_revalue">#</a> <i>treemap</i>.<b>revalue</b>(<i>nodes</i>)
+
+…
+
+<a name="treemap_tile" href="#treemap_tile">#</a> <i>treemap</i>.<b>tile</b>([<i>function</i>])
+
+…
+
+<a name="treemap_id" href="#treemap_id">#</a> <i>treemap</i>.<b>id</b>([<i>function</i>])
+
+…
+
+<a name="treemap_parentId" href="#treemap_parentId">#</a> <i>treemap</i>.<b>parentId</b>([<i>function</i>])
+
+…
+
+<a name="treemap_value" href="#treemap_value">#</a> <i>treemap</i>.<b>value</b>([<i>function</i>])
+
+…
+
+<a name="treemap_sort" href="#treemap_sort">#</a> <i>treemap</i>.<b>sort</b>([<i>function</i>])
+
+…
+
+<a name="treemap_size" href="#treemap_size">#</a> <i>treemap</i>.<b>size</b>([<i>size</i>])
+
+…
+
+<a name="treemap_round" href="#treemap_round">#</a> <i>treemap</i>.<b>round</b>([<i>round</i>])
+
+…
+
+<a name="treemap_padding" href="#treemap_padding">#</a> <i>treemap</i>.<b>padding</b>([<i>padding</i>])
+
+…
+
+<a name="treemap_paddingInner" href="#treemap_paddingInner">#</a> <i>treemap</i>.<b>paddingInner</b>([<i>padding</i>])
+
+…
+
+<a name="treemap_paddingOuter" href="#treemap_paddingOuter">#</a> <i>treemap</i>.<b>paddingOuter</b>([<i>padding</i>])
+
+…
+
+<a name="treemapBinary" href="#treemapBinary">#</a> d3.<b>treemapBinary</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
+
+…
+
+<a name="treemapDice" href="#treemapDice">#</a> d3.<b>treemapDice</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
+
+…
+
+<a name="treemapSlice" href="#treemapSlice">#</a> d3.<b>treemapSlice</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
+
+…
+
+<a name="treemapSliceDice" href="#treemapSliceDice">#</a> d3.<b>treemapSliceDice</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
+
+…
+
+<a name="treemapSquarify" href="#treemapSquarify">#</a> d3.<b>treemapSquarify</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
+
+…
+
+<a name="squarify_ratio" href="#squarify_ratio">#</a> <i>squarify</i>.<b>ratio</b>(<i>ratio</i>)
+
+…
+
 ### Circle-Packing
+
+…
 
 <a name="pack" href="#pack">#</a> d3.<b>pack</b>()
 
