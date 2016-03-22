@@ -1,5 +1,3 @@
-import contains from "./contains";
-
 export default function(circles) {
   return encloseN(shuffle(circles), []);
 }
@@ -20,6 +18,13 @@ function shuffle(array) {
   return {head: head, tail: node};
 }
 
+function encloses(a, b) {
+  var dx = b.x - a.x,
+      dy = b.y - a.y,
+      dr = a.r - b.r;
+  return dr * dr + 1e-6 > dx * dx + dy * dy;
+}
+
 // Returns the smallest circle that contains circles L and intersects circles B.
 function encloseN(L, B) {
   var circle,
@@ -36,7 +41,7 @@ function encloseN(L, B) {
 
   while (l1) {
     p1 = l1.circle, l2 = l1.next;
-    if (!circle || !contains(circle, p1)) {
+    if (!circle || !encloses(circle, p1)) {
 
       // Temporarily truncate L before l1.
       if (l0) L.tail = l0, l0.next = null;
