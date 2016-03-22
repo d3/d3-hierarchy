@@ -9,4 +9,5 @@ export default function(callback) {
   while ((node = next.pop()) != null) {
     callback(node);
   }
+  return this;
 }

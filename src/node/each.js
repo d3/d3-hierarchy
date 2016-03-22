@@ -9,4 +9,5 @@ export default function(callback) {
       }
     }
   } while (next.length);
+  return this;
 }

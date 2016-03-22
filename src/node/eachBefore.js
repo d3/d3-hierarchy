@@ -6,4 +6,5 @@ export default function(callback) {
       nodes.push(children[i]);
     }
   }
+  return this;
 }
