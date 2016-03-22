@@ -1,3 +1,92 @@
+import hierarchy from "../hierarchy";
+import rebind from "../rebind";
+import enclose from "./enclose";
+import intersects from "./intersects";
+
+export default function() {
+  var layout = hierarchy(),
+      dx = 1,
+      dy = 1,
+      padding = 0;
+
+  function pack(data) {
+    var nodes = layout(data);
+    position(nodes[0]);
+    return nodes;
+  }
+
+  function position(root) {
+    root.x = dx / 2, root.y = dy / 2;
+    root.eachAfter(packChildren);
+    if (padding > 0) root.eachAfter(padChildren(padding * root.r / Math.min(dx, dy)));
+    root.eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
+  }
+
+  rebind(pack, layout);
+
+  pack.revalue = function(nodes) {
+    layout.revalue(nodes);
+    position(nodes[0]);
+    return nodes;
+  };
+
+  pack.size = function(x) {
+    return arguments.length ? (dx = +x[0], dy = +x[1], pack) : [dx, dy];
+  };
+
+  pack.padding = function(x) {
+    return arguments.length ? (padding = +x, pack) : padding;
+  };
+
+  return pack;
+}
+
+function packChildren(node) {
+  if (node.children) {
+    packSiblings(node.children);
+    var e = enclose(node.children);
+    node.children.forEach(translateNode(-e.x, -e.y));
+    node.r = e.r;
+  } else {
+    node.r = Math.sqrt(node.value);
+  }
+}
+
+function padChildren(r) {
+  var pad = padNode(r), unpad = padNode(-r);
+  return function(node) {
+    if (node.children) {
+      node.children.forEach(pad);
+      packChildren(node);
+      node.children.forEach(unpad);
+      node.r += r;
+    }
+  };
+}
+
+function padNode(r) {
+  return function(node) {
+    node.r += r;
+  };
+}
+
+function translateChild(k) {
+  return function(node) {
+    var parent = node.parent;
+    node.r *= k;
+    if (parent) {
+      node.x = parent.x + k * node.x;
+      node.y = parent.y + k * node.y;
+    }
+  };
+}
+
+function translateNode(dx, dy) {
+  return function(node) {
+    node.x += dx, node.y += dy;
+  };
+}
+
 function place(A, B, C) {
   var a = A._,
       b = B._,
@@ -21,18 +110,11 @@ function place(A, B, C) {
   C.score = c.x * c.x + c.y * c.y;
 }
 
-function intersects(a, b) {
-  var dx = b.x - a.x,
-      dy = b.y - a.y,
-      dr = a.r + b.r;
-  return dr * dr > dx * dx + dy * dy;
-}
-
 function newNode(circle) {
   return {_: circle, next: null, previous: null, score: NaN};
 }
 
-export default function(circles) {
+function packSiblings(circles) {
   if (!(n = circles.length)) return;
   circles = circles.map(newNode);
 

@@ -1,3 +1,5 @@
+import contains from "./contains";
+
 export default function(circles) {
   return encloseN(shuffle(circles), []);
 }
@@ -16,12 +18,6 @@ function shuffle(array) {
   }
 
   return {head: head, tail: node};
-}
-
-function contains(circle1, circle2) {
-  var x21 = circle2.x - circle1.x,
-      y21 = circle2.y - circle1.y;
-  return Math.sqrt(x21 * x21 + y21 * y21) < circle1.r - circle2.r + 1e-6;
 }
 
 // Returns the smallest circle that contains circles L and intersects circles B.
@@ -65,9 +61,9 @@ function encloseN(L, B) {
   return circle;
 }
 
-function enclose2(circle1, circle2) {
-  var x1 = circle1.x, y1 = circle1.y, r1 = circle1.r,
-      x2 = circle2.x, y2 = circle2.y, r2 = circle2.r,
+function enclose2(a, b) {
+  var x1 = a.x, y1 = a.y, r1 = a.r,
+      x2 = b.x, y2 = b.y, r2 = b.r,
       x21 = x2 - x1, y21 = y2 - y1, r21 = r2 - r1,
       l = Math.sqrt(x21 * x21 + y21 * y21);
   return {
@@ -77,10 +73,10 @@ function enclose2(circle1, circle2) {
   };
 }
 
-function enclose3(circle1, circle2, circle3) {
-  var x1 = circle1.x, y1 = circle1.y, r1 = circle1.r,
-      x2 = circle2.x, y2 = circle2.y, r2 = circle2.r,
-      x3 = circle3.x, y3 = circle3.y, r3 = circle3.r,
+function enclose3(a, b, c) {
+  var x1 = a.x, y1 = a.y, r1 = a.r,
+      x2 = b.x, y2 = b.y, r2 = b.r,
+      x3 = c.x, y3 = c.y, r3 = c.r,
       a2 = 2 * (x1 - x2),
       b2 = 2 * (y1 - y2),
       c2 = 2 * (r2 - r1),
