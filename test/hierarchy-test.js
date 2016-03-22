@@ -77,28 +77,28 @@ tape("hierarchy(data) throws an error if the specified parent is not found", fun
   test.end();
 });
 
-tape("hierarchy(data) coerces the id to a string, even if null", function(test) {
-  var h = d3_hierarchy.hierarchy(),
-      root = {id: "root"},
-      a = {id: null, parent: "root"},
-      aa = {id: "aa", parent: "null"},
-      nodes = h([a, aa, root]),
-      AA = {data: aa, index: 1, id: "aa", depth: 2, value: 0},
-      A = {data: a, index: 0, id: "null", depth: 1, value: 0, children: [AA]},
-      ROOT = {data: root, index: 2, id: "root", depth: 0, value: 0, children: [A]};
-  test.deepEqual(noparents(nodes), [ROOT, A, AA]);
-  test.deepEqual(parents(nodes), [undefined, ROOT, A]);
-  test.end();
-});
-
-tape("hierarchy(data) coerces the id to a string, even if undefined", function(test) {
+tape("hierarchy(data) allows the id to be undefined for leaf nodes", function(test) {
   var h = d3_hierarchy.hierarchy(),
       root = {id: "root"},
       a = {parent: "root"},
-      aa = {id: "aa", parent: "undefined"},
+      b = {parent: "root"},
+      nodes = h([a, b, root]),
+      B = {data: b, index: 1, depth: 1, value: 0},
+      A = {data: a, index: 0, depth: 1, value: 0},
+      ROOT = {data: root, index: 2, id: "root", depth: 0, value: 0, children: [A, B]};
+  test.deepEqual(noparents(nodes), [ROOT, A, B]);
+  test.deepEqual(parents(nodes), [undefined, ROOT, ROOT]);
+  test.end();
+});
+
+tape("hierarchy(data) coerces the id to a string if defined", function(test) {
+  var h = d3_hierarchy.hierarchy(),
+      root = {id: "root"},
+      a = {id: {toString: function() { return "a"; }}, parent: "root"},
+      aa = {id: "aa", parent: "a"},
       nodes = h([a, aa, root]),
       AA = {data: aa, index: 1, id: "aa", depth: 2, value: 0},
-      A = {data: a, index: 0, id: "undefined", depth: 1, value: 0, children: [AA]},
+      A = {data: a, index: 0, id: "a", depth: 1, value: 0, children: [AA]},
       ROOT = {data: root, index: 2, id: "root", depth: 0, value: 0, children: [A]};
   test.deepEqual(noparents(nodes), [ROOT, A, AA]);
   test.deepEqual(parents(nodes), [undefined, ROOT, A]);

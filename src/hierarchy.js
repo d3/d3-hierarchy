@@ -57,17 +57,16 @@ export default function() {
         root;
 
     for (i = 0; i < n; ++i) {
-      nodeKey = keyPrefix + (nodeId = id(d = data[i], i, data) + "");
-      if (nodeByKey[nodeKey]) throw new Error("duplicate: " + nodeId);
-      nodeByKey[nodeKey] = nodes[i] = node = new Node;
-      node.id = nodeId;
-      node.data = d;
-      node.index = i;
+      nodes[i] = node = new Node(d = data[i], i);
+      if ((nodeId = id(d, i, data)) != null) {
+        nodeKey = keyPrefix + (node.id = nodeId += "");
+        if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);
+        nodeByKey[nodeKey] = node;
+      }
     }
 
     for (i = 0; i < n; ++i) {
-      node = nodes[i];
-      nodeId = parentId(d = data[i], i, data);
+      node = nodes[i], nodeId = parentId(d = data[i], i, data);
       if (nodeId == null) {
         if (root) throw new Error("multiple roots");
         root = nodes[0], nodes[0] = node, nodes[i] = root;
