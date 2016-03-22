@@ -21,7 +21,7 @@ function intersects(a, b) {
 }
 
 function newNode(circle) {
-  return {_: circle, next: null, previous: null, score: NaN};
+  return {_: circle, next: null, previous: null, r2: NaN};
 }
 
 export default function(circles) {
@@ -41,6 +41,9 @@ export default function(circles) {
   // Initialize the front-chain using the first three circles a, b and c.
   circles = circles.map(newNode);
   place((a = circles[0])._, (b = circles[1])._, (c = circles[2])._);
+  a.r2 = a._.r * a._.r;
+  b.r2 = b._.r * b._.r;
+  c.r2 = c._.x * c._.x + c._.y * c._.y;
   b.next = c.previous = a, c.next = a.previous = b, b = a.next = b.previous = c;
 
   // Attempt to place each remaining circle…
@@ -81,8 +84,8 @@ export default function(circles) {
     c.previous = a, c.next = b, a.next = b.previous = c;
 
     // Now recompute the closest circle a to the origin.
-    sj = c.score = c._.x * c._.x + c._.y * c._.y, a = b = c;
-    while ((c = c.next) !== b) if (c.score < sj) sj = c.score, a = c;
+    sj = c.r2 = c._.x * c._.x + c._.y * c._.y, a = b = c;
+    while ((c = c.next) !== b) if (c.r2 < sj) sj = c.r2, a = c;
     b = a.next;
   }
 }
