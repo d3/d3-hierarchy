@@ -21,7 +21,7 @@ function intersects(a, b) {
 }
 
 function newNode(circle) {
-  return {_: circle};
+  return {_: circle, next: null, previous: null, score: NaN};
 }
 
 export default function(circles) {
@@ -80,8 +80,9 @@ export default function(circles) {
     // Success! Insert the new circle c between a and b.
     c.previous = a, c.next = b, a.next = b.previous = c;
 
-    // If c is closer than a, it becomes the new a.
-    if (c._.x * c._.x + c._.y * c._.y < a._.x * a._.x + a._.y * a._.y) a = c;
-    else b = c;
+    // Now recompute the closest circle a to the origin.
+    sj = c.score = c._.x * c._.x + c._.y * c._.y, a = b = c;
+    while ((c = c.next) !== b) if (c.score < sj) sj = c.score, a = c;
+    b = a.next;
   }
 }
