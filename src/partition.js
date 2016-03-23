@@ -1,5 +1,3 @@
-import hierarchy from "./hierarchy";
-import rebind from "./rebind";
 import roundNode from "./round";
 import treemapDice from "./treemap/dice";
 
@@ -14,19 +12,12 @@ function depth(node) {
 }
 
 export default function() {
-  var layout = hierarchy(),
-      dx = 1,
+  var dx = 1,
       dy = 1,
       padding = 0,
       round = false;
 
-  function partition(data) {
-    var nodes = layout(data);
-    position(nodes[0]);
-    return nodes;
-  }
-
-  function position(root) {
+  function partition(root) {
     var n = depth(root) + 1;
     root.x0 =
     root.y0 = padding;
@@ -34,6 +25,7 @@ export default function() {
     root.y1 = dy / n;
     root.eachBefore(positionNode(dy, n));
     if (round) root.eachBefore(roundNode);
+    return root;
   }
 
   function positionNode(dy, n) {
@@ -53,14 +45,6 @@ export default function() {
       node.y1 = y1;
     };
   }
-
-  rebind(partition, layout);
-
-  partition.revalue = function(nodes) {
-    layout.revalue(nodes);
-    position(nodes[0]);
-    return nodes;
-  };
 
   partition.round = function(x) {
     return arguments.length ? (round = !!x, partition) : round;

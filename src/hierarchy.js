@@ -35,16 +35,6 @@ export default function() {
       sort = defaultSort;
 
   function hierarchy(data) {
-    var nodes = computeNodes(data), root = nodes[0], i = -1;
-    root.eachBefore(detectCycles(data.length));
-    root.eachAfter(computeValue(data));
-    if (sort != null) root.sort(sort);
-    root.each(function(node) { nodes[++i] = node; });
-    nodes.data = data;
-    return nodes;
-  }
-
-  function computeNodes(data) {
     var i,
         n = data.length,
         d,
@@ -54,10 +44,10 @@ export default function() {
         nodes = new Array(n),
         node,
         parent,
-        root;
+        root = new Node(data);
 
     for (i = 0; i < n; ++i) {
-      nodes[i] = node = new Node(d = data[i], i);
+      nodes[node.index = i] = node = new Node(d = data[i]);
       if ((nodeId = id(d, i, data)) != null) {
         nodeKey = keyPrefix + (node.id = nodeId += "");
         if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);
@@ -67,36 +57,18 @@ export default function() {
 
     for (i = 0; i < n; ++i) {
       node = nodes[i], nodeId = parentId(d = data[i], i, data);
-      if (nodeId == null) {
-        if (root) throw new Error("multiple roots");
-        root = nodes[0], nodes[0] = node, nodes[i] = root;
-      } else {
-        parent = nodeByKey[keyPrefix + nodeId];
-        if (!parent) throw new Error("missing: " + nodeId);
-        node.parent = parent;
-        if (parent.children) parent.children.push(node);
-        else parent.children = [node];
-      }
+      parent = nodeId == null ? root : nodeByKey[keyPrefix + nodeId];
+      if (!parent) throw new Error("missing: " + nodeId);
+      node.parent = parent;
+      if (parent.children) parent.children.push(node);
+      else parent.children = [node];
     }
 
-    if (!root) throw new Error("cycle");
-    return nodes;
+    root.eachBefore(detectCycles(data.length));
+    root.evaluate(value);
+    if (sort != null) root.sort(sort);
+    return root;
   }
-
-  function computeValue(data) {
-    return function(node) {
-      var sum = +value(node.data, node.index, data) || 0,
-          children = node.children,
-          i = children && children.length;
-      while (--i >= 0) sum += children[i].value;
-      node.value = sum;
-    };
-  }
-
-  hierarchy.revalue = function(nodes) {
-    nodes[0].eachAfter(computeValue(nodes.data));
-    return nodes;
-  };
 
   hierarchy.id = function(x) {
     return arguments.length ? (id = x, hierarchy) : id;

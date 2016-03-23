@@ -1,34 +1,18 @@
-import hierarchy from "../hierarchy";
-import rebind from "../rebind";
 import enclosingCircle from "./enclosingCircle";
 import packCircles from "./circles";
 
 export default function() {
-  var layout = hierarchy(),
-      dx = 1,
+  var dx = 1,
       dy = 1,
       padding = 0;
 
-  function pack(data) {
-    var nodes = layout(data);
-    position(nodes[0]);
-    return nodes;
-  }
-
-  function position(root) {
+  function pack(root) {
     root.x = dx / 2, root.y = dy / 2;
     root.eachAfter(packChildren);
     if (padding > 0) root.eachAfter(padChildren(padding * root.r / Math.min(dx, dy)));
     root.eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
+    return root;
   }
-
-  rebind(pack, layout);
-
-  pack.revalue = function(nodes) {
-    layout.revalue(nodes);
-    position(nodes[0]);
-    return nodes;
-  };
 
   pack.size = function(x) {
     return arguments.length ? (dx = +x[0], dy = +x[1], pack) : [dx, dy];

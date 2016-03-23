@@ -1,11 +1,8 @@
-import hierarchy from "../hierarchy";
-import rebind from "../rebind";
 import roundNode from "../round";
 import squarify from "./squarify";
 
 export default function() {
-  var layout = hierarchy(),
-      dx = 1,
+  var dx = 1,
       dy = 1,
       paddingInner = 0,
       paddingOuter = 0,
@@ -13,19 +10,14 @@ export default function() {
       tile = squarify,
       round = false;
 
-  function treemap(data) {
-    var nodes = layout(data);
-    position(nodes[0]);
-    return nodes;
-  }
-
-  function position(root) {
+  function treemap(root) {
     root.x0 =
     root.y0 = -paddingInner;
     root.x1 = dx + paddingInner;
     root.y1 = dy + paddingInner;
     root.eachBefore(positionNode);
     if (round) root.eachBefore(roundNode);
+    return root;
   }
 
   function positionNode(node) {
@@ -49,14 +41,6 @@ export default function() {
       tile(node, x0, y0, x1, y1);
     }
   }
-
-  rebind(treemap, layout);
-
-  treemap.revalue = function(nodes) {
-    layout.revalue(nodes);
-    position(nodes[0]);
-    return nodes;
-  };
 
   treemap.round = function(x) {
     return arguments.length ? (round = !!x, treemap) : round;

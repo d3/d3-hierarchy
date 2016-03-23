@@ -22,10 +22,6 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 …
 
-<a name="hierarchy_revalue" href="#hierarchy_revalue">#</a> <i>hierarchy</i>.<b>revalue</b>(<i>nodes</i>)
-
-…
-
 <a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>function</i>])
 
 …
@@ -58,6 +54,10 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 …
 
+<a name="node_evaluate" href="#node_evaluate">#</a> <i>node</i>.<b>evaluate</b>(<i>function</i>)
+
+…
+
 <a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>function</i>)
 
 …
@@ -78,33 +78,13 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 …
 
-<a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>data</i>)
-
-…
-
-<a name="treemap_revalue" href="#treemap_revalue">#</a> <i>treemap</i>.<b>revalue</b>(<i>nodes</i>)
+<a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>root</i>)
 
 …
 
 <a name="treemap_tile" href="#treemap_tile">#</a> <i>treemap</i>.<b>tile</b>([<i>function</i>])
 
 …
-
-<a name="treemap_id" href="#treemap_id">#</a> <i>treemap</i>.<b>id</b>([<i>function</i>])
-
-See [*hierarchy*.id](#hierarchy_id).
-
-<a name="treemap_parentId" href="#treemap_parentId">#</a> <i>treemap</i>.<b>parentId</b>([<i>function</i>])
-
-See [*hierarchy*.parentId](#hierarchy_parentId).
-
-<a name="treemap_value" href="#treemap_value">#</a> <i>treemap</i>.<b>value</b>([<i>function</i>])
-
-See [*hierarchy*.value](#hierarchy_value).
-
-<a name="treemap_sort" href="#treemap_sort">#</a> <i>treemap</i>.<b>sort</b>([<i>function</i>])
-
-See [*hierarchy*.sort](#hierarchy_sort).
 
 <a name="treemap_size" href="#treemap_size">#</a> <i>treemap</i>.<b>size</b>([<i>size</i>])
 
@@ -158,29 +138,9 @@ See [*hierarchy*.sort](#hierarchy_sort).
 
 …
 
-<a name="_partition" href="#_partition">#</a> <i>partition</i>(<i>data</i>)
+<a name="_partition" href="#_partition">#</a> <i>partition</i>(<i>root</i>)
 
 …
-
-<a name="partition_revalue" href="#partition_revalue">#</a> <i>partition</i>.<b>revalue</b>(<i>nodes</i>)
-
-…
-
-<a name="partition_id" href="#partition_id">#</a> <i>partition</i>.<b>id</b>([<i>function</i>])
-
-See [*hierarchy*.id](#hierarchy_id).
-
-<a name="partition_parentId" href="#partition_parentId">#</a> <i>partition</i>.<b>parentId</b>([<i>function</i>])
-
-See [*hierarchy*.parentId](#hierarchy_parentId).
-
-<a name="partition_value" href="#partition_value">#</a> <i>partition</i>.<b>value</b>([<i>function</i>])
-
-See [*hierarchy*.value](#hierarchy_value).
-
-<a name="partition_sort" href="#partition_sort">#</a> <i>partition</i>.<b>sort</b>([<i>function</i>])
-
-See [*hierarchy*.sort](#hierarchy_sort).
 
 <a name="partition_size" href="#partition_size">#</a> <i>partition</i>.<b>size</b>([<i>size</i>])
 
@@ -202,29 +162,9 @@ See [*hierarchy*.sort](#hierarchy_sort).
 
 …
 
-<a name="_pack" href="#_pack">#</a> <i>pack</i>(<i>data</i>)
+<a name="_pack" href="#_pack">#</a> <i>pack</i>(<i>root</i>)
 
 …
-
-<a name="pack_revalue" href="#pack_revalue">#</a> <i>pack</i>.<b>revalue</b>(<i>nodes</i>)
-
-…
-
-<a name="pack_id" href="#pack_id">#</a> <i>pack</i>.<b>id</b>([<i>function</i>])
-
-See [*hierarchy*.id](#hierarchy_id).
-
-<a name="pack_parentId" href="#pack_parentId">#</a> <i>pack</i>.<b>parentId</b>([<i>function</i>])
-
-See [*hierarchy*.parentId](#hierarchy_parentId).
-
-<a name="pack_value" href="#pack_value">#</a> <i>pack</i>.<b>value</b>([<i>function</i>])
-
-See [*hierarchy*.value](#hierarchy_value).
-
-<a name="pack_sort" href="#pack_sort">#</a> <i>pack</i>.<b>sort</b>([<i>function</i>])
-
-See [*hierarchy*.sort](#hierarchy_sort).
 
 <a name="pack_size" href="#pack_size">#</a> <i>pack</i>.<b>size</b>([<i>size</i>])
 
