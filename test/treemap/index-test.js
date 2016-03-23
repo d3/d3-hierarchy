@@ -40,6 +40,52 @@ tape("treemap.round(round) coerces the specified round to boolean", function(tes
   test.end();
 });
 
+tape("treemap.padding(padding) sets the inner and outer padding to the specified value", function(test) {
+  var t = d3_hierarchy.treemap().padding("42");
+  test.strictEqual(t.padding(), 42);
+  test.strictEqual(t.paddingInner(), 42);
+  test.strictEqual(t.paddingOuter(), 42);
+  test.end();
+});
+
+tape("treemap.paddingInner(padding) observes the specified padding", function(test) {
+  var h = d3_hierarchy.hierarchyTopDown(),
+      t = d3_hierarchy.treemap().size([6, 4]).paddingInner(0.5),
+      root = t(h(simple)),
+      nodes = root.descendants().map(round);
+  test.deepEqual(t.size(), [6, 4]);
+  test.deepEqual(nodes, [
+    {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
+    {x0: 0.00, x1: 2.75, y0: 0.00, y1: 1.75},
+    {x0: 0.00, x1: 2.75, y0: 2.25, y1: 4.00},
+    {x0: 3.25, x1: 4.61, y0: 0.00, y1: 2.13},
+    {x0: 5.11, x1: 6.00, y0: 0.00, y1: 2.13},
+    {x0: 3.25, x1: 5.35, y0: 2.63, y1: 3.06},
+    {x0: 3.25, x1: 5.35, y0: 3.56, y1: 4.00},
+    {x0: 5.85, x1: 6.00, y0: 2.63, y1: 4.00}
+  ]);
+  test.end();
+});
+
+tape("treemap.paddingOuter(padding) observes the specified padding", function(test) {
+  var h = d3_hierarchy.hierarchyTopDown(),
+      t = d3_hierarchy.treemap().size([6, 4]).paddingOuter(0.5),
+      root = t(h(simple)),
+      nodes = root.descendants().map(round);
+  test.deepEqual(t.size(), [6, 4]);
+  test.deepEqual(nodes, [
+    {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
+    {x0: 0.50, x1: 3.00, y0: 0.50, y1: 2.00},
+    {x0: 0.50, x1: 3.00, y0: 2.00, y1: 3.50},
+    {x0: 3.00, x1: 4.43, y0: 0.50, y1: 2.25},
+    {x0: 4.43, x1: 5.50, y0: 0.50, y1: 2.25},
+    {x0: 3.00, x1: 5.00, y0: 2.25, y1: 2.88},
+    {x0: 3.00, x1: 5.00, y0: 2.88, y1: 3.50},
+    {x0: 5.00, x1: 5.50, y0: 2.25, y1: 3.50}
+  ]);
+  test.end();
+});
+
 tape("treemap.size(size) observes the specified size", function(test) {
   var h = d3_hierarchy.hierarchyTopDown(),
       t = d3_hierarchy.treemap().size([6, 4]),
@@ -104,5 +150,54 @@ tape("treemap.tile(tile) observes the specified tile function", function(test) {
     {x0: 0.00, x1: 6.00, y0: 3.50, y1: 3.83},
     {x0: 0.00, x1: 6.00, y0: 3.83, y1: 4.00}
   ]);
+  test.end();
+});
+
+tape("treemap.value(value)(data) observes the specified value function", function(test) {
+  var foo = function(d) { return d.foo; },
+      h = d3_hierarchy.hierarchyTopDown(),
+      t = d3_hierarchy.treemap().value(foo).size([6, 4]),
+      root = t(h(require("../data/simple3"))),
+      nodes = root.descendants().map(round);
+  test.equal(t.value(), foo);
+  test.deepEqual(t.size(), [6, 4]);
+  test.deepEqual(nodes, [
+    {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
+    {x0: 0.00, x1: 3.00, y0: 0.00, y1: 2.00},
+    {x0: 0.00, x1: 3.00, y0: 2.00, y1: 4.00},
+    {x0: 3.00, x1: 4.71, y0: 0.00, y1: 2.33},
+    {x0: 4.71, x1: 6.00, y0: 0.00, y1: 2.33},
+    {x0: 3.00, x1: 5.40, y0: 2.33, y1: 3.17},
+    {x0: 3.00, x1: 5.40, y0: 3.17, y1: 4.00},
+    {x0: 5.40, x1: 6.00, y0: 2.33, y1: 4.00}
+  ]);
+  test.end();
+});
+
+tape("treemap.value(null)(data) uses the previously-computed value", function(test) {
+  var foo = function(d) { return d.foo; },
+      h = d3_hierarchy.hierarchyTopDown(),
+      t = d3_hierarchy.treemap().value(null).size([6, 4]),
+      root = t(h(require("../data/simple3")).revalue(foo)),
+      nodes = root.descendants().map(round);
+  test.equal(t.value(), null);
+  test.deepEqual(t.size(), [6, 4]);
+  test.deepEqual(nodes, [
+    {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
+    {x0: 0.00, x1: 3.00, y0: 0.00, y1: 2.00},
+    {x0: 0.00, x1: 3.00, y0: 2.00, y1: 4.00},
+    {x0: 3.00, x1: 4.71, y0: 0.00, y1: 2.33},
+    {x0: 4.71, x1: 6.00, y0: 0.00, y1: 2.33},
+    {x0: 3.00, x1: 5.40, y0: 2.33, y1: 3.17},
+    {x0: 3.00, x1: 5.40, y0: 3.17, y1: 4.00},
+    {x0: 5.40, x1: 6.00, y0: 2.33, y1: 4.00}
+  ]);
+  test.end();
+});
+
+tape("treemap.value(value) throws an error if value is not null or a function", function(test) {
+  var t = d3_hierarchy.treemap().value(null);
+  test.equal(t.value(), null);
+  test.throws(function() { t.value(42); });
   test.end();
 });
