@@ -4,7 +4,8 @@ var tape = require("tape"),
 tape("hierarchy() has the expected defaults", function(test) {
   var h = d3_hierarchy.hierarchy();
   test.equal(h.id()({id: "foo"}), "foo");
-  test.equal(h.parentId()({parent: "bar"}), "bar");
+  test.equal(h.parentId(), null);
+  test.deepEqual(h.children()({children: [1, 2]}), [1, 2]);
   test.equal(h.value()({value: 42}), 42);
   test.ok(h.sort()({value: 1}, {value: 2}) > 0);
   test.ok(h.sort()({value: 2}, {value: 1}) < 0);
@@ -12,8 +13,8 @@ tape("hierarchy() has the expected defaults", function(test) {
   test.end();
 });
 
-tape("hierarchy(data) returns an array of nodes for each datum, plus the root", function(test) {
-  var h = d3_hierarchy.hierarchy(),
+tape("hierarchy.parentId(…)(data) returns a root node", function(test) {
+  var h = d3_hierarchy.hierarchy().parentId(function(d) { return d.parent; }),
       a = {id: "a"},
       aa = {id: "aa", parent: "a"},
       ab = {id: "ab", parent: "a"},
@@ -24,7 +25,7 @@ tape("hierarchy(data) returns an array of nodes for each datum, plus the root", 
       AB = {data: ab, index: 2, id: "ab", depth: 2, value: 0},
       AA = {data: aa, index: 1, id: "aa", depth: 2, value: 0, children: [AAA]},
       A = {data: a, index: 0, id: "a", depth: 1, value: 0, children: [AA, AB]},
-      ROOT = {data: data, index: -1, depth: 0, value: 0, children: [A]};
+      ROOT = {data: data, depth: 0, value: 0, children: [A]};
   test.deepEqual(noparents(root), [ROOT, A, AA, AB, AAA]);
   test.deepEqual(parents(root), [undefined, ROOT, A, A, AA]);
   test.end();

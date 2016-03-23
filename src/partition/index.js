@@ -1,5 +1,5 @@
-import roundNode from "./round";
-import treemapDice from "./treemap/dice";
+import roundNode from "../round";
+import treemapDice from "../treemap/dice";
 
 function depth(node) {
   var depth = node.depth;

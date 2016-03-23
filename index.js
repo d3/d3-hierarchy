@@ -3,7 +3,7 @@ export {default as hierarchy} from "./src/hierarchy";
 export {default as pack} from "./src/pack/index";
 export {default as packCircles} from "./src/pack/circles";
 export {default as packEnclosingCircle} from "./src/pack/enclosingCircle";
-export {default as partition} from "./src/partition";
+export {default as partition} from "./src/partition/index";
 export {default as treemap} from "./src/treemap/index";
 export {default as treemapBinary} from "./src/treemap/binary";
 export {default as treemapDice} from "./src/treemap/dice";
