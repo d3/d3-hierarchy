@@ -1,4 +1,4 @@
-import Node from "../node/index";
+import newNode from "../node/index";
 import {required} from "./accessors";
 
 function defaultChildren(d) {
@@ -9,7 +9,7 @@ export default function() {
   var children = defaultChildren;
 
   function hierarchy(data) {
-    var root = new Node(data),
+    var root = newNode(data),
         node = root,
         nodes = [root],
         child,
@@ -23,7 +23,7 @@ export default function() {
       if ((childs = children(node.data)) && (n = childs.length)) {
         node.children = new Array(n);
         for (i = n - 1; i >= 0; --i) {
-          nodes.push(child = node.children[i] = new Node(childs[i]));
+          nodes.push(child = node.children[i] = newNode(childs[i]));
           child.parent = node;
           child.depth = node.depth + 1;
         }

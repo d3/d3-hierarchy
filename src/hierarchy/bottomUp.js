@@ -1,4 +1,4 @@
-import Node from "../node/index";
+import newNode from "../node/index";
 import {required} from "./accessors";
 
 var keyPrefix = "$"; // Protect against keys like “__proto__”.
@@ -28,7 +28,7 @@ export default function() {
         parent;
 
     for (i = 0; i < n; ++i) {
-      nodes[i] = node = new Node(d = data[i]), node.index = i;
+      nodes[i] = node = newNode(d = data[i]), node.index = i;
       if ((nodeId = id(d, i, data)) != null) {
         nodeKey = keyPrefix + (node.id = nodeId += "");
         if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);

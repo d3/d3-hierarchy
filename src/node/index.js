@@ -7,11 +7,15 @@ import node_eachBefore from "./eachBefore";
 import node_revalue from "./revalue";
 import node_sort from "./sort";
 
-export default function Node(data) {
+export default function node(data) {
+  return new Node(data);
+}
+
+function Node(data) {
   this.data = data;
 }
 
-Node.prototype = {
+Node.prototype = node.prototype = {
   constructor: Node,
   ancestors: node_ancestors,
   descendants: node_descendants,

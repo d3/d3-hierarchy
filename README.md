@@ -12,7 +12,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ### Hierarchies
 
-…
+Before you can compute a hierarchical layout, you need to create a hierarchical data structure: you need a [root node](#hierarchy-nodes). If you have tabular data as input, such as a CSV file, use [d3.hierarchyBottomUp](#hierarchyBottomUp) to organize the rows into a hierarchy. If you already have hierarchical data, such as a JSON file, use [d3.hierarchyTopDown](#hierarchyTopDown) to derive the corresponding hierarchy. You can also construct [hierarchy nodes](#hierarchy-nodes) manually.
 
 <a name="hierarchyBottomUp" href="#hierarchyBottomUp">#</a> d3.<b>hierarchyBottomUp</b>()
 
@@ -43,6 +43,26 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 …
 
 ### Hierarchy Nodes
+
+…
+
+<a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
+
+…
+
+<a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
+
+…
+
+<a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
+
+…
+
+<a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
+
+…
+
+<a name="node_children" href="#node_children">#</a> <i>node</i>.<b>children</b>
 
 …
 
