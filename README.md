@@ -14,27 +14,31 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 …
 
-<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
+<a name="hierarchyBottomUp" href="#hierarchyBottomUp">#</a> d3.<b>hierarchyBottomUp</b>()
 
 …
 
-<a name="_hierarchy" href="#_hierarchy">#</a> <i>hierarchy</i>(<i>data</i>)
+<a name="_bottomUp" href="#_bottomUp">#</a> <i>bottomUp</i>(<i>data</i>)
+
+… Returns a root [*node*](#hierarchy-nodes).
+
+<a name="bottomUp_id" href="#bottomUp_id">#</a> <i>bottomUp</i>.<b>id</b>([<i>function</i>])
 
 …
 
-<a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>function</i>])
+<a name="bottomUp_parentId" href="#bottomUp_parentId">#</a> <i>bottomUp</i>.<b>parentId</b>([<i>function</i>])
 
 …
 
-<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>function</i>])
+<a name="hierarchyTopDown" href="#hierarchyTopDown">#</a> d3.<b>hierarchyTopDown</b>()
 
 …
 
-<a name="hierarchy_value" href="#hierarchy_value">#</a> <i>hierarchy</i>.<b>value</b>([<i>function</i>])
+<a name="_topDown" href="#_topDown">#</a> <i>topDown</i>(<i>data</i>)
 
-…
+… Returns a root [*node*](#hierarchy-nodes).
 
-<a name="hierarchy_sort" href="#hierarchy_sort">#</a> <i>hierarchy</i>.<b>sort</b>([<i>function</i>])
+<a name="topDown_id" href="#topDown_id">#</a> <i>topDown</i>.<b>children</b>([<i>function</i>])
 
 …
 
@@ -54,7 +58,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 …
 
-<a name="node_evaluate" href="#node_evaluate">#</a> <i>node</i>.<b>evaluate</b>(<i>function</i>)
+<a name="node_revalue" href="#node_revalue">#</a> <i>node</i>.<b>revalue</b>(<i>function</i>)
 
 …
 
@@ -67,6 +71,10 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 …
 
 <a name="node_descendants" href="#node_descendants">#</a> <i>node</i>.<b>descendants</b>()
+
+…
+
+<a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>()
 
 …
 
@@ -83,6 +91,14 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 …
 
 <a name="treemap_tile" href="#treemap_tile">#</a> <i>treemap</i>.<b>tile</b>([<i>function</i>])
+
+…
+
+<a name="treemap_value" href="#treemap_value">#</a> <i>treemap</i>.<b>value</b>([<i>function</i>])
+
+…
+
+<a name="treemap_sort" href="#treemap_sort">#</a> <i>treemap</i>.<b>sort</b>([<i>function</i>])
 
 …
 
@@ -142,6 +158,14 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 …
 
+<a name="partition_value" href="#partition_value">#</a> <i>partition</i>.<b>value</b>([<i>function</i>])
+
+…
+
+<a name="partition_sort" href="#partition_sort">#</a> <i>partition</i>.<b>sort</b>([<i>function</i>])
+
+…
+
 <a name="partition_size" href="#partition_size">#</a> <i>partition</i>.<b>size</b>([<i>size</i>])
 
 …
@@ -163,6 +187,14 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 …
 
 <a name="_pack" href="#_pack">#</a> <i>pack</i>(<i>root</i>)
+
+…
+
+<a name="pack_value" href="#pack_value">#</a> <i>pack</i>.<b>value</b>([<i>function</i>])
+
+…
+
+<a name="pack_sort" href="#pack_sort">#</a> <i>pack</i>.<b>sort</b>([<i>function</i>])
 
 …
 
