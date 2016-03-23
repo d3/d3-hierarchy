@@ -14,7 +14,7 @@ tape("hierarchyTopDown() has the expected defaults", function(test) {
 });
 
 tape("hierarchyTopDown(data) returns a root node", function(test) {
-  var h = d3_hierarchy.hierarchyTopDown().value(null),
+  var h = d3_hierarchy.hierarchyTopDown().value(null).sort(null),
       aaa = {},
       aa = {children: [aaa]},
       ab = {},
@@ -31,25 +31,9 @@ tape("hierarchyTopDown(data) returns a root node", function(test) {
   test.end();
 });
 
-tape("hierarchyTopDown(data) preserves the input order of siblings", function(test) {
-  var h = d3_hierarchy.hierarchyTopDown().value(null),
-      b = {},
-      a = {},
-      c = {},
-      data = {children: [b, a, c]},
-      root = h(data),
-      B = {data: b, depth: 1},
-      A = {data: a, depth: 1},
-      C = {data: c, depth: 1},
-      ROOT = {data: data, depth: 0, children: [B, A, C]};
-  test.deepEqual(noparents(root), [ROOT, B, A, C]);
-  test.deepEqual(parents(root), [undefined, ROOT, ROOT, ROOT]);
-  test.end();
-});
-
 tape("hierarchyTopDown.children(children) observes the specified children function", function(test) {
   var foo = function(d) { return d.foo; },
-      h = d3_hierarchy.hierarchyTopDown().value(null).children(foo),
+      h = d3_hierarchy.hierarchyTopDown().value(null).sort(null).children(foo),
       b = {},
       a = {},
       c = {},
@@ -92,6 +76,7 @@ tape("hierarchyTopDown.value(value) observes the specified value function", func
 
 tape("hierarchyTopDown.value(value) tests that value is a function or null", function(test) {
   var h = d3_hierarchy.hierarchyTopDown().value(undefined);
+  test.equal(h.value(), null);
   test.throws(function() { h.value(42); });
   test.end();
 });
@@ -114,8 +99,25 @@ tape("hierarchyTopDown.sort(sort) observes the specified sort function", functio
   test.end();
 });
 
+tape("hierarchyTopDown.sort(null)(data) preserves the input order of siblings", function(test) {
+  var h = d3_hierarchy.hierarchyTopDown().value(null).sort(null),
+      b = {},
+      a = {},
+      c = {},
+      data = {children: [b, a, c]},
+      root = h(data),
+      B = {data: b, depth: 1},
+      A = {data: a, depth: 1},
+      C = {data: c, depth: 1},
+      ROOT = {data: data, depth: 0, children: [B, A, C]};
+  test.deepEqual(noparents(root), [ROOT, B, A, C]);
+  test.deepEqual(parents(root), [undefined, ROOT, ROOT, ROOT]);
+  test.end();
+});
+
 tape("hierarchyTopDown.sort(sort) tests that sort is a function or null", function(test) {
   var h = d3_hierarchy.hierarchyTopDown().sort(undefined);
+  test.equal(h.sort(), null);
   test.throws(function() { h.sort(42); });
   test.end();
 });

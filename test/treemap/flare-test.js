@@ -32,7 +32,6 @@ function test(input, expected, tile) {
 
       var actual = d3_hierarchy.hierarchyBottomUp()
           .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; })
-          .value(function(d) { return d.value; })
           .sort(function(a, b) { return b.value - a.value || a.id.localeCompare(b.id); })
         (data)
         .children[0];

@@ -33,7 +33,7 @@ export default function() {
     }
 
     if (value) root.revalue(value);
-    if (sort && (value || sort !== defaultSort)) root.sort(sort);
+    if (sort) root.sort(sort);
     return root;
   }
 

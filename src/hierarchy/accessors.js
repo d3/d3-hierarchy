@@ -7,8 +7,7 @@ export function defaultSort(a, b) {
 }
 
 export function optional(f) {
-  if (f != null && typeof f !== "function") throw new Error;
-  return f;
+  return f == null ? null : required(f);
 }
 
 export function required(f) {

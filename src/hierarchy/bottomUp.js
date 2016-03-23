@@ -57,7 +57,7 @@ export default function() {
     if (n !== 0) throw new Error("cycle");
 
     if (value) root.revalue(value);
-    if (sort && (value || sort !== defaultSort)) root.sort(sort);
+    if (sort) root.sort(sort);
     return root;
   }
 

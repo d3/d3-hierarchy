@@ -46,22 +46,6 @@ tape("hierarchyBottomUp(data) does not require the data to be in topological ord
   test.end();
 });
 
-tape("hierarchyBottomUp(data) preserves the input order of siblings", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
-      b = {id: "b"},
-      a = {id: "a"},
-      c = {id: "c"},
-      data = [b, a, c],
-      root = h(data),
-      B = {data: b, index: 0, id: "b", depth: 1},
-      A = {data: a, index: 1, id: "a", depth: 1},
-      C = {data: c, index: 2, id: "c", depth: 1},
-      ROOT = {data: data, depth: 0, children: [B, A, C]};
-  test.deepEqual(noparents(root), [ROOT, B, A, C]);
-  test.deepEqual(parents(root), [undefined, ROOT, ROOT, ROOT]);
-  test.end();
-});
-
 tape("hierarchyBottomUp(data) does not require the data to have a single root", function(test) {
   var h = d3_hierarchy.hierarchyBottomUp().value(null),
       a = {id: "a"},
@@ -242,6 +226,22 @@ tape("hierarchyBottomUp.sort(sort) observes the specified sort function", functi
   test.equal(h.sort(), foo);
   test.deepEqual(noparents(root), [ROOT, A, B]);
   test.deepEqual(parents(root), [undefined, ROOT, ROOT]);
+  test.end();
+});
+
+tape("hierarchyBottomUp.sort(null)(data) preserves the input order of siblings", function(test) {
+  var h = d3_hierarchy.hierarchyBottomUp().value(null).sort(null),
+      b = {id: "b"},
+      a = {id: "a"},
+      c = {id: "c"},
+      data = [b, a, c],
+      root = h(data),
+      B = {data: b, index: 0, id: "b", depth: 1},
+      A = {data: a, index: 1, id: "a", depth: 1},
+      C = {data: c, index: 2, id: "c", depth: 1},
+      ROOT = {data: data, depth: 0, children: [B, A, C]};
+  test.deepEqual(noparents(root), [ROOT, B, A, C]);
+  test.deepEqual(parents(root), [undefined, ROOT, ROOT, ROOT]);
   test.end();
 });
 

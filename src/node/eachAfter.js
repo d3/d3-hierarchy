@@ -1,8 +1,8 @@
 export default function(callback) {
-  var node = this, nodes = [node], next = [], children, i;
+  var node = this, nodes = [node], next = [], children, i, n;
   while ((node = nodes.pop()) != null) {
     next.push(node), children = node.children;
-    if (children) for (i = children.length - 1; i >= 0; --i) {
+    if (children) for (i = 0, n = children.length; i < n; ++i) {
       nodes.push(children[i]);
     }
   }
