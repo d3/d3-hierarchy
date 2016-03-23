@@ -16,7 +16,7 @@ export default function() {
       parentId = defaultParentId;
 
   function hierarchy(data) {
-    var root = new Node(data),
+    var root,
         i,
         n = data.length,
         d,
@@ -38,17 +38,23 @@ export default function() {
 
     for (i = 0; i < n; ++i) {
       node = nodes[i], nodeId = parentId(d = data[i], i, data);
-      parent = nodeId == null ? root : nodeByKey[keyPrefix + nodeId];
-      if (!parent) throw new Error("missing: " + nodeId);
-      node.parent = parent;
-      if (parent.children) parent.children.push(node);
-      else parent.children = [node];
+      if (nodeId == null) {
+        if (root) throw new Error("multiple roots");
+        root = node;
+      } else {
+        parent = nodeByKey[keyPrefix + nodeId];
+        if (!parent) throw new Error("missing: " + nodeId);
+        node.parent = parent;
+        if (parent.children) parent.children.push(node);
+        else parent.children = [node];
+      }
     }
 
+    if (!root) throw new Error("cycle");
+
     root.eachBefore(function(node) {
-      if (node.index == null) return node.depth = 0;
       if (!nodes[node.index]) throw new Error("cycle");
-      node.depth = node.parent.depth + 1;
+      node.depth = node.parent ? node.parent.depth + 1 : 0;
       nodes[node.index] = null, --n;
     });
 

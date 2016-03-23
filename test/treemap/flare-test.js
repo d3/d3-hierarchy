@@ -37,7 +37,7 @@ function test(input, expected, tile) {
 
       var data = d3_dsv.csvParse(inputText),
           expected = JSON.parse(expectedText),
-          actual = treemap(hierarchy(data).children[0]);
+          actual = treemap(hierarchy(data));
 
       (function visit(node) {
         node.name = node.id.slice(node.id.lastIndexOf(".") + 1);
@@ -45,7 +45,6 @@ function test(input, expected, tile) {
         node.y = round(node.y0);
         node.dx = round(node.x1 - node.x0);
         node.dy = round(node.y1 - node.y0);
-        --node.depth;
         delete node.index;
         delete node.id;
         delete node.parent;

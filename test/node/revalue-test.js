@@ -3,14 +3,14 @@ var tape = require("tape")
 
 tape("node.revalue(value) invokes the value function for each descendant in post-traversal order", function(test) {
   var foo = function(d) { return d.foo; },
-      root = d3_hierarchy.hierarchyBottomUp()([{foo: 1}, {foo: 2}, {foo: 3}]),
+      root = d3_hierarchy.hierarchyTopDown()({children: [{foo: 1}, {foo: 2}, {foo: 3}]}),
       results = [];
-  test.equal(root.revalue(function(d, i, data) { results.push([d, i, data]); }), root);
+  test.equal(root.revalue(function(d) { results.push(d); }), root);
   test.deepEqual(results, [
-    [root.children[0].data, 0, root.data],
-    [root.children[1].data, 1, root.data],
-    [root.children[2].data, 2, root.data],
-    [root.data, undefined, root.data]
+    root.children[0].data,
+    root.children[1].data,
+    root.children[2].data,
+    root.data
   ]);
   test.end();
 });
