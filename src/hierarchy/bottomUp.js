@@ -1,4 +1,5 @@
 import Node from "../node/index";
+import {optional, required, defaultValue, defaultSort} from "./accessors";
 
 var keyPrefix = "$"; // Protect against keys like “__proto__”.
 
@@ -10,19 +11,11 @@ function defaultParentId(d) {
   return d.parent;
 }
 
-function detectCycles(n) {
-  var visited = new Array(n);
-  return function(node) {
-    var i = node.index;
-    if (visited[i]) throw new Error("cycle");
-    node.depth = node.parent ? node.parent.depth + 1 : 0;
-    visited[i] = 1;
-  };
-}
-
 export default function() {
   var id = defaultId,
-      parentId = defaultParentId;
+      parentId = defaultParentId,
+      value = defaultValue,
+      sort = defaultSort;
 
   function hierarchy(data) {
     var root = new Node(data),
@@ -54,15 +47,34 @@ export default function() {
       else parent.children = [node];
     }
 
-    return root.eachBefore(detectCycles(data.length));
+    root.eachBefore(function(node) {
+      if (node.index == null) return node.depth = 0;
+      if (!nodes[node.index]) throw new Error("cycle");
+      node.depth = node.parent.depth + 1;
+      nodes[node.index] = null, --n;
+    });
+
+    if (n !== 0) throw new Error("cycle");
+
+    if (value) root.revalue(value);
+    if (sort && (value || sort !== defaultSort)) root.sort(sort);
+    return root;
   }
 
   hierarchy.id = function(x) {
-    return arguments.length ? (id = x, hierarchy) : id;
+    return arguments.length ? (id = required(x), hierarchy) : id;
   };
 
   hierarchy.parentId = function(x) {
-    return arguments.length ? (parentId = x, hierarchy) : parentId;
+    return arguments.length ? (parentId = required(x), hierarchy) : parentId;
+  };
+
+  hierarchy.value = function(x) {
+    return arguments.length ? (value = optional(x), hierarchy) : value;
+  };
+
+  hierarchy.sort = function(x) {
+    return arguments.length ? (sort = optional(x), hierarchy) : sort;
   };
 
   return hierarchy;

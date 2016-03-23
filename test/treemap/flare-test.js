@@ -30,25 +30,37 @@ function test(input, expected, tile) {
       var data = d3_dsv.csvParse(inputText),
           expected = JSON.parse(expectedText);
 
+      var actual = d3_hierarchy.hierarchyBottomUp()
+          .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; })
+          .value(function(d) { return d.value; })
+          .sort(function(a, b) { return b.value - a.value || a.id.localeCompare(b.id); })
+        (data)
+        .children[0];
+
       var treemap = d3_hierarchy.treemap()
           .tile(tile)
-          .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; })
-          .sort(function(a, b) { return b.value - a.value || a.id.localeCompare(b.id); })
           .size([960, 500]);
 
-      var nodes = treemap(data).map(function reduce(d) {
-        var copy = {
-          name: d.id.slice(d.id.lastIndexOf(".") + 1),
-          value: d.value,
-          depth: d.depth,
-          x: round(d.x0),
-          y: round(d.y0),
-          dx: round(d.x1 - d.x0),
-          dy: round(d.y1 - d.y0)
-        };
-        if (d.children) copy.children = d.children.map(reduce);
-        return copy;
-      });
+      treemap(actual);
+
+      (function visit(node) {
+        node.name = node.id.slice(node.id.lastIndexOf(".") + 1);
+        node.x = round(node.x0);
+        node.y = round(node.y0);
+        node.dx = round(node.x1 - node.x0);
+        node.dy = round(node.y1 - node.y0);
+        --node.depth;
+        delete node.index;
+        delete node.id;
+        delete node.parent;
+        delete node._squarify;
+        delete node.data;
+        delete node.x0;
+        delete node.y0;
+        delete node.x1;
+        delete node.y1;
+        if (node.children) node.children.forEach(visit);
+      })(actual);
 
       (function visit(node) {
         node.x = round(node.x);
@@ -61,7 +73,7 @@ function test(input, expected, tile) {
         }
       })(expected);
 
-      test.deepEqual(nodes[0], expected);
+      test.deepEqual(actual, expected);
       test.end();
     }
   };
