@@ -27,20 +27,17 @@ function test(input, expected, tile) {
     function ready(error, inputText, expectedText) {
       if (error) throw error;
 
-      var data = d3_dsv.csvParse(inputText),
-          expected = JSON.parse(expectedText);
-
-      var actual = d3_hierarchy.hierarchyBottomUp()
-          .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; })
-          .sort(function(a, b) { return b.value - a.value || a.id.localeCompare(b.id); })
-        (data)
-        .children[0];
+      var hierarchy = d3_hierarchy.hierarchyBottomUp()
+          .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; });
 
       var treemap = d3_hierarchy.treemap()
           .tile(tile)
-          .size([960, 500]);
+          .size([960, 500])
+          .sort(function(a, b) { return b.value - a.value || a.id.localeCompare(b.id); });
 
-      treemap(actual);
+      var data = d3_dsv.csvParse(inputText),
+          expected = JSON.parse(expectedText),
+          actual = treemap(hierarchy(data).children[0]);
 
       (function visit(node) {
         node.name = node.id.slice(node.id.lastIndexOf(".") + 1);

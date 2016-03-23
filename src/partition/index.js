@@ -1,5 +1,6 @@
 import roundNode from "../treemap/round";
 import treemapDice from "../treemap/dice";
+import {optional, defaultValue, defaultSort} from "../hierarchy/accessors";
 
 function depth(node) {
   var depth = node.depth;
@@ -12,12 +13,16 @@ function depth(node) {
 }
 
 export default function() {
-  var dx = 1,
+  var value = defaultValue,
+      sort = defaultSort,
+      dx = 1,
       dy = 1,
       padding = 0,
       round = false;
 
   function partition(root) {
+    if (value) root.revalue(value);
+    if (sort) root.sort(sort);
     var n = depth(root) + 1;
     root.x0 =
     root.y0 = padding;
@@ -45,6 +50,14 @@ export default function() {
       node.y1 = y1;
     };
   }
+
+  partition.value = function(x) {
+    return arguments.length ? (value = optional(x), partition) : value;
+  };
+
+  partition.sort = function(x) {
+    return arguments.length ? (sort = optional(x), partition) : sort;
+  };
 
   partition.round = function(x) {
     return arguments.length ? (round = !!x, partition) : round;

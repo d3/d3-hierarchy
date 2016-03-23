@@ -1,8 +1,11 @@
 import roundNode from "./round";
 import squarify from "./squarify";
+import {optional, required, defaultValue, defaultSort} from "../hierarchy/accessors";
 
 export default function() {
-  var dx = 1,
+  var value = defaultValue,
+      sort = defaultSort,
+      dx = 1,
       dy = 1,
       paddingInner = 0,
       paddingOuter = 0,
@@ -11,6 +14,8 @@ export default function() {
       round = false;
 
   function treemap(root) {
+    if (value) root.revalue(value);
+    if (sort) root.sort(sort);
     root.x0 =
     root.y0 = -paddingInner;
     root.x1 = dx + paddingInner;
@@ -42,6 +47,14 @@ export default function() {
     }
   }
 
+  treemap.value = function(x) {
+    return arguments.length ? (value = optional(x), treemap) : value;
+  };
+
+  treemap.sort = function(x) {
+    return arguments.length ? (sort = optional(x), treemap) : sort;
+  };
+
   treemap.round = function(x) {
     return arguments.length ? (round = !!x, treemap) : round;
   };
@@ -51,7 +64,7 @@ export default function() {
   };
 
   treemap.tile = function(x) {
-    return arguments.length ? (tile = x, treemap) : tile;
+    return arguments.length ? (tile = required(x), treemap) : tile;
   };
 
   treemap.padding = function(x) {

@@ -1,5 +1,5 @@
 import Node from "../node/index";
-import {optional, required, defaultValue, defaultSort} from "./accessors";
+import {required} from "./accessors";
 
 var keyPrefix = "$"; // Protect against keys like “__proto__”.
 
@@ -13,9 +13,7 @@ function defaultParentId(d) {
 
 export default function() {
   var id = defaultId,
-      parentId = defaultParentId,
-      value = defaultValue,
-      sort = defaultSort;
+      parentId = defaultParentId;
 
   function hierarchy(data) {
     var root = new Node(data),
@@ -56,8 +54,6 @@ export default function() {
 
     if (n !== 0) throw new Error("cycle");
 
-    if (value) root.revalue(value);
-    if (sort) root.sort(sort);
     return root;
   }
 
@@ -67,14 +63,6 @@ export default function() {
 
   hierarchy.parentId = function(x) {
     return arguments.length ? (parentId = required(x), hierarchy) : parentId;
-  };
-
-  hierarchy.value = function(x) {
-    return arguments.length ? (value = optional(x), hierarchy) : value;
-  };
-
-  hierarchy.sort = function(x) {
-    return arguments.length ? (sort = optional(x), hierarchy) : sort;
   };
 
   return hierarchy;

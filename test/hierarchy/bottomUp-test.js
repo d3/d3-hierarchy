@@ -7,15 +7,11 @@ tape("hierarchyBottomUp() has the expected defaults", function(test) {
   var h = d3_hierarchy.hierarchyBottomUp();
   test.equal(h.id()({id: "foo"}), "foo");
   test.equal(h.parentId()({parent: "bar"}), "bar");
-  test.equal(h.value()({value: 42}), 42);
-  test.ok(h.sort()({value: 1}, {value: 2}) > 0);
-  test.ok(h.sort()({value: 2}, {value: 1}) < 0);
-  test.equal(h.sort()({value: 1}, {value: 1}), 0);
   test.end();
 });
 
 tape("hierarchyBottomUp(data) returns a root node", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {id: "a"},
       aa = {id: "aa", parent: "a"},
       ab = {id: "ab", parent: "a"},
@@ -33,7 +29,7 @@ tape("hierarchyBottomUp(data) returns a root node", function(test) {
 });
 
 tape("hierarchyBottomUp(data) does not require the data to be in topological order", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {id: "a"},
       aa = {id: "aa", parent: "a"},
       data = [aa, a],
@@ -47,7 +43,7 @@ tape("hierarchyBottomUp(data) does not require the data to be in topological ord
 });
 
 tape("hierarchyBottomUp(data) does not require the data to have a single root", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {id: "a"},
       b = {id: "b"},
       data = [a, b],
@@ -61,7 +57,7 @@ tape("hierarchyBottomUp(data) does not require the data to have a single root", 
 });
 
 tape("hierarchyBottomUp(data) throws an error if the hierarchy is cyclical", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {id: "a", parent: "b"},
       b = {id: "b", parent: "a"};
   test.throws(function() { h([a, b]); }, /\bcycle\b/);
@@ -69,26 +65,26 @@ tape("hierarchyBottomUp(data) throws an error if the hierarchy is cyclical", fun
 });
 
 tape("hierarchyBottomUp(data) throws an error if the hierarchy is trivially cyclical", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {id: "a", parent: "a"};
   test.throws(function() { h([a]); }, /\bcycle\b/);
   test.end();
 });
 
 tape("hierarchyBottomUp(data) throws an error if multiple nodes have the same id", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null);
+  var h = d3_hierarchy.hierarchyBottomUp();
   test.throws(function() { h([{id: "foo"}, {id: "foo"}]); }, /\bduplicate\b/);
   test.end();
 });
 
 tape("hierarchyBottomUp(data) throws an error if the specified parent is not found", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null);
+  var h = d3_hierarchy.hierarchyBottomUp();
   test.throws(function() { h([{id: "a"}, {id: "b", parent: "c"}]); }, /\bmissing\b/);
   test.end();
 });
 
 tape("hierarchyBottomUp(data) allows the id to be undefined for leaf nodes", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {},
       b = {},
       data = [a, b],
@@ -102,7 +98,7 @@ tape("hierarchyBottomUp(data) allows the id to be undefined for leaf nodes", fun
 });
 
 tape("hierarchyBottomUp(data) coerces the id to a string if defined", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {id: {toString: function() { return "a"; }}},
       aa = {id: "aa", parent: "a"},
       data = [a, aa],
@@ -116,7 +112,7 @@ tape("hierarchyBottomUp(data) coerces the id to a string if defined", function(t
 });
 
 tape("hierarchyBottomUp(data) coerces the parent id to a string", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null),
+  var h = d3_hierarchy.hierarchyBottomUp(),
       a = {id: "a"},
       aa = {id: "aa", parent: {toString: function() { return "a"; }}},
       data = [a, aa],
@@ -131,7 +127,7 @@ tape("hierarchyBottomUp(data) coerces the parent id to a string", function(test)
 
 tape("hierarchyBottomUp.id(id) observes the specified id function", function(test) {
   var foo = function(d) { return d.foo; },
-      h = d3_hierarchy.hierarchyBottomUp().value(null).id(foo),
+      h = d3_hierarchy.hierarchyBottomUp().id(foo),
       a = {foo: "a"},
       aa = {foo: "aa", parent: "a"},
       ab = {foo: "ab", parent: "a"},
@@ -162,7 +158,7 @@ tape("hierarchyBottomUp.id(id) tests that id is a function", function(test) {
 
 tape("hierarchyBottomUp.parentId(id) observes the specified parent id function", function(test) {
   var foo = function(d) { return d.foo; },
-      h = d3_hierarchy.hierarchyBottomUp().value(null).parentId(foo),
+      h = d3_hierarchy.hierarchyBottomUp().parentId(foo),
       a = {id: "a"},
       aa = {id: "aa", foo: "a"},
       ab = {id: "ab", foo: "a"},
@@ -188,65 +184,5 @@ tape("hierarchyBottomUp.parentId(id) tests that id is a function", function(test
   var h = d3_hierarchy.hierarchyBottomUp();
   test.throws(function() { h.parentId(42); });
   test.throws(function() { h.parentId(null); });
-  test.end();
-});
-
-tape("hierarchyBottomUp.value(value) observes the specified value function", function(test) {
-  var foo = function(d) { return d.foo; },
-      h = d3_hierarchy.hierarchyBottomUp().value(foo),
-      a = {foo: 1},
-      b = {foo: 2},
-      data = [a, b],
-      root = h(data),
-      B = {data: b, index: 1, value: 2, depth: 1},
-      A = {data: a, index: 0, value: 1, depth: 1},
-      ROOT = {data: data, value: 3, depth: 0, children: [B, A]};
-  test.equal(h.value(), foo);
-  test.deepEqual(noparents(root), [ROOT, B, A]);
-  test.deepEqual(parents(root), [undefined, ROOT, ROOT]);
-  test.end();
-});
-
-tape("hierarchyBottomUp.value(value) tests that value is a function or null", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(undefined);
-  test.throws(function() { h.value(42); });
-  test.end();
-});
-
-tape("hierarchyBottomUp.sort(sort) observes the specified sort function", function(test) {
-  var foo = function(a, b) { return a.value - b.value; },
-      h = d3_hierarchy.hierarchyBottomUp().sort(foo),
-      a = {value: 1},
-      b = {value: 2},
-      data = [b, a],
-      root = h(data),
-      B = {data: b, index: 0, value: 2, depth: 1},
-      A = {data: a, index: 1, value: 1, depth: 1},
-      ROOT = {data: data, value: 3, depth: 0, children: [A, B]};
-  test.equal(h.sort(), foo);
-  test.deepEqual(noparents(root), [ROOT, A, B]);
-  test.deepEqual(parents(root), [undefined, ROOT, ROOT]);
-  test.end();
-});
-
-tape("hierarchyBottomUp.sort(null)(data) preserves the input order of siblings", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().value(null).sort(null),
-      b = {id: "b"},
-      a = {id: "a"},
-      c = {id: "c"},
-      data = [b, a, c],
-      root = h(data),
-      B = {data: b, index: 0, id: "b", depth: 1},
-      A = {data: a, index: 1, id: "a", depth: 1},
-      C = {data: c, index: 2, id: "c", depth: 1},
-      ROOT = {data: data, depth: 0, children: [B, A, C]};
-  test.deepEqual(noparents(root), [ROOT, B, A, C]);
-  test.deepEqual(parents(root), [undefined, ROOT, ROOT, ROOT]);
-  test.end();
-});
-
-tape("hierarchyBottomUp.sort(sort) tests that sort is a function or null", function(test) {
-  var h = d3_hierarchy.hierarchyBottomUp().sort(undefined);
-  test.throws(function() { h.sort(42); });
   test.end();
 });

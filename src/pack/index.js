@@ -1,18 +1,31 @@
 import enclosingCircle from "./enclosingCircle";
 import packCircles from "./circles";
+import {optional, defaultValue, defaultSort} from "../hierarchy/accessors";
 
 export default function() {
-  var dx = 1,
+  var value = defaultValue,
+      sort = defaultSort,
+      dx = 1,
       dy = 1,
       padding = 0;
 
   function pack(root) {
+    if (value) root.revalue(value);
+    if (sort) root.sort(sort);
     root.x = dx / 2, root.y = dy / 2;
     root.eachAfter(packChildren);
     if (padding > 0) root.eachAfter(padChildren(padding * root.r / Math.min(dx, dy)));
     root.eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
     return root;
   }
+
+  pack.value = function(x) {
+    return arguments.length ? (value = optional(x), pack) : value;
+  };
+
+  pack.sort = function(x) {
+    return arguments.length ? (sort = optional(x), pack) : sort;
+  };
 
   pack.size = function(x) {
     return arguments.length ? (dx = +x[0], dy = +x[1], pack) : [dx, dy];

@@ -1,14 +1,12 @@
 import Node from "../node/index";
-import {optional, required, defaultValue, defaultSort} from "./accessors";
+import {required} from "./accessors";
 
 function defaultChildren(d) {
   return d.children;
 }
 
 export default function() {
-  var children = defaultChildren,
-      value = defaultValue,
-      sort = defaultSort;
+  var children = defaultChildren;
 
   function hierarchy(data) {
     var root = new Node(data),
@@ -32,21 +30,11 @@ export default function() {
       }
     }
 
-    if (value) root.revalue(value);
-    if (sort) root.sort(sort);
     return root;
   }
 
   hierarchy.children = function(x) {
     return arguments.length ? (children = required(x), hierarchy) : children;
-  };
-
-  hierarchy.value = function(x) {
-    return arguments.length ? (value = optional(x), hierarchy) : value;
-  };
-
-  hierarchy.sort = function(x) {
-    return arguments.length ? (sort = optional(x), hierarchy) : sort;
   };
 
   return hierarchy;
