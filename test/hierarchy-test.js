@@ -13,6 +13,24 @@ tape("hierarchy() has the expected defaults", function(test) {
   test.end();
 });
 
+tape("hierarchy.children(…)(data) returns a root node", function(test) {
+  var h = d3_hierarchy.hierarchy().children(function(d) { return d.children; }),
+      aaa = {id: "aaa"},
+      aa = {id: "aa", children: [aaa]},
+      ab = {id: "ab"},
+      a = {id: "a", children: [aa, ab]},
+      data = {children: [a]},
+      root = h(data),
+      AAA = {data: aaa, id: "aaa", depth: 3, value: 0},
+      AB = {data: ab, id: "ab", depth: 2, value: 0},
+      AA = {data: aa, id: "aa", depth: 2, value: 0, children: [AAA]},
+      A = {data: a, id: "a", depth: 1, value: 0, children: [AA, AB]},
+      ROOT = {data: data, depth: 0, value: 0, children: [A]};
+  test.deepEqual(noparents(root), [ROOT, A, AA, AB, AAA]);
+  test.deepEqual(parents(root), [undefined, ROOT, A, A, AA]);
+  test.end();
+});
+
 tape("hierarchy.parentId(…)(data) returns a root node", function(test) {
   var h = d3_hierarchy.hierarchy().parentId(function(d) { return d.parent; }),
       a = {id: "a"},

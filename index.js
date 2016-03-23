@@ -1,5 +1,7 @@
 export {version} from "./build/package";
-export {default as hierarchy} from "./src/hierarchy";
+export {default as hierarchyBottomUp} from "./src/hierarchy/bottomUp";
+export {default as hierarchyTopDown} from "./src/hierarchy/topDown";
+export {default as hierarchyNode} from "./src/node/index";
 export {default as pack} from "./src/pack/index";
 export {default as packCircles} from "./src/pack/circles";
 export {default as packEnclosingCircle} from "./src/pack/enclosingCircle";
