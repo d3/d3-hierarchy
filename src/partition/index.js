@@ -1,4 +1,4 @@
-import roundNode from "../round";
+import roundNode from "../treemap/round";
 import treemapDice from "../treemap/dice";
 
 function depth(node) {

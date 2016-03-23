@@ -1,4 +1,4 @@
-import roundNode from "../round";
+import roundNode from "./round";
 import squarify from "./squarify";
 
 export default function() {
