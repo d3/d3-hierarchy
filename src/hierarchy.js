@@ -6,8 +6,8 @@ function defaultId(d) {
   return d.id;
 }
 
-function defaultParentId(d) {
-  return d.parent;
+function defaultChildren(d) {
+  return d.children;
 }
 
 function defaultValue(d) {
@@ -29,13 +29,23 @@ function detectCycles(n) {
 }
 
 export default function() {
-  var id = defaultId,
-      parentId = defaultParentId,
+  var strategy = topDown,
+      id = defaultId,
+      parentId = null,
+      children = defaultChildren,
       value = defaultValue,
       sort = defaultSort;
 
   function hierarchy(data) {
-    var i,
+    var root = strategy(data);
+    root.evaluate(value);
+    if (sort != null) root.sort(sort);
+    return root;
+  }
+
+  function bottomUp(data) {
+    var root = new Node(data),
+        i,
         n = data.length,
         d,
         nodeId,
@@ -43,11 +53,10 @@ export default function() {
         nodeByKey = {},
         nodes = new Array(n),
         node,
-        parent,
-        root = new Node(data);
+        parent;
 
     for (i = 0; i < n; ++i) {
-      nodes[node.index = i] = node = new Node(d = data[i]);
+      nodes[i] = node = new Node(d = data[i]), node.index = i;
       if ((nodeId = id(d, i, data)) != null) {
         nodeKey = keyPrefix + (node.id = nodeId += "");
         if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);
@@ -64,9 +73,33 @@ export default function() {
       else parent.children = [node];
     }
 
-    root.eachBefore(detectCycles(data.length));
-    root.evaluate(value);
-    if (sort != null) root.sort(sort);
+    return root.eachBefore(detectCycles(data.length));
+  }
+
+  function topDown(data) {
+    var root = new Node(data),
+        node = root,
+        nodes = [root],
+        nodeId,
+        child,
+        childs,
+        i,
+        n;
+
+    root.depth = 0;
+
+    while ((node = nodes.pop()) != null) {
+      if ((nodeId = id(node.data)) != null) node.id = nodeId + "";
+      if ((childs = children(node.data)) && (n = childs.length)) {
+        node.children = new Array(n);
+        for (i = n - 1; i >= 0; --i) {
+          nodes.push(child = node.children[i] = new Node(childs[i]));
+          child.parent = node;
+          child.depth = node.depth + 1;
+        }
+      }
+    }
+
     return root;
   }
 
@@ -75,7 +108,11 @@ export default function() {
   };
 
   hierarchy.parentId = function(x) {
-    return arguments.length ? (parentId = x, hierarchy) : parentId;
+    return arguments.length ? (parentId = x, strategy = bottomUp, children = null, hierarchy) : parentId;
+  };
+
+  hierarchy.children = function(x) {
+    return arguments.length ? (children = x, strategy = topDown, parentId = null, hierarchy) : children;
   };
 
   hierarchy.value = function(x) {
