@@ -28,7 +28,7 @@ Awan  | Eve
 Enoch | Awan
 Azura | Eve
 
-We can represent this as a CSV file:
+To represent this hierarchy as a CSV file:
 
 ```
 id,parentId
