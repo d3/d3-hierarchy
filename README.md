@@ -129,43 +129,7 @@ Each node in the returned object has a shallow copy of the properties from the c
 
 <a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
 
-Constructs a root hierarchy node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. For example:
-
-```json
-{
-  "name": "Eve",
-  "children": [
-    {
-      "name": "Cain"
-    },
-    {
-      "name": "Seth",
-      "children": [
-        {
-          "name": "Enos",
-        },
-        {
-          "name": "Noam"
-        }
-      ]
-    },
-    {
-      "name": "Abel"
-    },
-    {
-      "name": "Awan",
-      "children": [
-        {
-          "name": "Enoch"
-        }
-      ]
-    },
-    {
-      "name": "Azura"
-    }
-  ]
-}
-```
+Constructs a root hierarchy node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [d3.hierarchy](#hierarchy) for an example.
 
 This method is typically not called directly; instead it is used by hierarchical layouts such as [d3.treemap](#treemap) to initialize root nodes.
 
