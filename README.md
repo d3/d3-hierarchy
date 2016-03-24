@@ -12,8 +12,6 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 Before you can compute a hierarchical layout, you need a hierarchical data structure: a root node. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, you can arrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.hierarchy](#hierarchy).
 
-<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
-
 For example, consider the following table of relationships:
 
 Name  | Parent
@@ -109,27 +107,45 @@ This returns:
 }
 ```
 
-Each node in the returned object has a shallow copy of the properties from the corresponding data object, excluding the following reserved properties: id, parentId, children.
+This hierarchy can then be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization.
+
+<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
+
+Constructs a new hierarchy generator with the default settings.
 
 <a name="_hierarchy" href="#_hierarchy">#</a> <i>hierarchy</i>(<i>data</i>)
 
-…
+Generates a new hierarchy from the specified tabular *data*. Each node in the returned object has a shallow copy of the properties from the corresponding data object, excluding the following reserved properties: id, parentId, children.
 
-<a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>function</i>])
+<a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>id</i>])
 
-…
+If *id* is specified, sets the id accessor and returns this hierarchy generator. Otherwise, returns the current id accessor, which defaults to:
 
-<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>function</i>])
+```
+function id(d) {
+  return d.id;
+}
+```
 
-…
+The id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy). The returned string is then used to identify the node’s relationships in conjunction with the [parent id](#hierarchy_parentId). For leaf nodes, the id may be undefined; otherwise, the id must be unique. (Null and the empty string are equivalent to undefined.)
+
+<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>parentId</i>])
+
+If *parentId* is specified, sets the parent id accessor and returns this hierarchy generator. Otherwise, returns the current parent id accessor, which defaults to:
+
+```
+function parentId(d) {
+  return d.parentId;
+}
+```
+
+The parent id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy). The returned string is then used to identify the node’s relationships in conjunction with the [id](#hierarchy_id). For the root node, the parent id should be undefined. (Null and the empty string are equivalent to undefined.) There must be exactly one root node in the input data, and no circular relationships.
 
 ### Hierarchy Nodes
 
-…
-
 <a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
 
-Constructs a root hierarchy node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [d3.hierarchy](#hierarchy) for an example.
+Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Hierarchies](#hierarchies) for an example.
 
 This method is typically not called directly; instead it is used by hierarchical layouts to construct root nodes. You can also use it to test whether an object is an `instanceof d3.hierarchyNode`, or to extend the node prototype.
 
@@ -139,7 +155,7 @@ A reference to the data associated with this node, as specified to the [construc
 
 <a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
 
-The depth of the node. Zero for the root node, and increases by one for each subsequent generation.
+The depth of the node: zero for the root node, and increasing by one for each subsequent generation.
 
 <a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
 
