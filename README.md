@@ -26,7 +26,7 @@ Before you can compute a hierarchical layout, you need a hierarchical data struc
 
 …
 
-<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>bottomUp</i>.<b>parentId</b>([<i>function</i>])
+<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>function</i>])
 
 …
 
