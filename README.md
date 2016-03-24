@@ -131,7 +131,7 @@ Each node in the returned object has a shallow copy of the properties from the c
 
 Constructs a root hierarchy node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [d3.hierarchy](#hierarchy) for an example.
 
-This method is typically not called directly; instead it is used by hierarchical layouts to initialize root nodes.
+This method is typically not called directly; instead it is used by hierarchical layouts to construct root nodes.
 
 <a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
 
