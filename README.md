@@ -67,7 +67,7 @@ This returns:
 
 To convert to a hierarchy:
 
-```
+```js
 var root = d3.hierarchy()(table);
 ```
 
