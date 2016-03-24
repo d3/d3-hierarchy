@@ -12,7 +12,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ### Hierarchies
 
-Before you can compute a hierarchical layout, you need to create a hierarchical data structure: you need a [root node](#hierarchy-nodes). If you have tabular data as input, such as a CSV file, use [d3.hierarchyBottomUp](#hierarchyBottomUp) to organize the rows into a hierarchy. If you already have hierarchical data, such as a JSON file, use [d3.hierarchyTopDown](#hierarchyTopDown) to derive the corresponding hierarchy. You can also construct [hierarchy nodes](#hierarchy-nodes) manually.
+Before you can compute a hierarchical layout, you need a hierarchical data structure: a [root node](#hierarchy-nodes). If you have tabular data as input, such as a CSV file, use [d3.hierarchyBottomUp](#hierarchyBottomUp) to organize the rows into a hierarchy. If you already have hierarchical data, such as a JSON file, use [d3.hierarchyTopDown](#hierarchyTopDown) to derive the corresponding hierarchy. You can also construct [hierarchy nodes](#hierarchy-nodes) manually.
 
 <a name="hierarchyBottomUp" href="#hierarchyBottomUp">#</a> d3.<b>hierarchyBottomUp</b>()
 
@@ -98,7 +98,7 @@ Before you can compute a hierarchical layout, you need to create a hierarchical 
 
 …
 
-### Treemaps
+### Treemapping
 
 …
 
@@ -142,6 +142,10 @@ Before you can compute a hierarchical layout, you need to create a hierarchical 
 
 …
 
+### Treemap Tiling
+
+…
+
 <a name="treemapBinary" href="#treemapBinary">#</a> d3.<b>treemapBinary</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
 
 …
@@ -166,7 +170,7 @@ Before you can compute a hierarchical layout, you need to create a hierarchical 
 
 …
 
-### Partitions
+### Partitioning
 
 …
 
@@ -226,10 +230,10 @@ Before you can compute a hierarchical layout, you need to create a hierarchical 
 
 …
 
-<a name="packCircles" href="#packCircles">#</a> d3.<b>packCircles</b>(<i>nodes</i>)
+<a name="packCircles" href="#packCircles">#</a> d3.<b>packCircles</b>(<i>circles</i>)
 
 …
 
-<a name="packEnclosingCircle" href="#packEnclosingCircle">#</a> d3.<b>packEnclosingCircle</b>(<i>nodes</i>)
+<a name="packEnclosingCircle" href="#packEnclosingCircle">#</a> d3.<b>packEnclosingCircle</b>(<i>circles</i>)
 
 …
