@@ -31,7 +31,7 @@ Awan  | Eve
 Enoch | Awan
 Azura | Eve
 
-To represent this hierarchy as a CSV file:
+The names are conveniently unique, so we can unambiguously represent this hierarchy as a CSV file:
 
 ```
 id,parentId
