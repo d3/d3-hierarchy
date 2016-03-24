@@ -1,14 +1,15 @@
-import newNode from "../node/index";
 import {required} from "./accessors";
+import visitBefore from "./visitBefore";
 
-var keyPrefix = "$"; // Protect against keys like “__proto__”.
+var keyPrefix = "$", // Protect against keys like “__proto__”.
+    reserved = {id: 1, children: 1};
 
 function defaultId(d) {
   return d.id;
 }
 
 function defaultParentId(d) {
-  return d.parent;
+  return d.parentId;
 }
 
 export default function() {
@@ -16,19 +17,21 @@ export default function() {
       parentId = defaultParentId;
 
   function hierarchy(data) {
-    var root,
+    var d,
+        k,
         i,
         n = data.length,
-        d,
+        root,
+        parent,
+        node,
+        nodes = new Array(n),
         nodeId,
         nodeKey,
-        nodeByKey = {},
-        nodes = new Array(n),
-        node,
-        parent;
+        nodeByKey = {};
 
     for (i = 0; i < n; ++i) {
-      nodes[i] = node = newNode(d = data[i]), node.index = i;
+      d = data[i], node = nodes[i] = {};
+      for (k in d) if (!(k in reserved)) node[k] = d[k];
       if ((nodeId = id(d, i, data)) != null) {
         nodeKey = keyPrefix + (node.id = nodeId += "");
         if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);
@@ -37,28 +40,21 @@ export default function() {
     }
 
     for (i = 0; i < n; ++i) {
-      node = nodes[i], nodeId = parentId(d = data[i], i, data);
+      node = nodes[i], nodeId = parentId(data[i], i, data);
       if (nodeId == null) {
         if (root) throw new Error("multiple roots");
         root = node;
       } else {
         parent = nodeByKey[keyPrefix + nodeId];
         if (!parent) throw new Error("missing: " + nodeId);
-        node.parent = parent;
         if (parent.children) parent.children.push(node);
         else parent.children = [node];
       }
     }
 
-    if (!root) throw new Error("cycle");
-
-    root.eachBefore(function(node) {
-      if (!nodes[node.index]) throw new Error("cycle");
-      node.depth = node.parent ? node.parent.depth + 1 : 0;
-      nodes[node.index] = null, --n;
-    });
-
-    if (n !== 0) throw new Error("cycle");
+    if (!root) throw new Error("no root");
+    visitBefore(root, function() { --n; });
+    if (n > 0) throw new Error("cycle");
 
     return root;
   }

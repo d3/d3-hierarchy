@@ -1,6 +1,11 @@
 import enclosingCircle from "./enclosingCircle";
+import hierarchyNode from "../node/index";
+import hierarchyValue from "../hierarchyValue";
+import hierarchySort from "../hierarchySort";
 import packCircles from "./circles";
-import {optional, defaultValue, defaultSort} from "../hierarchy/accessors";
+import visitAfter from "../visitAfter";
+import visitBefore from "../visitBefore";
+import {optional, required, defaultValue, defaultSort} from "../accessors";
 
 export default function() {
   var value = defaultValue,
@@ -9,18 +14,19 @@ export default function() {
       dy = 1,
       padding = 0;
 
-  function pack(root) {
-    if (value) root.revalue(value);
-    if (sort) root.sort(sort);
+  function pack(data) {
+    var root = hierarchyNode(data);
+    hierarchyValue(root, value);
+    if (sort) hierarchySort(root, sort);
     root.x = dx / 2, root.y = dy / 2;
-    root.eachAfter(packChildren);
-    if (padding > 0) root.eachAfter(padChildren(padding * root.r / Math.min(dx, dy)));
-    root.eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
+    visitAfter(root, packChildren);
+    if (padding > 0) visitAfter(root, padChildren(padding * root.r / Math.min(dx, dy)));
+    visitBefore(root, translateChild(Math.min(dx, dy) / (2 * root.r)));
     return root;
   }
 
   pack.value = function(x) {
-    return arguments.length ? (value = optional(x), pack) : value;
+    return arguments.length ? (value = required(x), pack) : value;
   };
 
   pack.sort = function(x) {

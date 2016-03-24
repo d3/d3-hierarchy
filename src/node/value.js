@@ -1,5 +1,7 @@
-export default function(value) {
-  return this.eachAfter(function(node) {
+import visitAfter from "../visitAfter";
+
+export default function(node, value) {
+  visitAfter(node, function(node) {
     var sum = +value(node.data) || 0,
         children = node.children,
         i = children && children.length;

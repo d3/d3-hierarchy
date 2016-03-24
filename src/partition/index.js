@@ -1,6 +1,10 @@
+import hierarchyNode from "../node/index";
+import hierarchyValue from "../hierarchyValue";
+import hierarchySort from "../hierarchySort";
 import roundNode from "../treemap/round";
 import treemapDice from "../treemap/dice";
-import {optional, defaultValue, defaultSort} from "../hierarchy/accessors";
+import visitBefore from "../visitBefore";
+import {optional, required, defaultValue, defaultSort} from "../accessors";
 
 function depth(node) {
   var depth = node.depth;
@@ -20,16 +24,17 @@ export default function() {
       padding = 0,
       round = false;
 
-  function partition(root) {
-    if (value) root.revalue(value);
-    if (sort) root.sort(sort);
+  function partition(data) {
+    var root = hierarchyNode(data);
+    hierarchyValue(root, value);
+    if (sort) hierarchySort(root, sort);
     var n = depth(root) + 1;
     root.x0 =
     root.y0 = padding;
     root.x1 = dx;
     root.y1 = dy / n;
-    root.eachBefore(positionNode(dy, n));
-    if (round) root.eachBefore(roundNode);
+    visitBefore(root, positionNode(dy, n));
+    if (round) visitBefore(root, roundNode);
     return root;
   }
 
@@ -52,7 +57,7 @@ export default function() {
   }
 
   partition.value = function(x) {
-    return arguments.length ? (value = optional(x), partition) : value;
+    return arguments.length ? (value = required(x), partition) : value;
   };
 
   partition.sort = function(x) {

@@ -1,5 +1,5 @@
-export default function(callback) {
-  var node = this, current, next = [node], children, i, n;
+export default function(node, callback) {
+  var current, next = [node], children, i, n;
   do {
     current = next.reverse(), next = [];
     while ((node = current.pop()) != null) {
@@ -9,5 +9,4 @@ export default function(callback) {
       }
     }
   } while (next.length);
-  return this;
 }

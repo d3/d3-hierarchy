@@ -12,33 +12,21 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ### Hierarchies
 
-Before you can compute a hierarchical layout, you need a hierarchical data structure: a [root node](#hierarchy-nodes). If you have tabular data as input, such as a CSV file, use [d3.hierarchyBottomUp](#hierarchyBottomUp) to organize the rows into a hierarchy. If you already have hierarchical data, such as a JSON file, use [d3.hierarchyTopDown](#hierarchyTopDown) to derive the corresponding hierarchy. You can also construct [hierarchy nodes](#hierarchy-nodes) manually.
+Before you can compute a hierarchical layout, you need a hierarchical data structure: a root node. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, if you have tabular input data such as a CSV file, use [d3.hierarchy](#hierarchy) to organize the rows into a hierarchy.
 
-<a name="hierarchyBottomUp" href="#hierarchyBottomUp">#</a> d3.<b>hierarchyBottomUp</b>()
-
-…
-
-<a name="_bottomUp" href="#_bottomUp">#</a> <i>bottomUp</i>(<i>data</i>)
-
-… Returns a root [*node*](#hierarchy-nodes).
-
-<a name="bottomUp_id" href="#bottomUp_id">#</a> <i>bottomUp</i>.<b>id</b>([<i>function</i>])
+<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
 
 …
 
-<a name="bottomUp_parentId" href="#bottomUp_parentId">#</a> <i>bottomUp</i>.<b>parentId</b>([<i>function</i>])
+<a name="_hierarchy" href="#_hierarchy">#</a> <i>hierarchy</i>(<i>data</i>)
 
 …
 
-<a name="hierarchyTopDown" href="#hierarchyTopDown">#</a> d3.<b>hierarchyTopDown</b>()
+<a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>function</i>])
 
 …
 
-<a name="_topDown" href="#_topDown">#</a> <i>topDown</i>(<i>data</i>)
-
-… Returns a root [*node*](#hierarchy-nodes).
-
-<a name="topDown_id" href="#topDown_id">#</a> <i>topDown</i>.<b>children</b>([<i>function</i>])
+<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>bottomUp</i>.<b>parentId</b>([<i>function</i>])
 
 …
 
@@ -48,55 +36,69 @@ Before you can compute a hierarchical layout, you need a hierarchical data struc
 
 <a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
 
-…
+Constructs a root hierarchy node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. For example:
+
+```json
+{
+  "name": "Eve",
+  "children": [
+    {
+      "name": "Cain"
+    },
+    {
+      "name": "Seth",
+      "children": [
+        {
+          "name": "Enos",
+        },
+        {
+          "name": "Noam"
+        }
+      ]
+    },
+    {
+      "name": "Abel"
+    },
+    {
+      "name": "Awan",
+      "children": [
+        {
+          "name": "Enoch"
+        }
+      ]
+    },
+    {
+      "name": "Azura"
+    }
+  ]
+}
+```
+
+This method is typically not called directly; instead it is used by hierarchical layouts such as [d3.treemap](#treemap) to initialize root nodes.
 
 <a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
 
-…
-
-<a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
-
-…
+A reference to the data associated with this node, as specified to the [constructor](#hierarchyNode).
 
 <a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
 
-…
+A reference to the parent node; null for the root node.
 
 <a name="node_children" href="#node_children">#</a> <i>node</i>.<b>children</b>
 
-…
-
-<a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
-
-…
-
-<a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>)
-
-…
-
-<a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>)
-
-…
-
-<a name="node_revalue" href="#node_revalue">#</a> <i>node</i>.<b>revalue</b>(<i>function</i>)
-
-…
-
-<a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>function</i>)
-
-…
+An array of child nodes, if any; undefined for leaf nodes.
 
 <a name="node_ancestors" href="#node_ancestors">#</a> <i>node</i>.<b>ancestors</b>()
 
-…
+Returns the array of ancestors nodes, starting with this node, then followed by each parent up to the root.
 
 <a name="node_descendants" href="#node_descendants">#</a> <i>node</i>.<b>descendants</b>()
 
-…
+Returns the array of descendant nodes, starting with this node, then followed by each child in topological order.
 
 <a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>()
 
-…
+Returns the array of leaf nodes; a subset of this node’s [descendants](#node_descendants) including only nodes with no children.
 
 ### Treemapping
 
@@ -227,13 +229,5 @@ Before you can compute a hierarchical layout, you need a hierarchical data struc
 …
 
 <a name="pack_padding" href="#pack_padding">#</a> <i>pack</i>.<b>padding</b>([<i>padding</i>])
-
-…
-
-<a name="packCircles" href="#packCircles">#</a> d3.<b>packCircles</b>(<i>circles</i>)
-
-…
-
-<a name="packEnclosingCircle" href="#packEnclosingCircle">#</a> d3.<b>packEnclosingCircle</b>(<i>circles</i>)
 
 …

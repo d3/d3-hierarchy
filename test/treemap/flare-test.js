@@ -27,41 +27,38 @@ function test(input, expected, tile) {
     function ready(error, inputText, expectedText) {
       if (error) throw error;
 
-      var hierarchy = d3_hierarchy.hierarchyBottomUp()
+      var hierarchy = d3_hierarchy.hierarchy()
           .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; });
 
       var treemap = d3_hierarchy.treemap()
           .tile(tile)
           .size([960, 500])
-          .sort(function(a, b) { return b.value - a.value || a.id.localeCompare(b.id); });
+          .sort(function(a, b) { return b.value - a.value || a.data.id.localeCompare(b.data.id); });
 
       var data = d3_dsv.csvParse(inputText),
           expected = JSON.parse(expectedText),
           actual = treemap(hierarchy(data));
 
       (function visit(node) {
-        node.name = node.id.slice(node.id.lastIndexOf(".") + 1);
-        node.x = round(node.x0);
-        node.y = round(node.y0);
-        node.dx = round(node.x1 - node.x0);
-        node.dy = round(node.y1 - node.y0);
-        delete node.index;
-        delete node.id;
+        node.name = node.data.id.slice(node.data.id.lastIndexOf(".") + 1);
+        node.x0 = round(node.x0);
+        node.y0 = round(node.y0);
+        node.x1 = round(node.x1);
+        node.y1 = round(node.y1);
         delete node.parent;
-        delete node._squarify;
         delete node.data;
-        delete node.x0;
-        delete node.y0;
-        delete node.x1;
-        delete node.y1;
         if (node.children) node.children.forEach(visit);
       })(actual);
 
       (function visit(node) {
-        node.x = round(node.x);
-        node.y = round(node.y);
-        node.dx = round(node.dx);
-        node.dy = round(node.dy);
+        node.x0 = round(node.x);
+        node.y0 = round(node.y);
+        node.x1 = round(node.x + node.dx);
+        node.y1 = round(node.y + node.dy);
+        delete node.x;
+        delete node.y;
+        delete node.dx;
+        delete node.dy;
         if (node.children) {
           node.children.reverse(); // D3 3.x bug
           node.children.forEach(visit);

@@ -1,5 +1,11 @@
+import visit from "../visit";
+
 export default function() {
   var leaves = [];
-  this.each(function(node) { if (!node.children) leaves.push(node); });
+  visit(this, function(node) {
+    if (!node.children) {
+      leaves.push(node);
+    }
+  });
   return leaves;
 }

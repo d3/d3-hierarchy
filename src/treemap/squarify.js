@@ -21,37 +21,24 @@ export default (function custom(ratio) {
     while (i0 < n) {
       dx = x1 - x0, dy = y1 - y0;
       sumValue = (node = nodes[i0]).value;
+      minValue = maxValue = sumValue;
+      alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
+      beta = sumValue * sumValue * alpha;
+      minRatio = Math.max(maxValue / beta, beta / minValue);
 
-      // Are we updating a previous squarified layout?
-      if (node._squarify) {
-        for (i1 = i0 + 1; i1 < Math.abs(node._squarify); ++i1) {
-          sumValue += nodes[i1].value;
-        }
-      }
-
-      // Otherwise, we’re computing a squarified layout from scratch.
-      else {
-        minValue = maxValue = sumValue;
-        alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
+      // Keep adding nodes while the aspect ratio maintains or improves.
+      for (i1 = i0 + 1; i1 < n; ++i1) {
+        sumValue += nodeValue = nodes[i1].value;
+        if (nodeValue < minValue) minValue = nodeValue;
+        if (nodeValue > maxValue) maxValue = nodeValue;
         beta = sumValue * sumValue * alpha;
-        minRatio = Math.max(maxValue / beta, beta / minValue);
-
-        // Keep adding nodes while the aspect ratio maintains or improves.
-        for (i1 = i0 + 1; i1 < n; ++i1) {
-          sumValue += nodeValue = nodes[i1].value;
-          if (nodeValue < minValue) minValue = nodeValue;
-          if (nodeValue > maxValue) maxValue = nodeValue;
-          beta = sumValue * sumValue * alpha;
-          newRatio = Math.max(maxValue / beta, beta / minValue);
-          if (newRatio > minRatio) { sumValue -= nodeValue; break; }
-          minRatio = newRatio;
-        }
-
-        node._squarify = dx < dy ? i1 : -i1;
+        newRatio = Math.max(maxValue / beta, beta / minValue);
+        if (newRatio > minRatio) { sumValue -= nodeValue; break; }
+        minRatio = newRatio;
       }
 
       // Position the row horizontally along the top of the rect.
-      if (node._squarify > 0) {
+      if (dx < dy) {
         for (x2 = x0, y2 = y0 + dy * sumValue / value, dx /= sumValue; i0 < i1; ++i0) {
           node = nodes[i0], node.x0 = x2, node.y0 = y0, node.y1 = y2;
           node.x1 = x2 += node.value * dx;
