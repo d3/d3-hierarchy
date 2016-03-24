@@ -2,7 +2,7 @@ import {required} from "./accessors";
 import visitBefore from "./visitBefore";
 
 var keyPrefix = "$", // Protect against keys like “__proto__”.
-    reserved = {id: 1, children: 1};
+    reserved = {id: 1, parentId: 1, children: 1};
 
 function defaultId(d) {
   return d.id;

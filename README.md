@@ -76,47 +76,40 @@ This returns:
 ```json
 {
   "id": "Eve",
-  "parentId": "",
   "children": [
     {
-      "id": "Cain",
-      "parentId": "Eve"
+      "id": "Cain"
     },
     {
       "id": "Seth",
-      "parentId": "Eve",
       "children": [
         {
-          "id": "Enos",
-          "parentId": "Seth"
+          "id": "Enos"
         },
         {
-          "id": "Noam",
-          "parentId": "Seth"
+          "id": "Noam"
         }
       ]
     },
     {
-      "id": "Abel",
-      "parentId": "Eve"
+      "id": "Abel"
     },
     {
       "id": "Awan",
-      "parentId": "Eve",
       "children": [
         {
-          "id": "Enoch",
-          "parentId": "Awan"
+          "id": "Enoch"
         }
       ]
     },
     {
-      "id": "Azura",
-      "parentId": "Eve"
+      "id": "Azura"
     }
   ]
 }
 ```
+
+Each node in the returned object has a shallow copy of the properties from the corresponding data object, excluding the following reserved properties: id, parentId, children.
 
 <a name="_hierarchy" href="#_hierarchy">#</a> <i>hierarchy</i>(<i>data</i>)
 

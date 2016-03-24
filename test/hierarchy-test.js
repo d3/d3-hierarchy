@@ -20,17 +20,14 @@ tape("hierarchy(data) returns the root node", function(test) {
     children: [
       {
         id: "aa",
-        parentId: "a",
         children: [
           {
-            id: "aaa",
-            parentId: "aa"
+            id: "aaa"
           }
         ]
       },
       {
-        id: "ab",
-        parentId: "a"
+        id: "ab"
       }
     ]
   });
@@ -49,17 +46,14 @@ tape("hierarchy(data) does not require the data to be in topological order", fun
     children: [
       {
         id: "aa",
-        parentId: "a",
         children: [
           {
-            id: "aaa",
-            parentId: "aa"
+            id: "aaa"
           }
         ]
       },
       {
-        id: "ab",
-        parentId: "a"
+        id: "ab"
       }
     ]
   });
@@ -77,16 +71,13 @@ tape("hierarchy(data) preserves the input order of siblings", function(test) {
     id: "a",
     children: [
       {
-        id: "ab",
-        parentId: "a"
+        id: "ab"
       },
       {
         id: "aa",
-        parentId: "a",
         children: [
           {
-            id: "aaa",
-            parentId: "aa"
+            id: "aaa"
           }
         ]
       }
@@ -104,21 +95,17 @@ tape("hierarchy(data) treats an empty parentId as the root", function(test) {
     {id: "aaa", parentId: "aa"}
   ]), {
     id: "a",
-    parentId: "",
     children: [
       {
         id: "aa",
-        parentId: "a",
         children: [
           {
-            id: "aaa",
-            parentId: "aa"
+            id: "aaa"
           }
         ]
       },
       {
-        id: "ab",
-        parentId: "a"
+        id: "ab"
       }
     ]
   });
@@ -133,15 +120,12 @@ tape("hierarchy(data) does not treat a falsy but non-empty parentId as the root"
     {id: 2, parentId: 0}
   ]), {
     id: "0",
-    parentId: null,
     children: [
       {
-        id: "1",
-        parentId: 0
+        id: "1"
       },
       {
-        id: "2",
-        parentId: 0
+        id: "2"
       }
     ]
   });
@@ -184,12 +168,8 @@ tape("hierarchy(data) allows the id to be undefined for leaf nodes", function(te
   ]), {
     id: "a",
     children: [
-      {
-        parentId: "a"
-      },
-      {
-        parentId: "a"
-      }
+      {},
+      {}
     ]
   });
   test.end();
@@ -206,8 +186,8 @@ tape("hierarchy(data) coerces the id to a string, if not null and not empty", fu
 });
 
 tape("hierarchy(data) allows the id to be undefined for leaf nodes", function(test) {
-  var o = {parentId: {toString: function() { return "a"; }}}, h = d3_hierarchy.hierarchy();
-  test.deepEqual(h([{id: "a"}, o]), {id: "a", children: [o]});
+  var h = d3_hierarchy.hierarchy();
+  test.deepEqual(h([{id: "a"}, {parentId: {toString: function() { return "a"; }}}]), {id: "a", children: [{}]});
   test.end();
 });
 
@@ -227,19 +207,16 @@ tape("hierarchy.id(id) observes the specified id function", function(test) {
       {
         id: "aa",
         foo: "aa",
-        parentId: "a",
         children: [
           {
             id: "aaa",
-            foo: "aaa",
-            parentId: "aa"
+            foo: "aaa"
           }
         ]
       },
       {
         id: "ab",
-        foo: "ab",
-        parentId: "a"
+        foo: "ab"
       }
     ]
   });
