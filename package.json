@@ -18,9 +18,6 @@
   },
   "main": "build/d3-hierarchy.js",
   "jsnext:main": "index",
-  "bin": {
-    "tree2csv": "./bin/tree2csv"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d3/d3-hierarchy.git"
