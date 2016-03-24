@@ -7,8 +7,13 @@ import visitAfter from "../visitAfter";
 import visitBefore from "../visitBefore";
 import {optional, required, defaultValue, defaultSort} from "../accessors";
 
+function defaultRadius(d) {
+  return Math.sqrt(d.value);
+}
+
 export default function() {
-  var value = defaultValue,
+  var radius = null,
+      value = defaultValue,
       sort = defaultSort,
       dx = 1,
       dy = 1,
@@ -16,17 +21,28 @@ export default function() {
 
   function pack(data) {
     var root = hierarchyNode(data);
-    hierarchyValue(root, value);
+    if (value) hierarchyValue(root, value);
     if (sort) hierarchySort(root, sort);
     root.x = dx / 2, root.y = dy / 2;
-    visitAfter(root, packChildren);
-    if (padding > 0) visitAfter(root, padChildren(padding * root.r / Math.min(dx, dy)));
-    visitBefore(root, translateChild(Math.min(dx, dy) / (2 * root.r)));
+    if (radius) {
+      visitAfter(root, radiusLeaf(radius));
+      visitAfter(root, padChildren(padding / 2));
+      visitBefore(root, translateChild(1));
+    } else {
+      visitAfter(root, radiusLeaf(defaultRadius));
+      visitAfter(root, packChildren);
+      if (padding) visitAfter(root, padChildren(padding * root.r / Math.min(dx, dy)));
+      visitBefore(root, translateChild(Math.min(dx, dy) / (2 * root.r)));
+    }
     return root;
   }
 
+  pack.radius = function(x) {
+    return arguments.length ? (radius = optional(x), pack) : radius;
+  };
+
   pack.value = function(x) {
-    return arguments.length ? (value = required(x), pack) : value;
+    return arguments.length ? (value = optional(x), pack) : value;
   };
 
   pack.sort = function(x) {
@@ -38,38 +54,49 @@ export default function() {
   };
 
   pack.padding = function(x) {
-    return arguments.length ? (padding = +x, pack) : padding;
+    return arguments.length ? (padding = Math.max(0, +x || 0), pack) : padding;
   };
 
   return pack;
 }
 
-function packChildren(node) {
-  if (node.children) {
-    packCircles(node.children);
-    var e = enclosingCircle(node.children);
-    node.children.forEach(translateNode(-e.x, -e.y));
-    node.r = e.r;
-  } else {
-    node.r = Math.sqrt(node.value);
-  }
-}
-
-function padChildren(r) {
-  var pad = padNode(r), unpad = padNode(-r);
+function radiusLeaf(radius) {
   return function(node) {
-    if (node.children) {
-      node.children.forEach(pad);
-      packChildren(node);
-      node.children.forEach(unpad);
-      node.r += r;
+    if (!node.children) {
+      node.r = Math.max(0, +radius(node) || 0);
     }
   };
 }
 
-function padNode(r) {
+function packChildren(node) {
+  if (children = node.children) {
+    packCircles(children);
+
+    var circle = enclosingCircle(children),
+        children,
+        child,
+        i,
+        n = children.length;
+
+    for (i = 0; i < n; ++i) {
+      child = children[i];
+      child.x -= circle.x;
+      child.y -= circle.y;
+    }
+
+    node.r = circle.r;
+  }
+}
+
+function padChildren(padRadius) {
   return function(node) {
-    node.r += r;
+    if (children = node.children) {
+      var children, i, n = children.length;
+      for (i = 0; i < n; ++i) children[i].r += padRadius;
+      packChildren(node);
+      for (i = 0; i < n; ++i) children[i].r -= padRadius;
+      node.r += padRadius;
+    }
   };
 }
 
@@ -81,11 +108,5 @@ function translateChild(k) {
       node.x = parent.x + k * node.x;
       node.y = parent.y + k * node.y;
     }
-  };
-}
-
-function translateNode(dx, dy) {
-  return function(node) {
-    node.x += dx, node.y += dy;
   };
 }

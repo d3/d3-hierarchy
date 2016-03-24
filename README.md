@@ -15,7 +15,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ### Hierarchy
 
-Before you can compute a hierarchical layout, you need a hierarchical data structure: a root node. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, you can arrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.hierarchy](#hierarchy).
+Before you can compute a hierarchical layout, you need a hierarchical data structure: a root node. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, you can arrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.hierarchy](#_hierarchy).
 
 For example, consider the following table of relationships:
 
@@ -126,7 +126,7 @@ Generates a new hierarchy from the specified tabular *data*. Each node in the re
 
 If *id* is specified, sets the id accessor to the given function and returns this hierarchy generator. Otherwise, returns the current id accessor, which defaults to:
 
-```
+```js
 function id(d) {
   return d.id;
 }
@@ -138,7 +138,7 @@ The id accessor is invoked for each element in the input data passed to the [gen
 
 If *parentId* is specified, sets the parent id accessor to the given function and returns this hierarchy generator. Otherwise, returns the current parent id accessor, which defaults to:
 
-```
+```js
 function parentId(d) {
   return d.parentId;
 }
@@ -150,7 +150,7 @@ The parent id accessor is invoked for each element in the input data passed to t
 
 <a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
 
-Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Hierarchies](#hierarchies) for an example.
+Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Hierarchy](#hierarchy) for an example.
 
 This method is typically not called directly; instead it is used by hierarchical layouts to construct root nodes. You can also use it to test whether an object is an `instanceof d3.hierarchyNode`, or to extend the node prototype.
 
@@ -194,15 +194,15 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 …
 
-<a name="treemap_tile" href="#treemap_tile">#</a> <i>treemap</i>.<b>tile</b>([<i>function</i>])
+<a name="treemap_tile" href="#treemap_tile">#</a> <i>treemap</i>.<b>tile</b>([<i>tile</i>])
 
 …
 
-<a name="treemap_value" href="#treemap_value">#</a> <i>treemap</i>.<b>value</b>([<i>function</i>])
+<a name="treemap_value" href="#treemap_value">#</a> <i>treemap</i>.<b>value</b>([<i>value</i>])
 
 …
 
-<a name="treemap_sort" href="#treemap_sort">#</a> <i>treemap</i>.<b>sort</b>([<i>function</i>])
+<a name="treemap_sort" href="#treemap_sort">#</a> <i>treemap</i>.<b>sort</b>([<i>sort</i>])
 
 …
 
@@ -266,11 +266,11 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 …
 
-<a name="partition_value" href="#partition_value">#</a> <i>partition</i>.<b>value</b>([<i>function</i>])
+<a name="partition_value" href="#partition_value">#</a> <i>partition</i>.<b>value</b>([<i>value</i>])
 
 …
 
-<a name="partition_sort" href="#partition_sort">#</a> <i>partition</i>.<b>sort</b>([<i>function</i>])
+<a name="partition_sort" href="#partition_sort">#</a> <i>partition</i>.<b>sort</b>([<i>sort</i>])
 
 …
 
@@ -298,11 +298,15 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 …
 
-<a name="pack_value" href="#pack_value">#</a> <i>pack</i>.<b>value</b>([<i>function</i>])
+<a name="pack_radius" href="#pack_radius">#</a> <i>pack</i>.<b>radius</b>([<i>radius</i>])
 
 …
 
-<a name="pack_sort" href="#pack_sort">#</a> <i>pack</i>.<b>sort</b>([<i>function</i>])
+<a name="pack_value" href="#pack_value">#</a> <i>pack</i>.<b>value</b>([<i>value</i>])
+
+…
+
+<a name="pack_sort" href="#pack_sort">#</a> <i>pack</i>.<b>sort</b>([<i>sort</i>])
 
 …
 
