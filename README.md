@@ -31,7 +31,7 @@ Azura | Eve
 We can represent this as a comma-separated values (CSV) file:
 
 ```
-name,parent
+id,parentId
 Eve,
 Cain,Eve
 Seth,Eve
@@ -53,25 +53,22 @@ This returns:
 
 ```json
 [
-  {"name": "Eve",   "parent": ""},
-  {"name": "Cain",  "parent": "Eve"},
-  {"name": "Seth",  "parent": "Eve"},
-  {"name": "Enos",  "parent": "Seth"},
-  {"name": "Noam",  "parent": "Seth"},
-  {"name": "Abel",  "parent": "Eve"},
-  {"name": "Awan",  "parent": "Eve"},
-  {"name": "Enoch", "parent": "Awan"},
-  {"name": "Azura", "parent": "Eve"}
+  {"id": "Eve",   "parentId": ""},
+  {"id": "Cain",  "parentId": "Eve"},
+  {"id": "Seth",  "parentId": "Eve"},
+  {"id": "Enos",  "parentId": "Seth"},
+  {"id": "Noam",  "parentId": "Seth"},
+  {"id": "Abel",  "parentId": "Eve"},
+  {"id": "Awan",  "parentId": "Eve"},
+  {"id": "Enoch", "parentId": "Awan"},
+  {"id": "Azura", "parentId": "Eve"}
 ]
 ```
 
 To convert to a hierarchy:
 
 ```
-var root = d3.hierarchy()
-    .id(function(d) { return d.name; })
-    .parentId(function(d) { return d.parent; })
-    (table);
+var root = d3.hierarchy()(table);
 ```
 
 This returns:
@@ -79,52 +76,43 @@ This returns:
 ```json
 {
   "id": "Eve",
-  "name": "Eve",
-  "parent": "",
+  "parentId": "",
   "children": [
     {
       "id": "Cain",
-      "name": "Cain",
-      "parent": "Eve"
+      "parentId": "Eve"
     },
     {
       "id": "Seth",
-      "name": "Seth",
-      "parent": "Eve",
+      "parentId": "Eve",
       "children": [
         {
           "id": "Enos",
-          "name": "Enos",
-          "parent": "Seth"
+          "parentId": "Seth"
         },
         {
           "id": "Noam",
-          "name": "Noam",
-          "parent": "Seth"
+          "parentId": "Seth"
         }
       ]
     },
     {
       "id": "Abel",
-      "name": "Abel",
-      "parent": "Eve"
+      "parentId": "Eve"
     },
     {
       "id": "Awan",
-      "name": "Awan",
-      "parent": "Eve",
+      "parentId": "Eve",
       "children": [
         {
           "id": "Enoch",
-          "name": "Enoch",
-          "parent": "Awan"
+          "parentId": "Awan"
         }
       ]
     },
     {
       "id": "Azura",
-      "name": "Azura",
-      "parent": "Eve"
+      "parentId": "Eve"
     }
   ]
 }
