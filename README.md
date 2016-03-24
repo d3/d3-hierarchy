@@ -119,7 +119,7 @@ Generates a new hierarchy from the specified tabular *data*. Each node in the re
 
 <a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>id</i>])
 
-If *id* is specified, sets the id accessor and returns this hierarchy generator. Otherwise, returns the current id accessor, which defaults to:
+If *id* is specified, sets the id accessor to the given function and returns this hierarchy generator. Otherwise, returns the current id accessor, which defaults to:
 
 ```
 function id(d) {
@@ -131,7 +131,7 @@ The id accessor is invoked for each element in the input data passed to the [gen
 
 <a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>parentId</i>])
 
-If *parentId* is specified, sets the parent id accessor and returns this hierarchy generator. Otherwise, returns the current parent id accessor, which defaults to:
+If *parentId* is specified, sets the parent id accessor to the given function and returns this hierarchy generator. Otherwise, returns the current parent id accessor, which defaults to:
 
 ```
 function parentId(d) {
