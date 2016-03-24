@@ -137,6 +137,10 @@ This method is typically not called directly; instead it is used by hierarchical
 
 A reference to the data associated with this node, as specified to the [constructor](#hierarchyNode).
 
+<a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
+
+The depth of the node. Zero for the root node, and increases by one for each subsequent generation.
+
 <a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
 
 A reference to the parent node; null for the root node.
