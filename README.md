@@ -127,7 +127,7 @@ function id(d) {
 }
 ```
 
-The id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy). The returned string is then used to identify the node’s relationships in conjunction with the [parent id](#hierarchy_parentId). For leaf nodes, the id may be undefined; otherwise, the id must be unique. (Null and the empty string are equivalent to undefined.)
+The id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [parent id](#hierarchy_parentId). For leaf nodes, the id may be undefined; otherwise, the id must be unique. (Null and the empty string are equivalent to undefined.)
 
 <a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>parentId</i>])
 
@@ -139,7 +139,7 @@ function parentId(d) {
 }
 ```
 
-The parent id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy). The returned string is then used to identify the node’s relationships in conjunction with the [id](#hierarchy_id). For the root node, the parent id should be undefined. (Null and the empty string are equivalent to undefined.) There must be exactly one root node in the input data, and no circular relationships.
+The parent id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [id](#hierarchy_id). For the root node, the parent id should be undefined. (Null and the empty string are equivalent to undefined.) There must be exactly one root node in the input data, and no circular relationships.
 
 ### Hierarchy Nodes
 
