@@ -8,7 +8,12 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ## API Reference
 
-### Hierarchies
+* [Hierarchy](#hierarchy)
+* [Treemap](#treemap)
+* [Partition](#partition)
+* [Pack](#pack)
+
+### Hierarchy
 
 Before you can compute a hierarchical layout, you need a hierarchical data structure: a root node. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, you can arrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.hierarchy](#hierarchy).
 
@@ -141,7 +146,7 @@ function parentId(d) {
 
 The parent id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [id](#hierarchy_id). For the root node, the parent id should be undefined. (Null and the empty string are equivalent to undefined.) There must be exactly one root node in the input data, and no circular relationships.
 
-### Hierarchy Nodes
+#### Hierarchy Node
 
 <a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
 
@@ -177,7 +182,7 @@ Returns the array of descendant nodes, starting with this node, then followed by
 
 Returns the array of leaf nodes; a subset of this node’s [descendants](#node_descendants) including only nodes with no children.
 
-### Treemapping
+### Treemap
 
 …
 
@@ -221,7 +226,7 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 …
 
-### Treemap Tiling
+#### Treemap Tiling
 
 …
 
@@ -249,7 +254,7 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 …
 
-### Partitioning
+### Partition
 
 …
 
@@ -281,7 +286,7 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 …
 
-### Circle-Packing
+### Pack
 
 …
 
