@@ -5,7 +5,7 @@ import hierarchySort from "../hierarchySort";
 import packCircles from "./circles";
 import visitAfter from "../visitAfter";
 import visitBefore from "../visitBefore";
-import {optional, required, defaultValue, defaultSort} from "../accessors";
+import {optional, defaultValue, defaultSort} from "../accessors";
 
 function defaultRadius(d) {
   return Math.sqrt(d.value);
