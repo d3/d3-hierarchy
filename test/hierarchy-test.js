@@ -95,6 +95,59 @@ tape("hierarchy(data) preserves the input order of siblings", function(test) {
   test.end();
 });
 
+tape("hierarchy(data) treats an empty parentId as the root", function(test) {
+  var h = d3_hierarchy.hierarchy();
+  test.deepEqual(h([
+    {id: "a", parentId: ""},
+    {id: "aa", parentId: "a"},
+    {id: "ab", parentId: "a"},
+    {id: "aaa", parentId: "aa"}
+  ]), {
+    id: "a",
+    parentId: "",
+    children: [
+      {
+        id: "aa",
+        parentId: "a",
+        children: [
+          {
+            id: "aaa",
+            parentId: "aa"
+          }
+        ]
+      },
+      {
+        id: "ab",
+        parentId: "a"
+      }
+    ]
+  });
+  test.end();
+});
+
+tape("hierarchy(data) does not treat a falsy but non-empty parentId as the root", function(test) {
+  var h = d3_hierarchy.hierarchy();
+  test.deepEqual(h([
+    {id: 0, parentId: null},
+    {id: 1, parentId: 0},
+    {id: 2, parentId: 0}
+  ]), {
+    id: "0",
+    parentId: null,
+    children: [
+      {
+        id: "1",
+        parentId: 0
+      },
+      {
+        id: "2",
+        parentId: 0
+      }
+    ]
+  });
+  test.end();
+});
+
 tape("hierarchy(data) throws an error if the data does not have a single root", function(test) {
   var h = d3_hierarchy.hierarchy();
   test.throws(function() { h([{id: "a"}, {id: "b"}]); }, /\bmultiple roots\b/);
@@ -142,9 +195,10 @@ tape("hierarchy(data) allows the id to be undefined for leaf nodes", function(te
   test.end();
 });
 
-tape("hierarchy(data) coerces the id to a string, if not nully", function(test) {
+tape("hierarchy(data) coerces the id to a string, if not null and not empty", function(test) {
   var h = d3_hierarchy.hierarchy();
   test.strictEqual(h([{id: {toString: function() { return "a"}}}]).id, "a");
+  test.strictEqual(h([{id: ""}]).id, undefined);
   test.strictEqual(h([{id: null}]).id, undefined);
   test.strictEqual(h([{id: undefined}]).id, undefined);
   test.strictEqual(h([{}]).id, undefined);

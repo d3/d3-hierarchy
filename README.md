@@ -8,15 +8,127 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ## API Reference
 
-…
-
 ### Hierarchies
 
 Before you can compute a hierarchical layout, you need a hierarchical data structure: a root node. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, if you have tabular input data such as a CSV file, use [d3.hierarchy](#hierarchy) to organize the rows into a hierarchy.
 
 <a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
 
-…
+For example, consider the following table of relationships:
+
+Name  | Parent
+------|--------
+Eve   |
+Cain  | Eve
+Seth  | Eve
+Enos  | Seth
+Noam  | Seth
+Abel  | Eve
+Awan  | Eve
+Enoch | Awan
+Azura | Eve
+
+We can represent this as a comma-separated values (CSV) file:
+
+```
+name,parent
+Eve,
+Cain,Eve
+Seth,Eve
+Enos,Seth
+Noam,Seth
+Abel,Eve
+Awan,Eve
+Enoch,Awan
+Azura,Eve
+```
+
+To parse the CSV using [d3.csvParse](https://github.com/d3/d3-dsv#csvParse):
+
+```js
+var table = d3.csvParse(text);
+```
+
+This returns:
+
+```json
+[
+  {"name": "Eve",   "parent": ""},
+  {"name": "Cain",  "parent": "Eve"},
+  {"name": "Seth",  "parent": "Eve"},
+  {"name": "Enos",  "parent": "Seth"},
+  {"name": "Noam",  "parent": "Seth"},
+  {"name": "Abel",  "parent": "Eve"},
+  {"name": "Awan",  "parent": "Eve"},
+  {"name": "Enoch", "parent": "Awan"},
+  {"name": "Azura", "parent": "Eve"}
+]
+```
+
+To convert to a hierarchy:
+
+```
+var root = d3.hierarchy()
+    .id(function(d) { return d.name; })
+    .parentId(function(d) { return d.parent; })
+    (table);
+```
+
+This returns:
+
+```json
+{
+  "id": "Eve",
+  "name": "Eve",
+  "parent": "",
+  "children": [
+    {
+      "id": "Cain",
+      "name": "Cain",
+      "parent": "Eve"
+    },
+    {
+      "id": "Seth",
+      "name": "Seth",
+      "parent": "Eve",
+      "children": [
+        {
+          "id": "Enos",
+          "name": "Enos",
+          "parent": "Seth"
+        },
+        {
+          "id": "Noam",
+          "name": "Noam",
+          "parent": "Seth"
+        }
+      ]
+    },
+    {
+      "id": "Abel",
+      "name": "Abel",
+      "parent": "Eve"
+    },
+    {
+      "id": "Awan",
+      "name": "Awan",
+      "parent": "Eve",
+      "children": [
+        {
+          "id": "Enoch",
+          "name": "Enoch",
+          "parent": "Awan"
+        }
+      ]
+    },
+    {
+      "id": "Azura",
+      "name": "Azura",
+      "parent": "Eve"
+    }
+  ]
+}
+```
 
 <a name="_hierarchy" href="#_hierarchy">#</a> <i>hierarchy</i>(<i>data</i>)
 

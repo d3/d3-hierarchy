@@ -32,8 +32,8 @@ export default function() {
     for (i = 0; i < n; ++i) {
       d = data[i], node = nodes[i] = {};
       for (k in d) if (!(k in reserved)) node[k] = d[k];
-      if ((nodeId = id(d, i, data)) != null) {
-        nodeKey = keyPrefix + (node.id = nodeId += "");
+      if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
+        nodeKey = keyPrefix + (node.id = nodeId);
         if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);
         nodeByKey[nodeKey] = node;
       }
@@ -41,7 +41,7 @@ export default function() {
 
     for (i = 0; i < n; ++i) {
       node = nodes[i], nodeId = parentId(data[i], i, data);
-      if (nodeId == null) {
+      if (nodeId == null || !(nodeId += "")) {
         if (root) throw new Error("multiple roots");
         root = node;
       } else {
