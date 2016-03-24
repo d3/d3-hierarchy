@@ -15,7 +15,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ### Hierarchy
 
-Before you can compute a hierarchical layout, you need a hierarchical data structure: a root node. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, you can arrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.hierarchy](#_hierarchy).
+Before you can compute a hierarchical layout, you need a hierarchical data structure. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, you can rearrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.hierarchy](#_hierarchy).
 
 For example, consider the following table of relationships:
 
@@ -31,7 +31,7 @@ Awan  | Eve
 Enoch | Awan
 Azura | Eve
 
-The names are conveniently unique, so we can unambiguously represent this hierarchy as a CSV file:
+These names are conveniently unique, so we can unambiguously represent the hierarchy as a CSV file:
 
 ```
 id,parentId
@@ -112,7 +112,7 @@ This returns:
 }
 ```
 
-This hierarchy can then be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization.
+This hierarchy can now be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization.
 
 <a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
 
@@ -184,7 +184,9 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 ### Treemap
 
-…
+[<img alt="Treemap" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/treemap.png">](http://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80)
+
+Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 1991, a **treemap** recursively subdivides area into rectangles. Like [adjacency diagrams](#partition), treemaps encode value as rectangular area, while positioning sibling nodes nearby. D3’s treemap implementation supports an extensible [tiling method](#treemap_tile): the default “squarified” treemaps seek to generate rectangles with a [golden](https://en.wikipedia.org/wiki/Golden_ratio) aspect ratio, which offer better readability and size estimation than the simpler “slice-and-dice” method, which alternates between horizontal and vertical subdivision by depth.
 
 <a name="treemap" href="#treemap">#</a> d3.<b>treemap</b>()
 
