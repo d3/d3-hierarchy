@@ -186,7 +186,7 @@ Returns the array of leaf nodes; a subset of this node’s [descendants](#node_d
 
 [<img alt="Treemap" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/treemap.png">](http://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80)
 
-Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 1991, a **treemap** recursively subdivides area into rectangles. Like [adjacency diagrams](#partition), treemaps encode value as rectangular area, while positioning sibling nodes nearby. D3’s treemap implementation supports an extensible [tiling method](#treemap_tile): the default “squarified” treemaps seek to generate rectangles with a [golden](https://en.wikipedia.org/wiki/Golden_ratio) aspect ratio, which offer better readability and size estimation than the simpler “slice-and-dice” method, which alternates between horizontal and vertical subdivision by depth.
+Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 1991, a **treemap** recursively subdivides area into rectangles according to each node’s associated value. D3’s treemap implementation supports an extensible [tiling method](#treemap_tile): the default “squarified” treemaps seek to generate rectangles with a [golden](https://en.wikipedia.org/wiki/Golden_ratio) aspect ratio, which offer better readability and size estimation than the simpler “slice-and-dice” method, which alternates between horizontal and vertical subdivision by depth.
 
 <a name="treemap" href="#treemap">#</a> d3.<b>treemap</b>()
 
