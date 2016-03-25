@@ -43,7 +43,7 @@ export default (function custom(ratio) {
           node = nodes[i0], node.x0 = x2, node.y0 = y0, node.y1 = y2;
           node.x1 = x2 += node.value * dx;
         }
-        y0 = y2;
+        node.x1 = x1, y0 = y2;
       }
 
       // Position the row vertically along the left of the rect.
@@ -52,11 +52,13 @@ export default (function custom(ratio) {
           node = nodes[i0], node.y0 = y2, node.x0 = x0, node.x1 = x2;
           node.y1 = y2 += node.value * dy;
         }
-        x0 = x2;
+        node.y1 = y1, x0 = x2;
       }
 
       value -= sumValue;
     }
+
+    node.x1 = x1, node.y1 = y1;
   }
 
   squarify.ratio = function(x) {
