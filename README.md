@@ -8,51 +8,11 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ## API Reference
 
-* [Hierarchy](#hierarchy)
 * [Treemap](#treemap)
 * [Partition](#partition)
 * [Pack](#pack)
+* [Node](#node)
 * [Stratify](#Stratify)
-
-### Hierarchy
-
-<a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
-
-Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Stratify](#stratify) for an example.
-
-This method is typically not called directly; instead it is used by hierarchical layouts to construct root nodes. You can also use it to test whether an object is an `instanceof d3.hierarchyNode`, or to extend the node prototype.
-
-<a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
-
-A reference to the data associated with this node, as specified to the [constructor](#hierarchyNode).
-
-<a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
-
-The depth of the node: zero for the root node, and increasing by one for each subsequent generation.
-
-<a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
-
-A reference to the parent node; null for the root node.
-
-<a name="node_children" href="#node_children">#</a> <i>node</i>.<b>children</b>
-
-An array of child nodes, if any; undefined for leaf nodes.
-
-<a name="node_ancestors" href="#node_ancestors">#</a> <i>node</i>.<b>ancestors</b>()
-
-Returns the array of ancestors nodes, starting with this node, then followed by each parent up to the root.
-
-<a name="node_descendants" href="#node_descendants">#</a> <i>node</i>.<b>descendants</b>()
-
-Returns the array of descendant nodes, starting with this node, then followed by each child in topological order.
-
-<a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>()
-
-Returns the array of leaf nodes; a subset of this node’s [descendants](#node_descendants) including only nodes with no children.
-
-<a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
-
-Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
 
 ### Treemap
 
@@ -195,6 +155,46 @@ Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 
 <a name="pack_padding" href="#pack_padding">#</a> <i>pack</i>.<b>padding</b>([<i>padding</i>])
 
 …
+
+### Node
+
+<a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
+
+Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Stratify](#stratify) for an example.
+
+This method is typically not called directly; instead it is used by hierarchical layouts to construct root nodes. You can also use it to test whether an object is an `instanceof d3.hierarchyNode`, or to extend the node prototype.
+
+<a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
+
+A reference to the data associated with this node, as specified to the [constructor](#hierarchyNode).
+
+<a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
+
+The depth of the node: zero for the root node, and increasing by one for each subsequent generation.
+
+<a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
+
+A reference to the parent node; null for the root node.
+
+<a name="node_children" href="#node_children">#</a> <i>node</i>.<b>children</b>
+
+An array of child nodes, if any; undefined for leaf nodes.
+
+<a name="node_ancestors" href="#node_ancestors">#</a> <i>node</i>.<b>ancestors</b>()
+
+Returns the array of ancestors nodes, starting with this node, then followed by each parent up to the root.
+
+<a name="node_descendants" href="#node_descendants">#</a> <i>node</i>.<b>descendants</b>()
+
+Returns the array of descendant nodes, starting with this node, then followed by each child in topological order.
+
+<a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>()
+
+Returns the array of leaf nodes; a subset of this node’s [descendants](#node_descendants) including only nodes with no children.
+
+<a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
+
+Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
 
 ### Stratify
 
