@@ -9,13 +9,11 @@ import {optional, required, defaultValue, defaultSort} from "../accessors";
 export default function() {
   var value = defaultValue,
       sort = defaultSort,
-      dx = 1,
-      dy = 1,
-      paddingInner = 0,
-      paddingOuter = 0,
-      paddingOffset = 0,
       tile = squarify,
-      round = false;
+      round = false,
+      dx = 1,  dy = 1,
+      pix0 = 0, piy0 = 0, pix1 = 0, piy1 = 0,
+      pox0 = 0, poy0 = 0, pox1 = 0, poy1 = 0;
 
   function treemap(data) {
     var root = hierarchyNode(data);
@@ -25,20 +23,20 @@ export default function() {
   }
 
   function position(root) {
-    root.x0 =
-    root.y0 = -paddingInner;
-    root.x1 = dx + paddingInner;
-    root.y1 = dy + paddingInner;
+    root.x0 = -pix0;
+    root.y0 = -piy0;
+    root.x1 = dx + pix1;
+    root.y1 = dy + piy1;
     visitBefore(root, positionNode);
     if (round) visitBefore(root, roundNode);
     return root;
   }
 
   function positionNode(node) {
-    var x0 = node.x0 + paddingInner,
-        y0 = node.y0 + paddingInner,
-        x1 = node.x1 - paddingInner,
-        y1 = node.y1 - paddingInner;
+    var x0 = node.x0 + pix0,
+        y0 = node.y0 + piy0,
+        x1 = node.x1 - pix1,
+        y1 = node.y1 - piy1;
     if (x1 < x0) x0 = x1 = (x0 + x1) / 2;
     if (y1 < y0) y0 = y1 = (y0 + y1) / 2;
     node.x0 = x0;
@@ -46,10 +44,10 @@ export default function() {
     node.x1 = x1;
     node.y1 = y1;
     if (node.children) {
-      x0 += paddingOffset;
-      y0 += paddingOffset;
-      x1 -= paddingOffset;
-      y1 -= paddingOffset;
+      x0 += pox0 - pix0;
+      y0 += poy0 - piy0;
+      x1 -= pox1 - pix1;
+      y1 -= poy1 - piy1;
       if (x1 < x0) x0 = x1 = (x0 + x1) / 2;
       if (y1 < y0) y0 = y1 = (y0 + y1) / 2;
       tile(node, x0, y0, x1, y1);
@@ -82,15 +80,25 @@ export default function() {
   };
 
   treemap.padding = function(x) {
-    return arguments.length ? (paddingInner = (paddingOuter = +x) / 2, paddingOffset = paddingInner, treemap) : paddingInner * 2;
+    return arguments.length
+        ? treemap.paddingInner(x).paddingOuter(x)
+        : treemap.paddingInner();
   };
 
   treemap.paddingInner = function(x) {
-    return arguments.length ? (paddingInner = x / 2, paddingOffset = paddingOuter - paddingInner, treemap) : paddingInner * 2;
+    return arguments.length
+        ? ((x.splice
+          ? (piy0 = x[0] / 2, pix1 = x[1] / 2, piy1 = x[2] / 2, pix0 = x[3] / 2)
+          : piy0 = pix1 = piy1 = pix0 = x / 2), treemap)
+        : [piy0 * 2, pix1 * 2, piy1 * 2, pix0 * 2];
   };
 
   treemap.paddingOuter = function(x) {
-    return arguments.length ? (paddingOuter = +x, paddingOffset = paddingOuter - paddingInner, treemap) : paddingOuter;
+    return arguments.length
+        ? ((x.splice
+          ? (poy0 = +x[0], pox1 = +x[1], poy1 = +x[2], pox0 = +x[3])
+          : poy0 = pox1 = poy1 = pox0 = +x), treemap)
+        : [poy0, pox1, poy1, pox0];
   };
 
   return treemap;

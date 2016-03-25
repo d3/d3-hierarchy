@@ -41,9 +41,9 @@ tape("treemap.round(round) coerces the specified round to boolean", function(tes
 
 tape("treemap.padding(padding) sets the inner and outer padding to the specified value", function(test) {
   var treemap = d3_hierarchy.treemap().padding("42");
-  test.strictEqual(treemap.padding(), 42);
-  test.strictEqual(treemap.paddingInner(), 42);
-  test.strictEqual(treemap.paddingOuter(), 42);
+  test.deepEqual(treemap.padding(), [42, 42, 42, 42]);
+  test.deepEqual(treemap.paddingInner(), [42, 42, 42, 42]);
+  test.deepEqual(treemap.paddingOuter(), [42, 42, 42, 42]);
   test.end();
 });
 
