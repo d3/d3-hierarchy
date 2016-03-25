@@ -3,8 +3,6 @@ import hierarchyNode from "../node/index";
 import hierarchyValue from "../hierarchyValue";
 import hierarchySort from "../hierarchySort";
 import packCircles from "./circles";
-import visitAfter from "../visitAfter";
-import visitBefore from "../visitBefore";
 import {optional, defaultValue, defaultSort} from "../accessors";
 
 function defaultRadius(d) {
@@ -25,14 +23,11 @@ export default function() {
     if (sort) hierarchySort(root, sort);
     root.x = dx / 2, root.y = dy / 2;
     if (radius) {
-      visitBefore(root, radiusLeaf(radius));
-      visitAfter(root, padChildren(padding / 2));
-      visitBefore(root, translateChild(1));
+      root.eachBefore(radiusLeaf(radius)).eachAfter(padChildren(padding / 2)).eachBefore(translateChild(1));
     } else {
-      visitBefore(root, radiusLeaf(defaultRadius));
-      visitAfter(root, packChildren);
-      if (padding) visitAfter(root, padChildren(padding * root.r / Math.min(dx, dy)));
-      visitBefore(root, translateChild(Math.min(dx, dy) / (2 * root.r)));
+      root.eachBefore(radiusLeaf(defaultRadius)).eachAfter(packChildren);
+      if (padding) root.eachAfter(padChildren(padding * root.r / Math.min(dx, dy)));
+      root.eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
     }
     return root;
   }

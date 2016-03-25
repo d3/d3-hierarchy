@@ -3,7 +3,6 @@ import hierarchyValue from "../hierarchyValue";
 import hierarchySort from "../hierarchySort";
 import roundNode from "./round";
 import squarify from "./squarify";
-import visitBefore from "../visitBefore";
 import {optional, required, defaultValue, defaultSort} from "../accessors";
 
 export default function() {
@@ -27,8 +26,8 @@ export default function() {
     root.y0 = -piy0;
     root.x1 = dx + pix1;
     root.y1 = dy + piy1;
-    visitBefore(root, positionNode);
-    if (round) visitBefore(root, roundNode);
+    root.eachBefore(positionNode);
+    if (round) root.eachBefore(roundNode);
     return root;
   }
 

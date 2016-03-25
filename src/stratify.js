@@ -1,5 +1,5 @@
 import {required} from "./accessors";
-import visitBefore from "./visitBefore";
+import eachBefore from "./node/eachBefore";
 
 var keyPrefix = "$", // Protect against keys like “__proto__”.
     reserved = {id: 1, parentId: 1, children: 1};
@@ -53,7 +53,7 @@ export default function() {
     }
 
     if (!root) throw new Error("no root");
-    visitBefore(root, function() { --n; });
+    eachBefore.call(root, function() { --n; });
     if (n > 0) throw new Error("cycle");
 
     return root;

@@ -1,7 +1,9 @@
+import node_each from "./each";
+import node_eachBefore from "./eachBefore";
+import node_eachAfter from "./eachAfter";
 import node_ancestors from "./ancestors";
 import node_descendants from "./descendants";
 import node_leaves from "./leaves";
-import visitBefore from "../visitBefore";
 
 export default function node(data) {
   var root = new Node(data),
@@ -27,11 +29,9 @@ export default function node(data) {
 }
 
 function node_copy() {
-  var root = node(this);
-  visitBefore(root, function(node) {
+  return node(this).eachBefore(function(node) {
     node.data = node.data.data;
   });
-  return root;
 }
 
 function Node(data) {
@@ -42,6 +42,9 @@ function Node(data) {
 
 Node.prototype = node.prototype = {
   constructor: Node,
+  each: node_each,
+  eachAfter: node_eachAfter,
+  eachBefore: node_eachBefore,
   ancestors: node_ancestors,
   descendants: node_descendants,
   leaves: node_leaves,

@@ -1,8 +1,6 @@
-import visitBefore from "../visitBefore";
-
 export default function() {
   var leaves = [];
-  visitBefore(this, function(node) {
+  this.eachBefore(function(node) {
     if (!node.children) {
       leaves.push(node);
     }

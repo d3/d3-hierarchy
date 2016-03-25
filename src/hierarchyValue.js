@@ -1,7 +1,5 @@
-import visitAfter from "./visitAfter";
-
 export default function(node, value) {
-  visitAfter(node, function(node) {
+  node.eachAfter(function(node) {
     var sum = +value(node.data) || 0,
         children = node.children,
         i = children && children.length;

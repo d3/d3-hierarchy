@@ -196,6 +196,18 @@ Returns the array of leaf nodes in traversal order; leaves are nodes with no chi
 
 Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
 
+<a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
+
+…
+
+<a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>)
+
+…
+
+<a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>)
+
+…
+
 ### Stratify
 
 Before you can compute a hierarchical layout, you need a hierarchical data structure. If you have hierarchical data already, such as a JSON file, you can pass it directly to the hierarchical layout; otherwise, you can rearrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.stratify](#_stratify).

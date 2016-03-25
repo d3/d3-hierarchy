@@ -3,7 +3,6 @@ import hierarchyValue from "../hierarchyValue";
 import hierarchySort from "../hierarchySort";
 import roundNode from "../treemap/round";
 import treemapDice from "../treemap/dice";
-import visitBefore from "../visitBefore";
 import {optional, required, defaultValue, defaultSort} from "../accessors";
 
 function depth(node) {
@@ -33,8 +32,8 @@ export default function() {
     root.y0 = padding;
     root.x1 = dx;
     root.y1 = dy / n;
-    visitBefore(root, positionNode(dy, n));
-    if (round) visitBefore(root, roundNode);
+    root.eachBefore(positionNode(dy, n));
+    if (round) root.eachBefore(roundNode);
     return root;
   }
 
