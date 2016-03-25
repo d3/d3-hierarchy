@@ -190,7 +190,7 @@ Returns the array of descendant nodes, starting with this node, then followed by
 
 <a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>()
 
-Returns the array of leaf nodes; a subset of this node’s [descendants](#node_descendants) including only nodes with no children.
+Returns the array of leaf nodes in traversal order; leaves are nodes with no children.
 
 <a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
 
