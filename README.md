@@ -12,145 +12,13 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 * [Treemap](#treemap)
 * [Partition](#partition)
 * [Pack](#pack)
+* [Stratify](#Stratify)
 
 ### Hierarchy
 
-Before you can compute a hierarchical layout, you need a hierarchical data structure. If you already have hierarchical data, such as a JSON file, you can pass it directly to the hierarchical layout. Otherwise, you can rearrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.hierarchy](#_hierarchy).
-
-For example, consider the following table of relationships:
-
-Name  | Parent
-------|--------
-Eve   |
-Cain  | Eve
-Seth  | Eve
-Enos  | Seth
-Noam  | Seth
-Abel  | Eve
-Awan  | Eve
-Enoch | Awan
-Azura | Eve
-
-These names are conveniently unique, so we can unambiguously represent the hierarchy as a CSV file:
-
-```
-id,parentId
-Eve,
-Cain,Eve
-Seth,Eve
-Enos,Seth
-Noam,Seth
-Abel,Eve
-Awan,Eve
-Enoch,Awan
-Azura,Eve
-```
-
-To parse the CSV using [d3.csvParse](https://github.com/d3/d3-dsv#csvParse):
-
-```js
-var table = d3.csvParse(text);
-```
-
-This returns:
-
-```json
-[
-  {"id": "Eve",   "parentId": ""},
-  {"id": "Cain",  "parentId": "Eve"},
-  {"id": "Seth",  "parentId": "Eve"},
-  {"id": "Enos",  "parentId": "Seth"},
-  {"id": "Noam",  "parentId": "Seth"},
-  {"id": "Abel",  "parentId": "Eve"},
-  {"id": "Awan",  "parentId": "Eve"},
-  {"id": "Enoch", "parentId": "Awan"},
-  {"id": "Azura", "parentId": "Eve"}
-]
-```
-
-To convert to a hierarchy:
-
-```js
-var root = d3.hierarchy()(table);
-```
-
-This returns:
-
-```json
-{
-  "id": "Eve",
-  "children": [
-    {
-      "id": "Cain"
-    },
-    {
-      "id": "Seth",
-      "children": [
-        {
-          "id": "Enos"
-        },
-        {
-          "id": "Noam"
-        }
-      ]
-    },
-    {
-      "id": "Abel"
-    },
-    {
-      "id": "Awan",
-      "children": [
-        {
-          "id": "Enoch"
-        }
-      ]
-    },
-    {
-      "id": "Azura"
-    }
-  ]
-}
-```
-
-This hierarchy can now be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization.
-
-<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>()
-
-Constructs a new hierarchy generator with the default settings.
-
-<a name="_hierarchy" href="#_hierarchy">#</a> <i>hierarchy</i>(<i>data</i>)
-
-Generates a new hierarchy from the specified tabular *data*. Each node in the returned object has a shallow copy of the properties from the corresponding data object, excluding the following reserved properties: id, parentId, children.
-
-<a name="hierarchy_id" href="#hierarchy_id">#</a> <i>hierarchy</i>.<b>id</b>([<i>id</i>])
-
-If *id* is specified, sets the id accessor to the given function and returns this hierarchy generator. Otherwise, returns the current id accessor, which defaults to:
-
-```js
-function id(d) {
-  return d.id;
-}
-```
-
-The id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [parent id](#hierarchy_parentId). For leaf nodes, the id may be undefined; otherwise, the id must be unique. (Null and the empty string are equivalent to undefined.)
-
-<a name="hierarchy_parentId" href="#hierarchy_parentId">#</a> <i>hierarchy</i>.<b>parentId</b>([<i>parentId</i>])
-
-If *parentId* is specified, sets the parent id accessor to the given function and returns this hierarchy generator. Otherwise, returns the current parent id accessor, which defaults to:
-
-```js
-function parentId(d) {
-  return d.parentId;
-}
-```
-
-The parent id accessor is invoked for each element in the input data passed to the [generator](#_hierarchy), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [id](#hierarchy_id). For the root node, the parent id should be undefined. (Null and the empty string are equivalent to undefined.) There must be exactly one root node in the input data, and no circular relationships.
-
-#### Hierarchy Node
-
 <a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
 
-Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Hierarchy](#hierarchy) for an example.
+Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Stratify](#stratify) for an example.
 
 This method is typically not called directly; instead it is used by hierarchical layouts to construct root nodes. You can also use it to test whether an object is an `instanceof d3.hierarchyNode`, or to extend the node prototype.
 
@@ -327,3 +195,136 @@ Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 
 <a name="pack_padding" href="#pack_padding">#</a> <i>pack</i>.<b>padding</b>([<i>padding</i>])
 
 …
+
+### Stratify
+
+Before you can compute a hierarchical layout, you need a hierarchical data structure. If you have hierarchical data already, such as a JSON file, you can pass it directly to the hierarchical layout; otherwise, you can rearrange tabular input data, such as a comma-separated values (CSV) file, into a hierarchy using [d3.stratify](#_stratify).
+
+For example, consider the following table of relationships:
+
+Name  | Parent
+------|--------
+Eve   |
+Cain  | Eve
+Seth  | Eve
+Enos  | Seth
+Noam  | Seth
+Abel  | Eve
+Awan  | Eve
+Enoch | Awan
+Azura | Eve
+
+These names are conveniently unique, so we can unambiguously represent the hierarchy as a CSV file:
+
+```
+id,parentId
+Eve,
+Cain,Eve
+Seth,Eve
+Enos,Seth
+Noam,Seth
+Abel,Eve
+Awan,Eve
+Enoch,Awan
+Azura,Eve
+```
+
+To parse the CSV using [d3.csvParse](https://github.com/d3/d3-dsv#csvParse):
+
+```js
+var table = d3.csvParse(text);
+```
+
+This returns:
+
+```json
+[
+  {"id": "Eve",   "parentId": ""},
+  {"id": "Cain",  "parentId": "Eve"},
+  {"id": "Seth",  "parentId": "Eve"},
+  {"id": "Enos",  "parentId": "Seth"},
+  {"id": "Noam",  "parentId": "Seth"},
+  {"id": "Abel",  "parentId": "Eve"},
+  {"id": "Awan",  "parentId": "Eve"},
+  {"id": "Enoch", "parentId": "Awan"},
+  {"id": "Azura", "parentId": "Eve"}
+]
+```
+
+To convert to a hierarchy:
+
+```js
+var root = d3.stratify()(table);
+```
+
+This returns:
+
+```json
+{
+  "id": "Eve",
+  "children": [
+    {
+      "id": "Cain"
+    },
+    {
+      "id": "Seth",
+      "children": [
+        {
+          "id": "Enos"
+        },
+        {
+          "id": "Noam"
+        }
+      ]
+    },
+    {
+      "id": "Abel"
+    },
+    {
+      "id": "Awan",
+      "children": [
+        {
+          "id": "Enoch"
+        }
+      ]
+    },
+    {
+      "id": "Azura"
+    }
+  ]
+}
+```
+
+This hierarchy can now be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization.
+
+<a name="stratify" href="#stratify">#</a> d3.<b>stratify</b>()
+
+Constructs a new stratify operator with the default settings.
+
+<a name="_stratify" href="#_stratify">#</a> <i>stratify</i>(<i>data</i>)
+
+Generates a new hierarchy from the specified tabular *data*. Each node in the returned object has a shallow copy of the properties from the corresponding data object, excluding the following reserved properties: id, parentId, children.
+
+<a name="stratify_id" href="#stratify_id">#</a> <i>stratify</i>.<b>id</b>([<i>id</i>])
+
+If *id* is specified, sets the id accessor to the given function and returns this stratify operator. Otherwise, returns the current id accessor, which defaults to:
+
+```js
+function id(d) {
+  return d.id;
+}
+```
+
+The id accessor is invoked for each element in the input data passed to the [stratify operator](#_stratify), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [parent id](#stratify_parentId). For leaf nodes, the id may be undefined; otherwise, the id must be unique. (Null and the empty string are equivalent to undefined.)
+
+<a name="stratify_parentId" href="#stratify_parentId">#</a> <i>stratify</i>.<b>parentId</b>([<i>parentId</i>])
+
+If *parentId* is specified, sets the parent id accessor to the given function and returns this stratify operator. Otherwise, returns the current parent id accessor, which defaults to:
+
+```js
+function parentId(d) {
+  return d.parentId;
+}
+```
+
+The parent id accessor is invoked for each element in the input data passed to the [stratify operator](#_stratify), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [id](#stratify_id). For the root node, the parent id should be undefined. (Null and the empty string are equivalent to undefined.) There must be exactly one root node in the input data, and no circular relationships.

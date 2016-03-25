@@ -27,7 +27,7 @@ function test(input, expected, tile) {
     function ready(error, inputText, expectedText) {
       if (error) throw error;
 
-      var hierarchy = d3_hierarchy.hierarchy()
+      var stratify = d3_hierarchy.stratify()
           .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; });
 
       var treemap = d3_hierarchy.treemap()
@@ -37,7 +37,7 @@ function test(input, expected, tile) {
 
       var data = d3_dsv.csvParse(inputText),
           expected = JSON.parse(expectedText),
-          actual = treemap(hierarchy(data));
+          actual = treemap(stratify(data));
 
       (function visit(node) {
         node.name = node.data.id.slice(node.data.id.lastIndexOf(".") + 1);
