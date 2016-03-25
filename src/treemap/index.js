@@ -21,6 +21,10 @@ export default function() {
     var root = hierarchyNode(data);
     hierarchyValue(root, value);
     if (sort) hierarchySort(root, sort);
+    return position(root);
+  }
+
+  function position(root) {
     root.x0 =
     root.y0 = -paddingInner;
     root.x1 = dx + paddingInner;
@@ -51,6 +55,11 @@ export default function() {
       tile(node, x0, y0, x1, y1);
     }
   }
+
+  treemap.update = function(root) {
+    hierarchyValue(root, value);
+    return position(root);
+  };
 
   treemap.value = function(x) {
     return arguments.length ? (value = required(x), treemap) : value;

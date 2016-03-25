@@ -47,6 +47,7 @@ function test(input, expected, tile) {
         node.y1 = round(node.y1);
         delete node.parent;
         delete node.data;
+        delete node._squarify;
         if (node.children) node.children.forEach(visit);
       })(actual);
 

@@ -192,7 +192,11 @@ Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 
 
 …
 
-<a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>root</i>)
+<a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>data</i>)
+
+…
+
+<a name="treemap_update" href="#treemap_update">#</a> <i>treemap</i>.<b>update</b>(<i>root</i>)
 
 …
 
@@ -264,7 +268,7 @@ Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 
 
 …
 
-<a name="_partition" href="#_partition">#</a> <i>partition</i>(<i>root</i>)
+<a name="_partition" href="#_partition">#</a> <i>partition</i>(<i>data</i>)
 
 …
 
@@ -296,7 +300,7 @@ Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 
 
 …
 
-<a name="_pack" href="#_pack">#</a> <i>pack</i>(<i>root</i>)
+<a name="_pack" href="#_pack">#</a> <i>pack</i>(<i>data</i>)
 
 …
 
