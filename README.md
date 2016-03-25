@@ -295,7 +295,7 @@ This returns:
 }
 ```
 
-This hierarchy can now be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization.
+This hierarchy can now be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization. See [bl.ocks.org/6bbb0a7ff7686b124d80](http://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80) for another example.
 
 <a name="stratify" href="#stratify">#</a> d3.<b>stratify</b>()
 
