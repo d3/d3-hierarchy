@@ -25,11 +25,11 @@ export default function() {
     if (sort) hierarchySort(root, sort);
     root.x = dx / 2, root.y = dy / 2;
     if (radius) {
-      visitAfter(root, radiusLeaf(radius));
+      visitBefore(root, radiusLeaf(radius));
       visitAfter(root, padChildren(padding / 2));
       visitBefore(root, translateChild(1));
     } else {
-      visitAfter(root, radiusLeaf(defaultRadius));
+      visitBefore(root, radiusLeaf(defaultRadius));
       visitAfter(root, packChildren);
       if (padding) visitAfter(root, padChildren(padding * root.r / Math.min(dx, dy)));
       visitBefore(root, translateChild(Math.min(dx, dy) / (2 * root.r)));

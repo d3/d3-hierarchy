@@ -182,6 +182,10 @@ Returns the array of descendant nodes, starting with this node, then followed by
 
 Returns the array of leaf nodes; a subset of this node’s [descendants](#node_descendants) including only nodes with no children.
 
+<a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
+
+Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
+
 ### Treemap
 
 [<img alt="Treemap" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/treemap.png">](http://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80)
