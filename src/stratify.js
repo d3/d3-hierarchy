@@ -54,7 +54,7 @@ export default function() {
     if (!root) throw new Error("no root");
     root.parent = preroot;
     root.eachBefore(function(node) { node.depth = node.parent.depth + 1; --n; });
-    delete root.parent;
+    root.parent = null;
     if (n > 0) throw new Error("cycle");
 
     return root;

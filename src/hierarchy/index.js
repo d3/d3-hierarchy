@@ -9,6 +9,7 @@ import node_leaves from "./leaves";
 
 export default function hierarchy(data) {
   var root = new Node(data),
+      valued = +data.value && (root.value = data.value),
       node,
       nodes = [root],
       child,
@@ -17,6 +18,7 @@ export default function hierarchy(data) {
       n;
 
   while ((node = nodes.pop()) != null) {
+    if (valued) node.value = +node.data.value;
     if ((children = node.data.children) && (n = children.length)) {
       node.children = new Array(n);
       for (i = n - 1; i >= 0; --i) {

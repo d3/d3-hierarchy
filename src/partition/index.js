@@ -1,14 +1,14 @@
 import roundNode from "../treemap/round";
 import treemapDice from "../treemap/dice";
 
-function depth(node) {
-  var depth = node.depth;
+function height(node) {
+  var height = 0;
   node.eachBefore(function(node) {
-    if (node.depth > depth) {
-      depth = node.depth;
+    if (node.depth > height) {
+      height = node.depth;
     }
   });
-  return depth;
+  return height;
 }
 
 export default function() {
@@ -18,7 +18,7 @@ export default function() {
       round = false;
 
   function partition(root) {
-    var n = depth(root) + 1;
+    var n = height(root) + 1;
     root.x0 =
     root.y0 = padding;
     root.x1 = dx;

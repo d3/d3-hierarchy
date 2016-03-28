@@ -24,35 +24,35 @@ For example, given the following input data:
 
 ```json
 {
-  "id": "Eve",
+  "name": "Eve",
   "children": [
     {
-      "id": "Cain"
+      "name": "Cain"
     },
     {
-      "id": "Seth",
+      "name": "Seth",
       "children": [
         {
-          "id": "Enos"
+          "name": "Enos"
         },
         {
-          "id": "Noam"
+          "name": "Noam"
         }
       ]
     },
     {
-      "id": "Abel"
+      "name": "Abel"
     },
     {
-      "id": "Awan",
+      "name": "Awan",
       "children": [
         {
-          "id": "Enoch"
+          "name": "Enoch"
         }
       ]
     },
     {
-      "id": "Azura"
+      "name": "Azura"
     }
   ]
 }
