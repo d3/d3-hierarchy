@@ -66,7 +66,7 @@ var root = d3.hierarchy(data);
 
 Returns the following structure:
 
-```json
+```js
 {
   "depth": 0,
   "data": [Object],
@@ -348,7 +348,7 @@ var root = d3.stratify()(table);
 
 This returns:
 
-```json
+```js
 {
   "id": "Eve",
   "depth": 0,
