@@ -58,66 +58,13 @@ For example, given the following input data:
 }
 ```
 
-The following code:
+The following code returns a root *node*:
 
 ```js
 var root = d3.hierarchy(data);
 ```
 
-Returns the following structure:
-
-```js
-{
-  "depth": 0,
-  "data": [Object],
-  "children": [
-    {
-      "depth": 1,
-      "parent": [Circular],
-      "data": [Object]
-    },
-    {
-      "depth": 1,
-      "parent": [Circular],
-      "data": [Object]
-      "children": [
-        {
-          "depth": 2,
-          "parent": [Circular],
-          "data": [Object]
-        },
-        {
-          "depth": 2,
-          "parent": [Circular],
-          "data": [Object]
-        }
-      ]
-    },
-    {
-      "depth": 1,
-      "parent": [Circular],
-      "data": [Object]
-    },
-    {
-      "depth": 1,
-      "parent": [Circular],
-      "data": [Object]
-      "children": [
-        {
-          "depth": 2,
-          "parent": [Circular],
-          "data": [Object]
-        }
-      ]
-    },
-    {
-      "depth": 1,
-      "parent": [Circular],
-      "data": [Object]
-    }
-  ]
-}
-```
+The [*node*.data](#node_data) of each node in the returned hierarchy is a reference to the corresponding object in the input data.
 
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>function</i>)
 
