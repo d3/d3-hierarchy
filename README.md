@@ -127,6 +127,10 @@ Returns the following structure:
 
 …
 
+<a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
+
+The combined value of this node and all its descendants; computed by [*node*.sum](#node_sum).
+
 <a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
 
 A reference to the data associated with this node, as specified to the [constructor](#hierarchy).
