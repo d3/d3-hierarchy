@@ -12,7 +12,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 * [Treemap](#treemap)
 * [Partition](#partition)
 * [Pack](#pack)
-* [Stratify](#Stratify)
+* [Stratify](#stratify)
 
 ### Hierarchy
 
@@ -64,15 +64,15 @@ The following code returns a root *node*:
 var root = d3.hierarchy(data);
 ```
 
-The [*node*.data](#node_data) of each node in the returned hierarchy is a reference to the corresponding object in the input data.
+The [*node*.data](#node_data) of each node in the returned hierarchy is a reference to the corresponding object in the input data. See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
 
-<a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>function</i>)
+<a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>)
 
-…
+Evaluates the specified *value* function for *node* and each descendant of *node* in [post-order traversal](#node_eachAfter). The [value](#node_value) of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s [data](#node_data), and must return a non-negative number.
 
-<a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>function</i>)
+<a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>compare</i>)
 
-…
+Sorts the children of *node*, if any, and each of *node*’s descendants’ children, in [pre-order traversal](#node_eachBefore) using the specified *compare* function. The specified function is passed two nodes *a* and *b* to compare. If *a* should be before *b*, the function must return a value less than zero; if *b* should be before *a*, the function must return a value greater than zero; otherwise, the relative order of *a* and *b* are not specified. See [*array*.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for more.
 
 <a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
 
@@ -112,15 +112,15 @@ Return a deep copy of the tree starting at this root *node*. (The returned deep 
 
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
 
-…
+Invokes the specified *function* for *node* and each descendent in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser [depth](#node_depth) have already been visited, as well as all preceeding nodes of the same depth. The specified function is passed the current *node*.
 
 <a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>)
 
-…
+Invokes the specified *function* for *node* and each descendent in [post-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Post-order), such that a given *node* is only visited after all of its descendants have already been visited. The specified function is passed the current *node*.
 
 <a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>)
 
-…
+Invokes the specified *function* for *node* and each descendent in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *node*.
 
 ### Treemap
 
