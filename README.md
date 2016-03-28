@@ -373,7 +373,7 @@ This returns:
       "data": {
         "id": "Seth",
         "parentId": "Eve"
-      }
+      },
       "children": [
         {
           "id": "Enos",
@@ -411,7 +411,7 @@ This returns:
       "data": {
         "id": "Awan",
         "parentId": "Eve"
-      }
+      },
       "children": [
         {
           "id": "Enoch",
