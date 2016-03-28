@@ -1,9 +1,6 @@
 import enclosingCircle from "./enclosingCircle";
-import hierarchyNode from "../node/index";
-import hierarchyValue from "../hierarchyValue";
-import hierarchySort from "../hierarchySort";
 import packCircles from "./circles";
-import {optional, defaultValue, defaultSort} from "../accessors";
+import {optional} from "../accessors";
 
 function defaultRadius(d) {
   return Math.sqrt(d.value);
@@ -11,16 +8,11 @@ function defaultRadius(d) {
 
 export default function() {
   var radius = null,
-      value = defaultValue,
-      sort = defaultSort,
       dx = 1,
       dy = 1,
       padding = 0;
 
-  function pack(data) {
-    var root = hierarchyNode(data);
-    if (value) hierarchyValue(root, value);
-    if (sort) hierarchySort(root, sort);
+  function pack(root) {
     root.x = dx / 2, root.y = dy / 2;
     if (radius) {
       root.eachBefore(radiusLeaf(radius)).eachAfter(padChildren(padding / 2)).eachBefore(translateChild(1));
@@ -34,14 +26,6 @@ export default function() {
 
   pack.radius = function(x) {
     return arguments.length ? (radius = optional(x), pack) : radius;
-  };
-
-  pack.value = function(x) {
-    return arguments.length ? (value = optional(x), pack) : value;
-  };
-
-  pack.sort = function(x) {
-    return arguments.length ? (sort = optional(x), pack) : sort;
   };
 
   pack.size = function(x) {

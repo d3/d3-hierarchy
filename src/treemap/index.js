@@ -1,27 +1,15 @@
-import hierarchyNode from "../node/index";
-import hierarchyValue from "../hierarchyValue";
-import hierarchySort from "../hierarchySort";
 import roundNode from "./round";
 import squarify from "./squarify";
-import {optional, required, defaultValue, defaultSort} from "../accessors";
+import {required} from "../accessors";
 
 export default function() {
-  var value = defaultValue,
-      sort = defaultSort,
-      tile = squarify,
+  var tile = squarify,
       round = false,
       dx = 1,  dy = 1,
       pix0 = 0, piy0 = 0, pix1 = 0, piy1 = 0,
       pox0 = 0, poy0 = 0, pox1 = 0, poy1 = 0;
 
-  function treemap(data) {
-    var root = hierarchyNode(data);
-    hierarchyValue(root, value);
-    if (sort) hierarchySort(root, sort);
-    return position(root);
-  }
-
-  function position(root) {
+  function treemap(root) {
     root.x0 = -pix0;
     root.y0 = -piy0;
     root.x1 = dx + pix1;
@@ -52,19 +40,6 @@ export default function() {
       tile(node, x0, y0, x1, y1);
     }
   }
-
-  treemap.update = function(root) {
-    hierarchyValue(root, value);
-    return position(root);
-  };
-
-  treemap.value = function(x) {
-    return arguments.length ? (value = required(x), treemap) : value;
-  };
-
-  treemap.sort = function(x) {
-    return arguments.length ? (sort = optional(x), treemap) : sort;
-  };
 
   treemap.round = function(x) {
     return arguments.length ? (round = !!x, treemap) : round;

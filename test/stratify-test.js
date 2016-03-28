@@ -9,25 +9,35 @@ tape("stratify() has the expected defaults", function(test) {
 });
 
 tape("stratify(data) returns the root node", function(test) {
-  var s = d3_hierarchy.stratify();
-  test.deepEqual(s([
-    {id: "a"},
-    {id: "aa", parentId: "a"},
-    {id: "ab", parentId: "a"},
-    {id: "aaa", parentId: "aa"}
-  ]), {
+  var s = d3_hierarchy.stratify(),
+      root = s([
+          {id: "a"},
+          {id: "aa", parentId: "a"},
+          {id: "ab", parentId: "a"},
+          {id: "aaa", parentId: "aa"}
+        ]);
+  test.ok(root instanceof d3_hierarchy.hierarchy);
+  test.deepEqual(noparent(root), {
     id: "a",
+    depth: 0,
+    data: {id: "a"},
     children: [
       {
         id: "aa",
+        depth: 1,
+        data: {id: "aa", parentId: "a"},
         children: [
           {
-            id: "aaa"
+            id: "aaa",
+            depth: 2,
+            data: {id: "aaa", parentId: "aa"}
           }
         ]
       },
       {
-        id: "ab"
+        id: "ab",
+        depth: 1,
+        data: {id: "ab", parentId: "a"}
       }
     ]
   });
@@ -35,25 +45,34 @@ tape("stratify(data) returns the root node", function(test) {
 });
 
 tape("stratify(data) does not require the data to be in topological order", function(test) {
-  var s = d3_hierarchy.stratify();
-  test.deepEqual(s([
-    {id: "aaa", parentId: "aa"},
-    {id: "aa", parentId: "a"},
-    {id: "ab", parentId: "a"},
-    {id: "a"}
-  ]), {
+  var s = d3_hierarchy.stratify(),
+      root = s([
+          {id: "aaa", parentId: "aa"},
+          {id: "aa", parentId: "a"},
+          {id: "ab", parentId: "a"},
+          {id: "a"}
+        ]);
+  test.deepEqual(noparent(root), {
     id: "a",
+    depth: 0,
+    data: {id: "a"},
     children: [
       {
         id: "aa",
+        depth: 1,
+        data: {id: "aa", parentId: "a"},
         children: [
           {
-            id: "aaa"
+            id: "aaa",
+            depth: 2,
+            data: {id: "aaa", parentId: "aa"}
           }
         ]
       },
       {
-        id: "ab"
+        id: "ab",
+        depth: 1,
+        data: {id: "ab", parentId: "a"}
       }
     ]
   });
@@ -61,23 +80,32 @@ tape("stratify(data) does not require the data to be in topological order", func
 });
 
 tape("stratify(data) preserves the input order of siblings", function(test) {
-  var s = d3_hierarchy.stratify();
-  test.deepEqual(s([
-    {id: "aaa", parentId: "aa"},
-    {id: "ab", parentId: "a"},
-    {id: "aa", parentId: "a"},
-    {id: "a"}
-  ]), {
+  var s = d3_hierarchy.stratify(),
+      root = s([
+          {id: "aaa", parentId: "aa"},
+          {id: "ab", parentId: "a"},
+          {id: "aa", parentId: "a"},
+          {id: "a"}
+        ]);
+  test.deepEqual(noparent(root), {
     id: "a",
+    depth: 0,
+    data: {id: "a"},
     children: [
       {
-        id: "ab"
+        id: "ab",
+        depth: 1,
+        data: {id: "ab", parentId: "a"}
       },
       {
         id: "aa",
+        depth: 1,
+        data: {id: "aa", parentId: "a"},
         children: [
           {
-            id: "aaa"
+            id: "aaa",
+            depth: 2,
+            data: {id: "aaa", parentId: "aa"}
           }
         ]
       }
@@ -87,25 +115,34 @@ tape("stratify(data) preserves the input order of siblings", function(test) {
 });
 
 tape("stratify(data) treats an empty parentId as the root", function(test) {
-  var s = d3_hierarchy.stratify();
-  test.deepEqual(s([
-    {id: "a", parentId: ""},
-    {id: "aa", parentId: "a"},
-    {id: "ab", parentId: "a"},
-    {id: "aaa", parentId: "aa"}
-  ]), {
+  var s = d3_hierarchy.stratify(),
+      root = s([
+          {id: "a", parentId: ""},
+          {id: "aa", parentId: "a"},
+          {id: "ab", parentId: "a"},
+          {id: "aaa", parentId: "aa"}
+        ]);
+  test.deepEqual(noparent(root), {
     id: "a",
+    depth: 0,
+    data: {id: "a", parentId: ""},
     children: [
       {
         id: "aa",
+        depth: 1,
+        data: {id: "aa", parentId: "a"},
         children: [
           {
-            id: "aaa"
+            id: "aaa",
+            depth: 2,
+            data: {id: "aaa", parentId: "aa"}
           }
         ]
       },
       {
-        id: "ab"
+        id: "ab",
+        depth: 1,
+        data: {id: "ab", parentId: "a"}
       }
     ]
   });
@@ -113,19 +150,26 @@ tape("stratify(data) treats an empty parentId as the root", function(test) {
 });
 
 tape("stratify(data) does not treat a falsy but non-empty parentId as the root", function(test) {
-  var s = d3_hierarchy.stratify();
-  test.deepEqual(s([
-    {id: 0, parentId: null},
-    {id: 1, parentId: 0},
-    {id: 2, parentId: 0}
-  ]), {
+  var s = d3_hierarchy.stratify(),
+      root = s([
+          {id: 0, parentId: null},
+          {id: 1, parentId: 0},
+          {id: 2, parentId: 0}
+        ]);
+  test.deepEqual(noparent(root), {
     id: "0",
+    depth: 0,
+    data: {id: 0, parentId: null},
     children: [
       {
-        id: "1"
+        id: "1",
+        depth: 1,
+        data: {id: 1, parentId: 0}
       },
       {
-        id: "2"
+        id: "2",
+        depth: 1,
+        data: {id: 2, parentId: 0}
       }
     ]
   });
@@ -160,16 +204,25 @@ tape("stratify(data) throws an error if the specified parent is not found", func
 });
 
 tape("stratify(data) allows the id to be undefined for leaf nodes", function(test) {
-  var s = d3_hierarchy.stratify();
-  test.deepEqual(s([
-    {id: "a"},
-    {parentId: "a"},
-    {parentId: "a"}
-  ]), {
+  var s = d3_hierarchy.stratify(),
+      root = s([
+          {id: "a"},
+          {parentId: "a"},
+          {parentId: "a"}
+        ]);
+  test.deepEqual(noparent(root), {
     id: "a",
+    depth: 0,
+    data: {id: "a"},
     children: [
-      {},
-      {}
+      {
+        depth: 1,
+        data: {parentId: "a"}
+      },
+      {
+        depth: 1,
+        data: {parentId: "a"}
+      }
     ]
   });
   test.end();
@@ -186,37 +239,54 @@ tape("stratify(data) coerces the id to a string, if not null and not empty", fun
 });
 
 tape("stratify(data) allows the id to be undefined for leaf nodes", function(test) {
-  var s = d3_hierarchy.stratify();
-  test.deepEqual(s([{id: "a"}, {parentId: {toString: function() { return "a"; }}}]), {id: "a", children: [{}]});
+  var s = d3_hierarchy.stratify(),
+      o = {parentId: {toString: function() { return "a"; }}},
+      root = s([{id: "a"}, o]);
+  test.deepEqual(noparent(root), {
+    id: "a",
+    depth: 0,
+    data: {id: "a"},
+    children: [
+      {
+        depth: 1,
+        data: o
+      }
+    ]
+  });
   test.end();
 });
 
 tape("stratify.id(id) observes the specified id function", function(test) {
   var foo = function(d) { return d.foo; },
-      s = d3_hierarchy.stratify().id(foo);
+      s = d3_hierarchy.stratify().id(foo),
+      root = s([
+          {foo: "a"},
+          {foo: "aa", parentId: "a"},
+          {foo: "ab", parentId: "a"},
+          {foo: "aaa", parentId: "aa"}
+        ]);
   test.equal(s.id(), foo);
-  test.deepEqual(s([
-    {foo: "a"},
-    {foo: "aa", parentId: "a"},
-    {foo: "ab", parentId: "a"},
-    {foo: "aaa", parentId: "aa"}
-  ]), {
+  test.deepEqual(noparent(root), {
     id: "a",
-    foo: "a",
+    depth: 0,
+    data: {foo: "a"},
     children: [
       {
         id: "aa",
-        foo: "aa",
+        depth: 1,
+        data: {foo: "aa", parentId: "a"},
         children: [
           {
             id: "aaa",
-            foo: "aaa"
+            depth: 2,
+            data: {foo: "aaa", parentId:"aa" }
           }
         ]
       },
       {
         id: "ab",
-        foo: "ab"
+        depth: 1,
+        data: {foo: "ab", parentId:"a" }
       }
     ]
   });
@@ -232,29 +302,35 @@ tape("stratify.id(id) tests that id is a function", function(test) {
 
 tape("stratify.parentId(id) observes the specified parent id function", function(test) {
   var foo = function(d) { return d.foo; },
-      s = d3_hierarchy.stratify().parentId(foo);
+      s = d3_hierarchy.stratify().parentId(foo),
+      root = s([
+          {id: "a"},
+          {id: "aa", foo: "a"},
+          {id: "ab", foo: "a"},
+          {id: "aaa", foo: "aa"}
+        ]);
   test.equal(s.parentId(), foo);
-  test.deepEqual(s([
-    {id: "a"},
-    {id: "aa", foo: "a"},
-    {id: "ab", foo: "a"},
-    {id: "aaa", foo: "aa"}
-  ]), {
+  test.deepEqual(noparent(root), {
     id: "a",
+    depth: 0,
+    data: {id: "a"},
     children: [
       {
         id: "aa",
-        foo: "a",
+        depth: 1,
+        data: {id: "aa", foo: "a"},
         children: [
           {
             id: "aaa",
-            foo: "aa"
+            depth: 2,
+            data: {id: "aaa", foo: "aa"}
           }
         ]
       },
       {
         id: "ab",
-        foo: "a"
+        depth: 1,
+        data: {id: "ab", foo: "a"}
       }
     ]
   });
@@ -267,3 +343,15 @@ tape("stratify.parentId(id) tests that id is a function", function(test) {
   test.throws(function() { s.parentId(null); });
   test.end();
 });
+
+function noparent(node) {
+  var copy = {};
+  for (var k in node) {
+    if (node.hasOwnProperty(k)) switch (k) {
+      case "children": copy.children = node.children.map(noparent); break;
+      case "parent": break;
+      default: copy[k] = node[k]; break;
+    }
+  }
+  return copy;
+}

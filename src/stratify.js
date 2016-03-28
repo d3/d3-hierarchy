@@ -1,8 +1,8 @@
 import {required} from "./accessors";
-import eachBefore from "./node/eachBefore";
+import {Node} from "./hierarchy/index";
 
 var keyPrefix = "$", // Protect against keys like “__proto__”.
-    reserved = {id: 1, parentId: 1, children: 1};
+    preroot = {depth: -1};
 
 function defaultId(d) {
   return d.id;
@@ -16,9 +16,8 @@ export default function() {
   var id = defaultId,
       parentId = defaultParentId;
 
-  function hierarchy(data) {
+  function stratify(data) {
     var d,
-        k,
         i,
         n = data.length,
         root,
@@ -30,8 +29,7 @@ export default function() {
         nodeByKey = {};
 
     for (i = 0; i < n; ++i) {
-      d = data[i], node = nodes[i] = {};
-      for (k in d) if (!(k in reserved)) node[k] = d[k];
+      d = data[i], node = nodes[i] = new Node(d);
       if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
         nodeKey = keyPrefix + (node.id = nodeId);
         if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);
@@ -49,23 +47,26 @@ export default function() {
         if (!parent) throw new Error("missing: " + nodeId);
         if (parent.children) parent.children.push(node);
         else parent.children = [node];
+        node.parent = parent;
       }
     }
 
     if (!root) throw new Error("no root");
-    eachBefore.call(root, function() { --n; });
+    root.parent = preroot;
+    root.eachBefore(function(node) { node.depth = node.parent.depth + 1; --n; });
+    delete root.parent;
     if (n > 0) throw new Error("cycle");
 
     return root;
   }
 
-  hierarchy.id = function(x) {
-    return arguments.length ? (id = required(x), hierarchy) : id;
+  stratify.id = function(x) {
+    return arguments.length ? (id = required(x), stratify) : id;
   };
 
-  hierarchy.parentId = function(x) {
-    return arguments.length ? (parentId = required(x), hierarchy) : parentId;
+  stratify.parentId = function(x) {
+    return arguments.length ? (parentId = required(x), stratify) : parentId;
   };
 
-  return hierarchy;
+  return stratify;
 }

@@ -8,11 +8,168 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 ## API Reference
 
+* [Hierarchy](#hierarchy)
 * [Treemap](#treemap)
 * [Partition](#partition)
 * [Pack](#pack)
-* [Node](#node)
 * [Stratify](#Stratify)
+
+### Hierarchy
+
+<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>(<i>data</i>)
+
+Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children.
+
+For example, given the following input data:
+
+```json
+{
+  "id": "Eve",
+  "children": [
+    {
+      "id": "Cain"
+    },
+    {
+      "id": "Seth",
+      "children": [
+        {
+          "id": "Enos"
+        },
+        {
+          "id": "Noam"
+        }
+      ]
+    },
+    {
+      "id": "Abel"
+    },
+    {
+      "id": "Awan",
+      "children": [
+        {
+          "id": "Enoch"
+        }
+      ]
+    },
+    {
+      "id": "Azura"
+    }
+  ]
+}
+```
+
+The following code:
+
+```js
+var root = d3.hierarchy(data);
+```
+
+Returns the following structure:
+
+```json
+{
+  "depth": 0,
+  "data": [Object],
+  "children": [
+    {
+      "depth": 1,
+      "parent": [Circular],
+      "data": [Object]
+    },
+    {
+      "depth": 1,
+      "parent": [Circular],
+      "data": [Object]
+      "children": [
+        {
+          "depth": 2,
+          "parent": [Circular],
+          "data": [Object]
+        },
+        {
+          "depth": 2,
+          "parent": [Circular],
+          "data": [Object]
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "parent": [Circular],
+      "data": [Object]
+    },
+    {
+      "depth": 1,
+      "parent": [Circular],
+      "data": [Object]
+      "children": [
+        {
+          "depth": 2,
+          "parent": [Circular],
+          "data": [Object]
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "parent": [Circular],
+      "data": [Object]
+    }
+  ]
+}
+```
+
+<a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>function</i>)
+
+…
+
+<a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>function</i>)
+
+…
+
+<a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
+
+A reference to the data associated with this node, as specified to the [constructor](#hierarchy).
+
+<a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
+
+The depth of the node: zero for the root node, and increasing by one for each subsequent generation.
+
+<a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
+
+A reference to the parent node; null for the root node.
+
+<a name="node_children" href="#node_children">#</a> <i>node</i>.<b>children</b>
+
+An array of child nodes, if any; undefined for leaf nodes.
+
+<a name="node_ancestors" href="#node_ancestors">#</a> <i>node</i>.<b>ancestors</b>()
+
+Returns the array of ancestors nodes, starting with this node, then followed by each parent up to the root.
+
+<a name="node_descendants" href="#node_descendants">#</a> <i>node</i>.<b>descendants</b>()
+
+Returns the array of descendant nodes, starting with this node, then followed by each child in topological order.
+
+<a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>()
+
+Returns the array of leaf nodes in traversal order; leaves are nodes with no children.
+
+<a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
+
+Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
+
+<a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
+
+…
+
+<a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>)
+
+…
+
+<a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>)
+
+…
 
 ### Treemap
 
@@ -24,23 +181,11 @@ Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 
 
 …
 
-<a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>data</i>)
-
-…
-
-<a name="treemap_update" href="#treemap_update">#</a> <i>treemap</i>.<b>update</b>(<i>root</i>)
+<a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>root</i>)
 
 …
 
 <a name="treemap_tile" href="#treemap_tile">#</a> <i>treemap</i>.<b>tile</b>([<i>tile</i>])
-
-…
-
-<a name="treemap_value" href="#treemap_value">#</a> <i>treemap</i>.<b>value</b>([<i>value</i>])
-
-…
-
-<a name="treemap_sort" href="#treemap_sort">#</a> <i>treemap</i>.<b>sort</b>([<i>sort</i>])
 
 …
 
@@ -100,15 +245,7 @@ If the specified *node* has odd depth, delegates to [treemapSlice](#treemapSlice
 
 …
 
-<a name="_partition" href="#_partition">#</a> <i>partition</i>(<i>data</i>)
-
-…
-
-<a name="partition_value" href="#partition_value">#</a> <i>partition</i>.<b>value</b>([<i>value</i>])
-
-…
-
-<a name="partition_sort" href="#partition_sort">#</a> <i>partition</i>.<b>sort</b>([<i>sort</i>])
+<a name="_partition" href="#_partition">#</a> <i>partition</i>(<i>root</i>)
 
 …
 
@@ -132,19 +269,11 @@ If the specified *node* has odd depth, delegates to [treemapSlice](#treemapSlice
 
 …
 
-<a name="_pack" href="#_pack">#</a> <i>pack</i>(<i>data</i>)
+<a name="_pack" href="#_pack">#</a> <i>pack</i>(<i>root</i>)
 
 …
 
 <a name="pack_radius" href="#pack_radius">#</a> <i>pack</i>.<b>radius</b>([<i>radius</i>])
-
-…
-
-<a name="pack_value" href="#pack_value">#</a> <i>pack</i>.<b>value</b>([<i>value</i>])
-
-…
-
-<a name="pack_sort" href="#pack_sort">#</a> <i>pack</i>.<b>sort</b>([<i>sort</i>])
 
 …
 
@@ -153,58 +282,6 @@ If the specified *node* has odd depth, delegates to [treemapSlice](#treemapSlice
 …
 
 <a name="pack_padding" href="#pack_padding">#</a> <i>pack</i>.<b>padding</b>([<i>padding</i>])
-
-…
-
-### Node
-
-<a name="hierarchyNode" href="#hierarchyNode">#</a> d3.<b>hierarchyNode</b>(<i>data</i>)
-
-Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node, and may have a *data*.children property specifying an array of data representing the children of the root node; each descendant child *data* may also have *data*.children. See [Stratify](#stratify) for an example.
-
-This method is typically not called directly; instead it is used by hierarchical layouts to construct root nodes. You can also use it to test whether an object is an `instanceof d3.hierarchyNode`, or to extend the node prototype.
-
-<a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
-
-A reference to the data associated with this node, as specified to the [constructor](#hierarchyNode).
-
-<a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
-
-The depth of the node: zero for the root node, and increasing by one for each subsequent generation.
-
-<a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
-
-A reference to the parent node; null for the root node.
-
-<a name="node_children" href="#node_children">#</a> <i>node</i>.<b>children</b>
-
-An array of child nodes, if any; undefined for leaf nodes.
-
-<a name="node_ancestors" href="#node_ancestors">#</a> <i>node</i>.<b>ancestors</b>()
-
-Returns the array of ancestors nodes, starting with this node, then followed by each parent up to the root.
-
-<a name="node_descendants" href="#node_descendants">#</a> <i>node</i>.<b>descendants</b>()
-
-Returns the array of descendant nodes, starting with this node, then followed by each child in topological order.
-
-<a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>()
-
-Returns the array of leaf nodes in traversal order; leaves are nodes with no children.
-
-<a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
-
-Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
-
-<a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
-
-…
-
-<a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>)
-
-…
-
-<a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>)
 
 …
 
@@ -274,34 +351,87 @@ This returns:
 ```json
 {
   "id": "Eve",
+  "depth": 0,
+  "data": {
+    "id": "Eve",
+    "parentId": ""
+  },
   "children": [
     {
-      "id": "Cain"
+      "id": "Cain",
+      "depth": 1,
+      "parent": [Circular],
+      "data": {
+        "id": "Cain",
+        "parentId": "Eve"
+      }
     },
     {
       "id": "Seth",
+      "depth": 1,
+      "parent": [Circular],
+      "data": {
+        "id": "Seth",
+        "parentId": "Eve"
+      }
       "children": [
         {
-          "id": "Enos"
+          "id": "Enos",
+          "depth": 2,
+          "parent": [Circular],
+          "data": {
+            "id": "Enos",
+            "parentId": "Seth"
+          }
         },
         {
-          "id": "Noam"
+          "id": "Noam",
+          "depth": 2,
+          "parent": [Circular],
+          "data": {
+             "id": "Noam",
+             "parentId": "Seth"
+          }
         }
       ]
     },
     {
-      "id": "Abel"
+      "id": "Abel",
+      "depth": 1,
+      "parent": [Circular],
+      "data": {
+        "id": "Abel",
+        "parentId": "Eve"
+      }
     },
     {
       "id": "Awan",
+      "depth": 1,
+      "parent": [Circular],
+      "data": {
+        "id": "Awan",
+        "parentId": "Eve"
+      }
       "children": [
         {
-          "id": "Enoch"
+          "id": "Enoch",
+          "depth": 2,
+          "parent": [Circular],
+          "data": {
+             "id": "Enoch",
+             "parentId": "Awan"
+          }
         }
       ]
     },
     {
-      "id": "Azura"
+      "id": "Azura",
+      "depth": 1,
+      "parent": [Circular],
+      "data": {
+        "id": "Azura",
+        "parentId": "Eve"
+      }
     }
   ]
 }

@@ -5,10 +5,6 @@ var tape = require("tape"),
 
 tape("treemap() has the expected defaults", function(test) {
   var treemap = d3_hierarchy.treemap();
-  test.equal(treemap.value()({value: 42}), 42);
-  test.ok(treemap.sort()({value: 1}, {value: 2}) > 0);
-  test.ok(treemap.sort()({value: 2}, {value: 1}) < 0);
-  test.equal(treemap.sort()({value: 1}, {value: 1}), 0);
   test.equal(treemap.tile(), d3_hierarchy.treemapSquarify);
   test.deepEqual(treemap.size(), [1, 1]);
   test.deepEqual(treemap.round(), false);
@@ -17,7 +13,7 @@ tape("treemap() has the expected defaults", function(test) {
 
 tape("treemap.round(round) observes the specified rounding", function(test) {
   var treemap = d3_hierarchy.treemap().size([600, 400]).round(true),
-      root = treemap(simple),
+      root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
       nodes = root.descendants().map(round);
   test.deepEqual(treemap.round(), true);
   test.deepEqual(nodes, [
@@ -49,7 +45,7 @@ tape("treemap.padding(padding) sets the inner and outer padding to the specified
 
 tape("treemap.paddingInner(padding) observes the specified padding", function(test) {
   var treemap = d3_hierarchy.treemap().size([6, 4]).paddingInner(0.5),
-      root = treemap(simple),
+      root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
       nodes = root.descendants().map(round);
   test.deepEqual(treemap.size(), [6, 4]);
   test.deepEqual(nodes, [
@@ -67,7 +63,7 @@ tape("treemap.paddingInner(padding) observes the specified padding", function(te
 
 tape("treemap.paddingOuter(padding) observes the specified padding", function(test) {
   var treemap = d3_hierarchy.treemap().size([6, 4]).paddingOuter(0.5),
-      root = treemap(simple),
+      root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
       nodes = root.descendants().map(round);
   test.deepEqual(treemap.size(), [6, 4]);
   test.deepEqual(nodes, [
@@ -85,7 +81,7 @@ tape("treemap.paddingOuter(padding) observes the specified padding", function(te
 
 tape("treemap.size(size) observes the specified size", function(test) {
   var treemap = d3_hierarchy.treemap().size([6, 4]),
-      root = treemap(simple),
+      root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
       nodes = root.descendants().map(round);
   test.deepEqual(treemap.size(), [6, 4]);
   test.deepEqual(nodes, [
@@ -111,7 +107,7 @@ tape("treemap.size(size) coerces the specified size to numbers", function(test) 
 tape("treemap.size(size) makes defensive copies", function(test) {
   var size = [6, 4],
       treemap = d3_hierarchy.treemap().size(size),
-      root = (size[1] = 100, treemap(simple)),
+      root = (size[1] = 100, treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue))),
       nodes = root.descendants().map(round);
   test.deepEqual(treemap.size(), [6, 4]);
   treemap.size()[1] = 100;
@@ -131,7 +127,7 @@ tape("treemap.size(size) makes defensive copies", function(test) {
 
 tape("treemap.tile(tile) observes the specified tile function", function(test) {
   var treemap = d3_hierarchy.treemap().size([6, 4]).tile(d3_hierarchy.treemapSlice),
-      root = treemap(simple),
+      root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
       nodes = root.descendants().map(round);
   test.equal(treemap.tile(), d3_hierarchy.treemapSlice);
   test.deepEqual(nodes, [
@@ -147,12 +143,11 @@ tape("treemap.tile(tile) observes the specified tile function", function(test) {
   test.end();
 });
 
-tape("treemap.value(value)(data) observes the specified value function", function(test) {
+tape("treemap(data) observes the specified values", function(test) {
   var foo = function(d) { return d.foo; },
-      treemap = d3_hierarchy.treemap().value(foo).size([6, 4]),
-      root = treemap(require("../data/simple3")),
+      treemap = d3_hierarchy.treemap().size([6, 4]),
+      root = treemap(d3_hierarchy.hierarchy(require("../data/simple3")).sum(foo).sort(descendingValue)),
       nodes = root.descendants().map(round);
-  test.equal(treemap.value(), foo);
   test.deepEqual(treemap.size(), [6, 4]);
   test.deepEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
@@ -167,55 +162,21 @@ tape("treemap.value(value)(data) observes the specified value function", functio
   test.end();
 });
 
-tape("treemap.value(value) throws an error if value is not a function", function(test) {
-  var treemap = d3_hierarchy.treemap();
-  test.throws(function() { t.value(42); });
-  test.throws(function() { t.value(null); });
-  test.end();
-});
-
-tape("treemap.value(value) invokes the value function for each descendant in post-traversal order", function(test) {
-  var results = [],
-      root = d3_hierarchy.treemap().sort(null).value(function(d) { results.push(d); })({children: [{value: 1}, {value: 2}, {value: 3}]});
-  test.deepEqual(results, [
-    root.children[0].data,
-    root.children[1].data,
-    root.children[2].data,
-    root.data
-  ]);
-  test.end();
-});
-
-tape("treemap.value(value) coerces each returned value to a number", function(test) {
-  var root = d3_hierarchy.treemap().sort(null)({children: [{value: "1"}, {value: {valueOf: function() { return 2; }}}]});
-  test.strictEqual(root.value, 3);
-  test.strictEqual(root.children[0].value, 1);
-  test.strictEqual(root.children[1].value, 2);
-  test.end();
-});
-
-tape("treemap.value(value) treats NaN values as zero", function(test) {
-  var root = d3_hierarchy.treemap().sort(null)({children: [{value: NaN}, {}, {value: "foo"}]});
-  test.strictEqual(root.value, 0);
-  test.strictEqual(root.children[0].value, 0);
-  test.strictEqual(root.children[1].value, 0);
-  test.strictEqual(root.children[2].value, 0);
-  test.end();
-});
-
-tape("treemap.value(value) aggregates values from the leaves and internal nodes", function(test) {
-  var root = d3_hierarchy.treemap().sort(null)({value: 1, children: [{value: 2}, {value: 3}]});
-  test.strictEqual(root.value, 6);
-  test.strictEqual(root.children[0].value, 2);
-  test.strictEqual(root.children[1].value, 3);
-  test.end();
-});
-
-tape("treemap.sort(sort) sorts siblings according to the specified comparator", function(test) {
-  var ascendingValue = function(a, b) { return a.value - b.value; },
-      treemap = d3_hierarchy.treemap().sort(ascendingValue),
-      root = treemap(simple);
-  test.equal(treemap.sort(), ascendingValue);
+tape("treemap(data) observes the specified sibling order", function(test) {
+  var treemap = d3_hierarchy.treemap(),
+      root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(ascendingValue));
   test.deepEqual(root.descendants().map(function(d) { return d.value; }), [24, 1, 2, 2, 3, 4, 6, 6]);
   test.end();
 });
+
+function defaultValue(d) {
+  return d.value;
+}
+
+function ascendingValue(a, b) {
+  return a.value - b.value;
+}
+
+function descendingValue(a, b) {
+  return b.value - a.value;
+}

@@ -32,12 +32,13 @@ function test(input, expected, tile) {
 
       var treemap = d3_hierarchy.treemap()
           .tile(tile)
-          .size([960, 500])
-          .sort(function(a, b) { return b.value - a.value || a.data.id.localeCompare(b.data.id); });
+          .size([960, 500]);
 
       var data = d3_dsv.csvParse(inputText),
           expected = JSON.parse(expectedText),
-          actual = treemap(stratify(data));
+          actual = treemap(stratify(data)
+              .sum(function(d) { return d.value; })
+              .sort(function(a, b) { return b.value - a.value || a.data.id.localeCompare(b.data.id); }));
 
       (function visit(node) {
         node.name = node.data.id.slice(node.data.id.lastIndexOf(".") + 1);
@@ -45,6 +46,7 @@ function test(input, expected, tile) {
         node.y0 = round(node.y0);
         node.x1 = round(node.x1);
         node.y1 = round(node.y1);
+        delete node.id;
         delete node.parent;
         delete node.data;
         delete node._squarify;

@@ -1,5 +1,5 @@
-export default function(node, value) {
-  node.eachAfter(function(node) {
+export default function(value) {
+  return this.eachAfter(function(node) {
     var sum = +value(node.data) || 0,
         children = node.children,
         i = children && children.length;
