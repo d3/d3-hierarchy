@@ -1,8 +1,5 @@
-function place(A, B, C) {
-  var a = A._,
-      b = B._,
-      c = C._,
-      ax = a.x,
+function place(a, b, c) {
+  var ax = a.x,
       ay = a.y,
       da = b.r + c.r,
       db = a.r + c.r,
@@ -18,7 +15,6 @@ function place(A, B, C) {
     c.x = ax + db;
     c.y = ay;
   }
-  C.score = c.x * c.x + c.y * c.y;
 }
 
 function intersects(a, b) {
@@ -28,34 +24,37 @@ function intersects(a, b) {
   return dr * dr > dx * dx + dy * dy;
 }
 
-function newLink(circle) {
-  return {_: circle, next: null, previous: null, score: NaN};
+function Node(circle) {
+  this._ = circle;
+  this.next = null;
+  this.previous = null;
+  this.score = circle.x * circle.x + circle.y * circle.y;
 }
 
 export default function(circles) {
   if (!(n = circles.length)) return;
-  circles = circles.map(newLink);
 
   var a, b, c,
       i, j, k,
       sj, sk,
       n;
 
-  a = circles[0], a.score = a._.r * a._.r, a._.x = a._.r, a._.y = 0;
+  a = circles[0], a.x = a.r, a.y = 0;
   if (!(n > 1)) return;
 
-  b = circles[1], b.score = b._.r * b._.r, b._.x = -b._.r, b._.y = 0;
+  b = circles[1], b.x = -b.r, b.y = 0;
   if (!(n > 2)) return;
 
   // Initialize the front-chain using the first three circles a, b and c.
   place(b, a, c = circles[2]);
+  a = new Node(a), b = new Node(b), c = new Node(c);
   a.next = c.previous = b;
   b.next = a.previous = c;
   c.next = b.previous = a;
 
   // Attempt to place each remaining circle…
   pack: for (i = 3; i < n; ++i) {
-    place(a, b, c = circles[i]);
+    place(a._, b._, c = circles[i]), c = new Node(c);
 
     // If there are only three elements in the front-chain…
     if ((k = a.previous) === (j = b.next)) {

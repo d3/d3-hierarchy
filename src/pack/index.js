@@ -1,5 +1,5 @@
-import enclosingCircle from "./enclosingCircle";
-import packCircles from "./circles";
+import enclose from "./enclose";
+import packSiblings from "./siblings";
 import {optional} from "../accessors";
 
 function defaultRadius(d) {
@@ -49,9 +49,9 @@ function radiusLeaf(radius) {
 
 function packChildren(node) {
   if (children = node.children) {
-    packCircles(children);
+    packSiblings(children);
 
-    var circle = enclosingCircle(children),
+    var circle = enclose(children),
         children,
         child,
         i,

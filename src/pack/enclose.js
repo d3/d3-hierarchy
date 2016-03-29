@@ -1,21 +1,7 @@
+import shuffle from "./shuffle";
+
 export default function(circles) {
   return encloseN(shuffle(circles), []);
-}
-
-function shuffle(array) {
-  var i,
-      n = (array = array.slice()).length,
-      head = null,
-      node = head;
-
-  while (n) {
-    var next = {circle: array[n - 1], next: null};
-    if (node) node = node.next = next;
-    else node = head = next;
-    array[i] = array[--n];
-  }
-
-  return {head: head, tail: node};
 }
 
 function encloses(a, b) {
@@ -40,7 +26,7 @@ function encloseN(L, B) {
   }
 
   while (l1) {
-    p1 = l1.circle, l2 = l1.next;
+    p1 = l1._, l2 = l1.next;
     if (!circle || !encloses(circle, p1)) {
 
       // Temporarily truncate L before l1.

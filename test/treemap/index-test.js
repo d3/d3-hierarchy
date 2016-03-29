@@ -37,9 +37,13 @@ tape("treemap.round(round) coerces the specified round to boolean", function(tes
 
 tape("treemap.padding(padding) sets the inner and outer padding to the specified value", function(test) {
   var treemap = d3_hierarchy.treemap().padding("42");
-  test.deepEqual(treemap.padding(), [42, 42, 42, 42]);
-  test.deepEqual(treemap.paddingInner(), [42, 42, 42, 42]);
-  test.deepEqual(treemap.paddingOuter(), [42, 42, 42, 42]);
+  test.strictEqual(treemap.padding()(), 42);
+  test.strictEqual(treemap.paddingInner()(), 42);
+  test.strictEqual(treemap.paddingOuter()(), 42);
+  test.strictEqual(treemap.paddingTop()(), 42);
+  test.strictEqual(treemap.paddingRight()(), 42);
+  test.strictEqual(treemap.paddingBottom()(), 42);
+  test.strictEqual(treemap.paddingLeft()(), 42);
   test.end();
 });
 
@@ -47,6 +51,7 @@ tape("treemap.paddingInner(padding) observes the specified padding", function(te
   var treemap = d3_hierarchy.treemap().size([6, 4]).paddingInner(0.5),
       root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
       nodes = root.descendants().map(round);
+  test.strictEqual(treemap.paddingInner()(), 0.5);
   test.deepEqual(treemap.size(), [6, 4]);
   test.deepEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
@@ -65,6 +70,11 @@ tape("treemap.paddingOuter(padding) observes the specified padding", function(te
   var treemap = d3_hierarchy.treemap().size([6, 4]).paddingOuter(0.5),
       root = treemap(d3_hierarchy.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
       nodes = root.descendants().map(round);
+  test.strictEqual(treemap.paddingOuter()(), 0.5);
+  test.strictEqual(treemap.paddingTop()(), 0.5);
+  test.strictEqual(treemap.paddingRight()(), 0.5);
+  test.strictEqual(treemap.paddingBottom()(), 0.5);
+  test.strictEqual(treemap.paddingLeft()(), 0.5);
   test.deepEqual(treemap.size(), [6, 4]);
   test.deepEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
