@@ -160,6 +160,22 @@ Introduced by [Ben Shneiderman](http://www.cs.umd.edu/hcil/treemap-history/) in 
 
 …
 
+<a name="treemap_paddingTop" href="#treemap_paddingTop">#</a> <i>treemap</i>.<b>paddingTop</b>([<i>padding</i>])
+
+…
+
+<a name="treemap_paddingRight" href="#treemap_paddingRight">#</a> <i>treemap</i>.<b>paddingRight</b>([<i>padding</i>])
+
+…
+
+<a name="treemap_paddingBottom" href="#treemap_paddingBottom">#</a> <i>treemap</i>.<b>paddingBottom</b>([<i>padding</i>])
+
+…
+
+<a name="treemap_paddingLeft" href="#treemap_paddingLeft">#</a> <i>treemap</i>.<b>paddingLeft</b>([<i>padding</i>])
+
+…
+
 #### Treemap Tiling
 
 …
