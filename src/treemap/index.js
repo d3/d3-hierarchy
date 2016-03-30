@@ -3,16 +3,12 @@ import squarify from "./squarify";
 import {required} from "../accessors";
 import constant, {constantZero} from "../constant";
 
-function clearPadding(node) {
-  delete node._padding;
-}
-
 export default function() {
   var tile = squarify,
       round = false,
       dx = 1,
       dy = 1,
-      paddingRoot,
+      paddingStack = [0],
       paddingInner = constantZero,
       paddingTop = constantZero,
       paddingRight = constantZero,
@@ -20,18 +16,18 @@ export default function() {
       paddingLeft = constantZero;
 
   function treemap(root) {
-    paddingRoot = paddingInner(root) / 2;
-    root.x0 = -paddingRoot;
-    root.y0 = -paddingRoot;
-    root.x1 = dx + paddingRoot;
-    root.y1 = dy + paddingRoot;
-    root.eachBefore(positionNode).eachBefore(clearPadding);
+    root.x0 =
+    root.y0 = 0;
+    root.x1 = dx;
+    root.y1 = dy;
+    root.eachBefore(positionNode);
+    paddingStack = [0];
     if (round) root.eachBefore(roundNode);
     return root;
   }
 
   function positionNode(node) {
-    var p = node.parent ? node.parent._padding : paddingRoot,
+    var p = paddingStack[node.depth],
         x0 = node.x0 + p,
         y0 = node.y0 + p,
         x1 = node.x1 - p,
@@ -43,7 +39,7 @@ export default function() {
     node.x1 = x1;
     node.y1 = y1;
     if (node.children) {
-      p = node._padding = paddingInner(node) / 2;
+      p = paddingStack[node.depth + 1] = paddingInner(node) / 2;
       x0 += paddingLeft(node) - p;
       y0 += paddingTop(node) - p;
       x1 -= paddingRight(node) - p;
