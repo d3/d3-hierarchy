@@ -134,7 +134,7 @@ Creates a new treemap layout with default settings.
 
 <a name="_treemap" href="#_treemap">#</a> <i>treemap</i>(<i>root</i>)
 
-Lays out the specified *root* [hierarchy](#hierarchy), assigning the following properties on *root* and each of its descendants:
+Lays out the specified *root* [hierarchy](#hierarchy), assigning the following properties on *root* and its descendants:
 
 * *node*.x0 - the left edge of the rectangle
 * *node*.y0 - the top edge of the rectangle
@@ -191,11 +191,11 @@ If *padding* is specified, sets the left padding to the specified number or func
 
 #### Treemap Tiling
 
-…
+Several built-in tiling methods are provided for use with [*treemap*.tile](#treemap_tile).
 
 <a name="treemapBinary" href="#treemapBinary">#</a> d3.<b>treemapBinary</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
 
-…
+Recursively partitions the specified *nodes* into an approximately-balanced binary tree, choosing horizontal partitioning for wide rectangles and vertical partitioning for tall rectangles.
 
 <a name="treemapDice" href="#treemapDice">#</a> d3.<b>treemapDice</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
 
@@ -211,11 +211,11 @@ If the specified *node* has odd depth, delegates to [treemapSlice](#treemapSlice
 
 <a name="treemapSquarify" href="#treemapSquarify">#</a> d3.<b>treemapSquarify</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
 
-…
+Implements the [squarified treemap](https://www.win.tue.nl/~vanwijk/stm.pdf) algorithm by Bruls *et al.*., which seeks to produce rectangles of a given [aspect ratio](#squarify_ratio).
 
 <a name="squarify_ratio" href="#squarify_ratio">#</a> <i>squarify</i>.<b>ratio</b>(<i>ratio</i>)
 
-…
+Specifies the desired aspect ratio of the generated rectangles. The specified *ratio* is merely a hint; the rectangles are not guaranteed to have the specified aspect ratio. If not specified, the aspect ratio defaults to the golden ratio, φ = (1 + sqrt(5)) / 2, per [Kong et al.](http://vis.stanford.edu/papers/perception-treemaps).
 
 ### Partition
 
