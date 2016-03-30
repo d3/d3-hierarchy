@@ -32,7 +32,7 @@ function Node(circle) {
 }
 
 export default function(circles) {
-  if (!(n = circles.length)) return;
+  if (!(n = circles.length)) return circles;
 
   var a, b, c,
       i, j, k,
@@ -40,10 +40,10 @@ export default function(circles) {
       n;
 
   a = circles[0], a.x = a.r, a.y = 0;
-  if (!(n > 1)) return;
+  if (!(n > 1)) return circles;
 
   b = circles[1], b.x = -b.r, b.y = 0;
-  if (!(n > 2)) return;
+  if (!(n > 2)) return circles;
 
   // Initialize the front-chain using the first three circles a, b and c.
   place(b, a, c = circles[2]);
@@ -92,4 +92,6 @@ export default function(circles) {
     // Now recompute the closest circle a to the origin.
     while ((c = c.next) !== b) if (c.score < a.score) a = c, b = a.next;
   }
+
+  return circles;
 }
