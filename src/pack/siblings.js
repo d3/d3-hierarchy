@@ -90,7 +90,8 @@ export default function(circles) {
     c.previous = a, c.next = b, a.next = b.previous = b = c;
 
     // Now recompute the closest circle a to the origin.
-    while ((c = c.next) !== b) if (c.score < a.score) a = c, b = a.next;
+    while ((c = c.next) !== b) if (c.score < a.score) a = c;
+    b = a.next;
   }
 
   return circles;
