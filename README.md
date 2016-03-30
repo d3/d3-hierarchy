@@ -267,11 +267,16 @@ Specifies the desired aspect ratio of the generated rectangles. The specified *r
 
 <a name="packSiblings" href="#packSiblings">#</a> d3.<b>packSiblings</b>(<i>circles</i>)
 
-…
+Packs the specified array of *circles*, each of which must have a *circle*.r property specifying the circle’s radius. Assigns the following properties to each circle:
+
+* *circle*.x - the *x*-coordinate of the circle’s center
+* *circle*.y - the *y*-coordinate of the circle’s center
+
+The circles are positioned according to the front-chain packing algorithm by [Wang et al.](https://dl.acm.org/citation.cfm?id=1124851).
 
 <a name="packEnclose" href="#packEnclose">#</a> d3.<b>packEnclose</b>(<i>circles</i>)
 
-…
+Computes the [smallest circle](https://en.wikipedia.org/wiki/Smallest-circle_problem) that encloses the specified array of *circles*, each of which must have a *circle*.r property specifying the circle’s radius, and *circle*.x and *circle*.y properties specifying the circle’s center. The enclosing circle is computed using [Welzl’s randomized algorithm](http://link.springer.com/chapter/10.1007/BFb0038202) adapted to enclose circles rather than points. (See also [Apollonius’ Problem](https://bl.ocks.org/mbostock/751fdd637f4bc2e3f08b).)
 
 ### Stratify
 
