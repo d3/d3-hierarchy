@@ -1,5 +1,5 @@
-import roundNode from "../treemap/round";
-import treemapDice from "../treemap/dice";
+import roundNode from "./treemap/round";
+import treemapDice from "./treemap/dice";
 
 function height(node) {
   var height = 0;
