@@ -1,6 +1,6 @@
 {
   "name": "d3-hierarchy",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Layout algorithms for visualizing hierarchical data.",
   "keywords": [
     "d3",
