@@ -9,6 +9,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 ## API Reference
 
 * [Hierarchy](#hierarchy)
+* [Cluster](#cluster)
 * [Treemap](#treemap)
 * [Partition](#partition)
 * [Pack](#pack)
@@ -121,6 +122,57 @@ Invokes the specified *function* for *node* and each descendent in [post-order t
 <a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>)
 
 Invokes the specified *function* for *node* and each descendent in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *node*.
+
+### Cluster
+
+The **cluster layout** produces [dendrograms](http://en.wikipedia.org/wiki/Dendrogram): node-link diagrams that place leaf nodes of the tree at the same depth.
+
+<a name="cluster" href="#cluster">#</a> d3.<b>cluster</b>()
+
+Creates a new cluster layout with default settings.
+
+<a name="_cluster" href="#_cluster">#</a> <i>cluster</i>(<i>root</i>)
+
+Lays out the specified *root* [hierarchy](#hierarchy), assigning the following properties on *root* and its descendants:
+
+* *node*.x - the *x*-coordinate of the node
+* *node*.y - the *y*-coordinate of the node
+
+The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a radial rather than Cartesian layout.
+
+You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the cluster layout. For example:
+
+```js
+cluster(root.sort(function(a, b) { return a.id.localeCompare(b.id); }));
+```
+
+<a name="cluster_size" href="#cluster_size">#</a> <i>cluster</i>.<b>size</b>([<i>size</i>])
+
+If *size* is specified, sets the layout size to the specified two-element array [*width*, *height*] and returns this cluster layout. If *size* is not specified, returns the current layout size, which defaults to [1, 1]. A layout size of null indicates that a [node size](#node_size) will be used instead. The coordinates *x* and *y* represent an arbitrary coordinate system; for example,to produce a radial layout, a size of [360, *radius*] corresponds to a breadth of 360° and a depth of *radius*.
+
+<a name="cluster_nodeSize" href="#cluster_nodeSize">#</a> <i>cluster</i>.<b>nodeSize</b>([<i>size</i>])
+
+If *size* is specified, sets the node size to the specified two-element array [*width*, *height*] and returns this cluster layout. If *size* is not specified, returns the current node size, which defaults to null. A node size of null indicates that a [layout size](#cluster_size) will be used instead.
+
+<a name="cluster_separation" href="#cluster_separation">#</a> <i>cluster</i>.<b>separation</b>([<i>separation</i>])
+
+If *separation* is specified, sets the separation accessor to the specified function and returns this cluster layout. If *separation* is not specified, returns the current separation accessor, which defaults to:
+
+```javascript
+function separation(a, b) {
+  return a.parent == b.parent ? 1 : 2;
+}
+```
+
+A variation that is more appropriate for radial layouts reduces the separation gap proportionally to the radius:
+
+```javascript
+function separation(a, b) {
+  return (a.parent == b.parent ? 1 : 2) / a.depth;
+}
+```
+
+The separation accessor is used to separate neighboring leaves. The separation function is passed two leaves *a* and *b*, and must return the desired separation. The nodes are typically siblings, though the nodes may be more distantly related if the layout decides to place such nodes adjacent.
 
 ### Treemap
 
