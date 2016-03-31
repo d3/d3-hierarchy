@@ -10,6 +10,7 @@ If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest rele
 
 * [Hierarchy](#hierarchy)
 * [Cluster](#cluster)
+* [Tree](#tree)
 * [Treemap](#treemap)
 * [Partition](#partition)
 * [Pack](#pack)
@@ -173,6 +174,57 @@ function separation(a, b) {
 ```
 
 The separation accessor is used to separate neighboring leaves. The separation function is passed two leaves *a* and *b*, and must return the desired separation. The nodes are typically siblings, though the nodes may be more distantly related if the layout decides to place such nodes adjacent.
+
+### Tree
+
+The **tree** layout produces tidy node-link diagrams of trees using the [Reingold–Tilford “tidy” algorithm](http://emr.cs.iit.edu/~reingold/tidier-drawings.pdf), improved to run in linear time by [Buchheim *et al.*](http://dirk.jivas.de/papers/buchheim02improving.pdf)
+
+<a name="tree" href="#tree">#</a> d3.<b>tree</b>()
+
+Creates a new tree layout with default settings.
+
+<a name="_tree" href="#_tree">#</a> <i>tree</i>(<i>root</i>)
+
+Lays out the specified *root* [hierarchy](#hierarchy), assigning the following properties on *root* and its descendants:
+
+* *node*.x - the *x*-coordinate of the node
+* *node*.y - the *y*-coordinate of the node
+
+The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a radial rather than Cartesian layout.
+
+You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the tree layout. For example:
+
+```js
+tree(root.sort(function(a, b) { return a.id.localeCompare(b.id); }));
+```
+
+<a name="tree_size" href="#tree_size">#</a> <i>tree</i>.<b>size</b>([<i>size</i>])
+
+If *size* is specified, sets the layout size to the specified two-element array [*width*, *height*] and returns this tree layout. If *size* is not specified, returns the current layout size, which defaults to [1, 1]. A layout size of null indicates that a [node size](#node_size) will be used instead. The coordinates *x* and *y* represent an arbitrary coordinate system; for example,to produce a radial layout, a size of [360, *radius*] corresponds to a breadth of 360° and a depth of *radius*.
+
+<a name="tree_nodeSize" href="#tree_nodeSize">#</a> <i>tree</i>.<b>nodeSize</b>([<i>size</i>])
+
+If *size* is specified, sets the node size to the specified two-element array [*width*, *height*] and returns this tree layout. If *size* is not specified, returns the current node size, which defaults to null. A node size of null indicates that a [layout size](#tree_size) will be used instead.
+
+<a name="tree_separation" href="#tree_separation">#</a> <i>tree</i>.<b>separation</b>([<i>separation</i>])
+
+If *separation* is specified, sets the separation accessor to the specified function and returns this tree layout. If *separation* is not specified, returns the current separation accessor, which defaults to:
+
+```javascript
+function separation(a, b) {
+  return a.parent == b.parent ? 1 : 2;
+}
+```
+
+A variation that is more appropriate for radial layouts reduces the separation gap proportionally to the radius:
+
+```javascript
+function separation(a, b) {
+  return (a.parent == b.parent ? 1 : 2) / a.depth;
+}
+```
+
+The separation accessor is used to separate neighboring nodes. The separation function is passed two nodes *a* and *b*, and must return the desired separation. The nodes are typically siblings, though the nodes may be more distantly related if the layout decides to place such nodes adjacent.
 
 ### Treemap
 
