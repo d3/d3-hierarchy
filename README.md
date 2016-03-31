@@ -124,6 +124,10 @@ Invokes the specified *function* for *node* and each descendent in [post-order t
 
 Invokes the specified *function* for *node* and each descendent in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *node*.
 
+<a name="hierarchyPath" href="#hierarchyPath">#</a> d3.<b>hierarchyPath</b>(<i>a</i>, <i>b</i>)
+
+Returns the shortest path through a hierarchy from node *a* to node *b*. The path starts at node *a*, ascends to the least common ancestor of *a* and *b*, and then descends to node *b*.
+
 ### Cluster
 
 The **cluster layout** produces [dendrograms](http://en.wikipedia.org/wiki/Dendrogram): node-link diagrams that place leaf nodes of the tree at the same depth.
