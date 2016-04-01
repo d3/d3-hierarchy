@@ -195,7 +195,7 @@ Azura | Eve
 These names are conveniently unique, so we can unambiguously represent the hierarchy as a CSV file:
 
 ```
-id,parentId
+name,parent
 Eve,
 Cain,Eve
 Seth,Eve
@@ -217,125 +217,32 @@ This returns:
 
 ```json
 [
-  {"id": "Eve",   "parentId": ""},
-  {"id": "Cain",  "parentId": "Eve"},
-  {"id": "Seth",  "parentId": "Eve"},
-  {"id": "Enos",  "parentId": "Seth"},
-  {"id": "Noam",  "parentId": "Seth"},
-  {"id": "Abel",  "parentId": "Eve"},
-  {"id": "Awan",  "parentId": "Eve"},
-  {"id": "Enoch", "parentId": "Awan"},
-  {"id": "Azura", "parentId": "Eve"}
+  {"name": "Eve",   "parent": ""},
+  {"name": "Cain",  "parent": "Eve"},
+  {"name": "Seth",  "parent": "Eve"},
+  {"name": "Enos",  "parent": "Seth"},
+  {"name": "Noam",  "parent": "Seth"},
+  {"name": "Abel",  "parent": "Eve"},
+  {"name": "Awan",  "parent": "Eve"},
+  {"name": "Enoch", "parent": "Awan"},
+  {"name": "Azura", "parent": "Eve"}
 ]
 ```
 
 To convert to a hierarchy:
 
 ```js
-var root = d3.stratify()(table);
+var root = d3.stratify()
+    .id(function(d) { return d.name; })
+    .parentId(function(d) { return d.parent; })
+    (table);
 ```
 
 This returns:
 
-```js
-{
-  "id": "Eve",
-  "depth": 0,
-  "height": 2,
-  "data": {
-    "id": "Eve",
-    "parentId": ""
-  },
-  "children": [
-    {
-      "id": "Cain",
-      "depth": 1,
-      "height": 0,
-      "parent": [Circular],
-      "data": {
-        "id": "Cain",
-        "parentId": "Eve"
-      }
-    },
-    {
-      "id": "Seth",
-      "depth": 1,
-      "height": 1,
-      "parent": [Circular],
-      "data": {
-        "id": "Seth",
-        "parentId": "Eve"
-      },
-      "children": [
-        {
-          "id": "Enos",
-          "depth": 2,
-          "height": 0,
-          "parent": [Circular],
-          "data": {
-            "id": "Enos",
-            "parentId": "Seth"
-          }
-        },
-        {
-          "id": "Noam",
-          "depth": 2,
-          "height": 0,
-          "parent": [Circular],
-          "data": {
-             "id": "Noam",
-             "parentId": "Seth"
-          }
-        }
-      ]
-    },
-    {
-      "id": "Abel",
-      "depth": 1,
-      "height": 0,
-      "parent": [Circular],
-      "data": {
-        "id": "Abel",
-        "parentId": "Eve"
-      }
-    },
-    {
-      "id": "Awan",
-      "depth": 1,
-      "height": 1,
-      "parent": [Circular],
-      "data": {
-        "id": "Awan",
-        "parentId": "Eve"
-      },
-      "children": [
-        {
-          "id": "Enoch",
-          "depth": 2,
-          "height": 0,
-          "parent": [Circular],
-          "data": {
-             "id": "Enoch",
-             "parentId": "Awan"
-          }
-        }
-      ]
-    },
-    {
-      "id": "Azura",
-      "depth": 1,
-      "height": 0,
-      "parent": [Circular],
-      "data": {
-        "id": "Azura",
-        "parentId": "Eve"
-      }
-    }
-  ]
-}
-```
+[<img alt="Stratify" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/stratify.png">](https://tonicdev.com/mbostock/56fed33d8630b01300f72daa)
 
-This hierarchy can now be passed to a hierarchical layout, such as [d3.treemap](#_treemap), for visualization. See [bl.ocks.org/6bbb0a7ff7686b124d80](http://bl.ocks.org/mbostock/6bbb0a7ff7686b124d80) for another example.
+This hierarchy can now be passed to a hierarchical layout, such as [d3.tree](#_tree), for visualization.
 
 <a name="stratify" href="#stratify">#</a> d3.<b>stratify</b>()
 
