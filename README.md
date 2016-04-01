@@ -19,7 +19,7 @@ var treemap = d3_hierarchy.treemap();
 
 ## API Reference
 
-* [Hierarchy](#hierarchy) ([Node](#node), [Stratify](#stratify))
+* [Hierarchy](#hierarchy) ([Hierarchy Node](#hierarchy-node), [Stratify](#stratify))
 * [Cluster](#cluster)
 * [Tree](#tree)
 * [Treemap](#treemap) ([Treemap Tiling](#treemap-tiling))
@@ -28,7 +28,7 @@ var treemap = d3_hierarchy.treemap();
 
 ### Hierarchy
 
-Before you can compute a hierarchical layout, you need a [root node](#node). If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
+Before you can compute a hierarchical layout, you need a [root node](#hierarchy-node). If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
 
 <a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>(<i>data</i>[, <i>children</i>])
 
@@ -80,7 +80,7 @@ function children(d) {
 
 The [*node*.data](#node_data) of each node in the returned root is a reference to the corresponding value in the input data. (The data is not copied.) See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
 
-#### Node
+#### Hierarchy Node
 
 <a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
 
