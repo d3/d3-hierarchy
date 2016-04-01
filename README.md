@@ -145,7 +145,7 @@ This example assumes that the [node data](#node_data) has a value field.
 
 Sorts the children of this *node*, if any, and each of this *node*’s descendants’ children, in [pre-order traversal](#node_eachBefore) using the specified *compare* function, and returns this *node*. The specified function is passed two nodes *a* and *b* to compare. If *a* should be before *b*, the function must return a value less than zero; if *b* should be before *a*, the function must return a value greater than zero; otherwise, the relative order of *a* and *b* are not specified. See [*array*.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for more.
 
-Unlike [*node*.sum](#node_sum), the *compare* function is passed two nodes rather than two nodes’ data. For example, if the data has a value property, this sorts nodes by the aggregate [value](#node_value) of the node and all its descendants:
+Unlike [*node*.sum](#node_sum), the *compare* function is passed two [nodes](#node) rather than two nodes’ [data](#node_data). For example, if the data has a value property, this sorts nodes by the aggregate [value](#node_value) of the node and all its descendants:
 
 ```js
 root
