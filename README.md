@@ -8,7 +8,7 @@ This module implements several popular techniques for visualizing hierarchical d
 
 **Adjacency diagrams** show topology through the relative placement of nodes. They may also encode a quantitative dimension in the area of each node, for example to show revenue or file size. The [“icicle” diagram](#partition) uses rectangles, while the “sunburst” uses annular segments.
 
-**Enclosure diagrams** also use an area encoding, but show topology through containment rather than adjacency. A [treemap](#treemap) recursively subdivides area into rectangles. [Circle-packing](#pack) nests circles, which is not as space-efficient as a treemap, but perhaps more readily shows topology.
+**Enclosure diagrams** also use an area encoding, but show topology through containment. A [treemap](#treemap) recursively subdivides area into rectangles. [Circle-packing](#pack) nests circles, which is not as space-efficient as a treemap, but perhaps more readily shows topology.
 
 A good hierarchical visualization should facilitate rapid multiscale inference: micro-observations of individual elements and macro-observations of large groups.
 
