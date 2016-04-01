@@ -150,7 +150,7 @@ root
     .sort(function(a, b) { return b.height - a.height || b.value - a.value; });
 ```
 
-This sort order is recommended for [treemaps](#treemap). To sort nodes by descending [height](#node_height) and then ascending id:
+This sort order is recommended for [treemaps](#treemap). To sort nodes by descending height and then ascending id:
 
 ```js
 root
