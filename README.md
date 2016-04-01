@@ -28,6 +28,8 @@ var treemap = d3_hierarchy.treemap();
 
 ### Hierarchy
 
+Before you can compute a hierarchical layout, you need a hierarchy. If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
+
 <a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>(<i>data</i>[, <i>children</i>])
 
 Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node. The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an array of data representing the children, or null if the current datum has no children. If *children* is not specified, it defaults to:
@@ -172,9 +174,7 @@ Return a deep copy of the tree starting at this root *node*. (The returned deep 
 
 #### Stratify
 
-Before you can compute a hierarchical layout, you need a hierarchy. If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#_stratify).
-
-For example, consider the following table of relationships:
+Consider the following table of relationships:
 
 Name  | Parent
 ------|--------
