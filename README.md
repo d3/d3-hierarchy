@@ -71,21 +71,13 @@ For example, given the following input data:
 }
 ```
 
-The following code returns a root *node*:
+The following code returns a root *node*, which can then be passed to [*treemap*](#_treemap) or any other hierarchical layout:
 
 ```js
 var root = d3.hierarchy(data);
 ```
 
-The [*node*.data](#node_data) of each node in the returned hierarchy is a reference to the corresponding object in the input data. See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
-
-<a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>)
-
-Evaluates the specified *value* function for *node* and each descendant of *node* in [post-order traversal](#node_eachAfter). The [value](#node_value) of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s [data](#node_data), and must return a non-negative number.
-
-<a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>compare</i>)
-
-Sorts the children of *node*, if any, and each of *node*’s descendants’ children, in [pre-order traversal](#node_eachBefore) using the specified *compare* function. The specified function is passed two nodes *a* and *b* to compare. If *a* should be before *b*, the function must return a value less than zero; if *b* should be before *a*, the function must return a value greater than zero; otherwise, the relative order of *a* and *b* are not specified. See [*array*.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for more.
+The [*node*.data](#node_data) of each node in the returned hierarchy is a reference to the corresponding object in the input data. (The data is not copied.) See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
 
 <a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
 
@@ -119,9 +111,36 @@ Returns the array of descendant nodes, starting with this node, then followed by
 
 Returns the array of leaf nodes in traversal order; leaves are nodes with no children.
 
-<a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
+<a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>)
 
-Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
+Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The [value](#node_value) of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s [data](#node_data), and must return a non-negative number. For example, if the data has a value property:
+
+```js
+root.sum(function(d) { return d.value; });
+```
+
+<a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>compare</i>)
+
+Sorts the children of this *node*, if any, and each of this *node*’s descendants’ children, in [pre-order traversal](#node_eachBefore) using the specified *compare* function, and returns this *node*. The specified function is passed two nodes *a* and *b* to compare. If *a* should be before *b*, the function must return a value less than zero; if *b* should be before *a*, the function must return a value greater than zero; otherwise, the relative order of *a* and *b* are not specified. See [*array*.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for more.
+
+Unlike [*node*.sum](#node_sum), the *compare* function is passed two nodes rather than two nodes’ data. For example, if the data has a value property:
+
+```js
+root
+    .sum(function(d) { return d.value; })
+    .sort(function(a, b) { return b.value - a.value; });
+``````
+
+Similarly, to sort nodes by descending height (greatest distance from any descendant leaf) and then sort by descending value:
+
+```js
+root
+    .sum(function(d) { return d.value; })
+    .eachBefore(function(d) { var h = 0; do d.height = h; while ((d = d.parent) && (d.height < ++h)); })
+    .sort(function(a, b) { return b.height - a.height || b.value - a.value; });
+```
+
+This sort order is recommended for treemaps.
 
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
 
@@ -135,11 +154,17 @@ Invokes the specified *function* for *node* and each descendent in [post-order t
 
 Invokes the specified *function* for *node* and each descendent in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *node*.
 
+<a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
+
+Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
+
 <a name="hierarchyPath" href="#hierarchyPath">#</a> d3.<b>hierarchyPath</b>(<i>a</i>, <i>b</i>)
 
 Returns the shortest path through a hierarchy from node *a* to node *b*. The path starts at node *a*, ascends to the least common ancestor of *a* and *b*, and then descends to node *b*.
 
 ### Cluster
+
+[<img alt="Dendrogram" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/cluster.png">](http://bl.ocks.org/mbostock/ff91c1558bc570b08539547ccc90050b)
 
 The **cluster layout** produces [dendrograms](http://en.wikipedia.org/wiki/Dendrogram): node-link diagrams that place leaf nodes of the tree at the same depth.
 
