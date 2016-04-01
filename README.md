@@ -355,7 +355,7 @@ Specifies the desired aspect ratio of the generated rectangles. The specified *r
 
 ### Partition
 
-…
+[<img alt="Partition" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/partition.png">](http://bl.ocks.org/mbostock/2e73ec84221cb9773f4c)
 
 <a name="partition" href="#partition">#</a> d3.<b>partition</b>()
 
@@ -379,7 +379,7 @@ Specifies the desired aspect ratio of the generated rectangles. The specified *r
 
 ### Pack
 
-…
+[<img alt="Circle-Packing" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/pack.png">](http://bl.ocks.org/mbostock/ca5b03a33affa4160321)
 
 <a name="pack" href="#pack">#</a> d3.<b>pack</b>()
 
