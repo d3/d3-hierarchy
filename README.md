@@ -208,7 +208,7 @@ If *size* is specified, sets this cluster layout’s node size to the specified 
 
 If *separation* is specified, sets the separation accessor to the specified function and returns this cluster layout. If *separation* is not specified, returns the current separation accessor, which defaults to:
 
-```javascript
+```js
 function separation(a, b) {
   return a.parent == b.parent ? 1 : 2;
 }
@@ -251,7 +251,7 @@ If *size* is specified, sets this tree layout’s node size to the specified two
 
 If *separation* is specified, sets the separation accessor to the specified function and returns this tree layout. If *separation* is not specified, returns the current separation accessor, which defaults to:
 
-```javascript
+```js
 function separation(a, b) {
   return a.parent == b.parent ? 1 : 2;
 }
@@ -259,7 +259,7 @@ function separation(a, b) {
 
 A variation that is more appropriate for radial layouts reduces the separation gap proportionally to the radius:
 
-```javascript
+```js
 function separation(a, b) {
   return (a.parent == b.parent ? 1 : 2) / a.depth;
 }
@@ -366,25 +366,40 @@ Specifies the desired aspect ratio of the generated rectangles. The specified *r
 
 [<img alt="Partition" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/partition.png">](http://bl.ocks.org/mbostock/2e73ec84221cb9773f4c)
 
+The **partition layout** produces adjacency diagrams: a space-filling variant of a node-link tree diagram. Rather than drawing a link between parent and child in the hierarchy, nodes are drawn as solid areas (either arcs or rectangles), and their placement relative to other nodes reveals their position in the hierarchy. The size of the nodes encodes a quantitative dimension that would be difficult to show in a node-link diagram.
+
 <a name="partition" href="#partition">#</a> d3.<b>partition</b>()
 
-…
+Creates a new partition layout with the default settings.
 
 <a name="_partition" href="#_partition">#</a> <i>partition</i>(<i>root</i>)
 
-…
+Lays out the specified *root* [hierarchy](#hierarchy), assigning the following properties on *root* and its descendants:
+
+* *node*.x0 - the left edge of the rectangle
+* *node*.y0 - the top edge of the rectangle
+* *node*.x1 - the right edge of the rectangle
+* *node*.y1 - the bottom edge of the rectangle
+
+You must call [*root*.sum](#node_sum) before passing the hierarchy to the partition layout. You probably also want to call [*root*.sort](#node_sort) to order the hierarchy before computing the layout. For example:
+
+```js
+partition(root
+    .sum(function(d) { return d.value; })
+    .sort(function(a, b) { return b.value - a.value; }));
+```
 
 <a name="partition_size" href="#partition_size">#</a> <i>partition</i>.<b>size</b>([<i>size</i>])
 
-…
+If *size* is specified, sets this partition layout’s size to the specified two-element array of numbers [*width*, *height*] and returns this partition layout. If *size* is not specified, returns the current size, which defaults to [1, 1].
 
 <a name="partition_round" href="#partition_round">#</a> <i>partition</i>.<b>round</b>([<i>round</i>])
 
-…
+If *round* is specified, enables or disables rounding according to the given boolean and returns this partition layout. If *round* is not specified, returns the current rounding state, which defaults to false.
 
 <a name="partition_padding" href="#partition_padding">#</a> <i>partition</i>.<b>padding</b>([<i>padding</i>])
 
-…
+If *padding* is specified, sets the padding to the specified number and returns this partition layout. If *padding* is not specified, returns the current padding, which defaults to zero. The padding is used to separate a node’s adjacent children.
 
 ### Pack
 
