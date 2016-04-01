@@ -93,7 +93,7 @@ The depth of the node: zero for the root node, and increasing by one for each de
 
 <a name="node_height" href="#node_height">#</a> <i>node</i>.<b>height</b>
 
-The height of the node: zero for any leaf node, and increasing by one for each ancestor generation.
+The height of the node: zero for leaf nodes, and the greatest distance from any descendant leaf for internal nodes.
 
 <a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
 
