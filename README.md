@@ -150,7 +150,15 @@ root
     .sort(function(a, b) { return b.height - a.height || b.value - a.value; });
 ```
 
-This sort order is recommended for treemaps.
+This sort order is recommended for [treemaps](#treemap). To sort nodes by descending [height](#node_height) and then ascending id:
+
+```js
+root
+    .sum(function(d) { return d.value; })
+    .sort(function(a, b) { return b.height - a.height || a.id.localeCompare(b.id); });
+```
+
+This sort order is recommended for [trees](#tree) and [dendrograms](#cluster).
 
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
 
