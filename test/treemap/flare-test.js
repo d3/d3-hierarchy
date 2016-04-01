@@ -50,6 +50,7 @@ function test(input, expected, tile) {
         delete node.parent;
         delete node.data;
         delete node._squarify;
+        delete node.height;
         if (node.children) node.children.forEach(visit);
       })(actual);
 

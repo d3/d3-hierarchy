@@ -30,18 +30,27 @@ export default function hierarchy(data) {
     }
   }
 
-  return root;
+  return root.eachBefore(computeHeight);
 }
 
 function node_copy() {
-  return hierarchy(this).eachBefore(function(node) {
-    node.data = node.data.data;
-  });
+  return hierarchy(this).eachBefore(copyData);
+}
+
+function copyData(node) {
+  node.data = node.data.data;
+}
+
+export function computeHeight(node) {
+  var height = 0;
+  do node.height = height;
+  while ((node = node.parent) && (node.height < ++height));
 }
 
 export function Node(data) {
   this.data = data;
-  this.depth = 0;
+  this.depth =
+  this.height = 0;
   this.parent = null;
 }
 

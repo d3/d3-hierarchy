@@ -1,5 +1,5 @@
 import {required} from "./accessors";
-import {Node} from "./hierarchy/index";
+import {Node, computeHeight} from "./hierarchy/index";
 
 var keyPrefix = "$", // Protect against keys like “__proto__”.
     preroot = {depth: -1};
@@ -53,7 +53,7 @@ export default function() {
 
     if (!root) throw new Error("no root");
     root.parent = preroot;
-    root.eachBefore(function(node) { node.depth = node.parent.depth + 1; --n; });
+    root.eachBefore(function(node) { node.depth = node.parent.depth + 1; --n; }).eachBefore(computeHeight);
     root.parent = null;
     if (n > 0) throw new Error("cycle");
 

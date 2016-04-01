@@ -89,7 +89,11 @@ A reference to the data associated with this node, as specified to the [construc
 
 <a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
 
-The depth of the node: zero for the root node, and increasing by one for each subsequent generation.
+The depth of the node: zero for the root node, and increasing by one for each descendant generation.
+
+<a name="node_height" href="#node_height">#</a> <i>node</i>.<b>height</b>
+
+The height of the node: zero for any leaf node, and increasing by one for each ancestor generation.
 
 <a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
 
@@ -140,7 +144,6 @@ Similarly, to sort nodes by descending height (greatest distance from any descen
 ```js
 root
     .sum(function(d) { return d.value; })
-    .eachBefore(function(d) { var h = 0; do d.height = h; while ((d = d.parent) && (d.height < ++h)); })
     .sort(function(a, b) { return b.height - a.height || b.value - a.value; });
 ```
 
@@ -495,6 +498,7 @@ This returns:
 {
   "id": "Eve",
   "depth": 0,
+  "height": 2,
   "data": {
     "id": "Eve",
     "parentId": ""
@@ -503,6 +507,7 @@ This returns:
     {
       "id": "Cain",
       "depth": 1,
+      "height": 0,
       "parent": [Circular],
       "data": {
         "id": "Cain",
@@ -512,6 +517,7 @@ This returns:
     {
       "id": "Seth",
       "depth": 1,
+      "height": 1,
       "parent": [Circular],
       "data": {
         "id": "Seth",
@@ -521,6 +527,7 @@ This returns:
         {
           "id": "Enos",
           "depth": 2,
+          "height": 0,
           "parent": [Circular],
           "data": {
             "id": "Enos",
@@ -530,6 +537,7 @@ This returns:
         {
           "id": "Noam",
           "depth": 2,
+          "height": 0,
           "parent": [Circular],
           "data": {
              "id": "Noam",
@@ -541,6 +549,7 @@ This returns:
     {
       "id": "Abel",
       "depth": 1,
+      "height": 0,
       "parent": [Circular],
       "data": {
         "id": "Abel",
@@ -550,6 +559,7 @@ This returns:
     {
       "id": "Awan",
       "depth": 1,
+      "height": 1,
       "parent": [Circular],
       "data": {
         "id": "Awan",
@@ -559,6 +569,7 @@ This returns:
         {
           "id": "Enoch",
           "depth": 2,
+          "height": 0,
           "parent": [Circular],
           "data": {
              "id": "Enoch",
@@ -570,6 +581,7 @@ This returns:
     {
       "id": "Azura",
       "depth": 1,
+      "height": 0,
       "parent": [Circular],
       "data": {
         "id": "Azura",
