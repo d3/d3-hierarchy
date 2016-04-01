@@ -59,17 +59,18 @@ function packChildren(padding, k) {
           child,
           i,
           n = children.length,
-          r = padding(node) * k;
+          r = padding(node) * k || 0;
 
       if (r) for (i = 0; i < n; ++i) {
         children[i].r += r;
       }
 
       for (i = 0, circle = enclose(packSiblings(children)); i < n; ++i) {
-        child = children[i];
-        child.x -= circle.x;
-        child.y -= circle.y;
-        child.r -= r;
+        child = children[i], child.x -= circle.x, child.y -= circle.y;
+      }
+
+      if (r) for (i = 0; i < n; ++i) {
+        children[i].r -= r;
       }
 
       node.r = circle.r + r;
