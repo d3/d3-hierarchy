@@ -1,5 +1,6 @@
-export default function(start, end) {
-  var ancestor = leastCommonAncestor(start, end),
+export default function(end) {
+  var start = this,
+      ancestor = leastCommonAncestor(start, end),
       nodes = [start];
   while (start !== ancestor) {
     start = start.parent;

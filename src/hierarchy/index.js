@@ -3,6 +3,7 @@ import node_eachBefore from "./eachBefore";
 import node_eachAfter from "./eachAfter";
 import node_sum from "./sum";
 import node_sort from "./sort";
+import node_path from "./path";
 import node_ancestors from "./ancestors";
 import node_descendants from "./descendants";
 import node_leaves from "./leaves";
@@ -51,6 +52,7 @@ Node.prototype = hierarchy.prototype = {
   eachBefore: node_eachBefore,
   sum: node_sum,
   sort: node_sort,
+  path: node_path,
   ancestors: node_ancestors,
   descendants: node_descendants,
   leaves: node_leaves,
