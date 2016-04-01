@@ -90,7 +90,7 @@ function children(d) {
 
 The [*node*.data](#node_data) of each node in the returned root is a reference to the corresponding value in the input data. (The data is not copied.) See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
 
-This method can also be used to test if something is an `instanceof d3.hierarchy` and to extend the node prototype.
+This method can also be used to test if a node is an `instanceof d3.hierarchy` and to extend the node prototype.
 
 <a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
 
