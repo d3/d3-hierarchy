@@ -139,7 +139,7 @@ root
     .sort(function(a, b) { return b.value - a.value; });
 ``````
 
-Similarly, to sort nodes by descending height (greatest distance from any descendant leaf) and then descending value:
+Similarly, to sort nodes by descending [height](#node_height) (greatest distance from any descendant leaf) and then descending value:
 
 ```js
 root
