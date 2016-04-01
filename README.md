@@ -1,6 +1,16 @@
 # d3-hierarchy
 
-…
+Many datasets are intrinsically hierarchical. Consider [geographic entities](https://www.census.gov/geo/reference/hierarchy.html), such as census blocks, census tracts, counties and states; the command structure of businesses and governments; file systems and software packages. And even non-hierarchical data may be arranged empirically into a hierarchy, as with [*k*-means clustering](https://en.wikipedia.org/wiki/K-means_clustering) or [phylogenetic trees](https://en.wikipedia.org/wiki/Phylogenetic_tree).
+
+This module implements several popular techniques for visualizing hierarchical data.
+
+**Node-link diagrams** show topology using discrete graphical marks for nodes and links, such as a circular dot for a node and a line connecting each parent and child. The [“tidy” tree](#tree) is delightfully compact. The [dendrogram](#cluster) places leaves at the same level. [Indented trees](https://bl.ocks.org/mbostock/1093025) are useful for interactive browsing. (These diagrams have both polar and Cartesian forms.)
+
+**Adjacency diagrams** show topology through relative placement of nodes. They may also encode a quantitative dimension in the area of each node. The [“icicle” diagram](#partition) uses rectangles, while the “sunburst” uses annular segments.
+
+**Enclosure diagrams** also use an area encoding, but show topology through containment rather than adjacency. A [treemap](#treemap) recursively subdivides area into rectangles. [Circle-packing](#pack) nests circles, which is not as space-efficient as a treemap, but perhaps more readily shows topology.
+
+A good hierarchical visualization should facilitate rapid multiscale inference: micro-observations of individual elements and macro-observations of large groups.
 
 ## Installing
 
