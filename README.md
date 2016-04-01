@@ -19,10 +19,10 @@ var treemap = d3_hierarchy.treemap();
 
 ## API Reference
 
-* [Hierarchy](#hierarchy)
+* [Hierarchy](#hierarchy) ([Node](#node), [Stratify](#stratify))
 * [Cluster](#cluster)
 * [Tree](#tree)
-* [Treemap](#treemap)
+* [Treemap](#treemap) ([Treemap Tiling](#treemap-tiling))
 * [Partition](#partition)
 * [Pack](#pack)
 
