@@ -29,7 +29,7 @@ var treemap = d3_hierarchy.treemap();
 
 ## API Reference
 
-* [Hierarchy](#hierarchy) ([Hierarchy Node](#hierarchy-node), [Stratify](#stratify))
+* [Hierarchy](#hierarchy) ([Stratify](#stratify))
 * [Cluster](#cluster)
 * [Tree](#tree)
 * [Treemap](#treemap) ([Treemap Tiling](#treemap-tiling))
@@ -38,7 +38,7 @@ var treemap = d3_hierarchy.treemap();
 
 ### Hierarchy
 
-Before you can compute a hierarchical layout, you need a [root node](#hierarchy-node). If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
+Before you can compute a hierarchical layout, you need a root node. If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
 
 <a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>(<i>data</i>[, <i>children</i>])
 
@@ -90,7 +90,7 @@ function children(d) {
 
 The [*node*.data](#node_data) of each node in the returned root is a reference to the corresponding value in the input data. (The data is not copied.) See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
 
-#### Hierarchy Node
+This method can also be used to test if something is an `instanceof d3.hierarchy` and to extend the node prototype.
 
 <a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
 
@@ -155,7 +155,7 @@ This example assumes that the [node data](#node_data) has a value field.
 
 Sorts the children of this *node*, if any, and each of this *node*’s descendants’ children, in [pre-order traversal](#node_eachBefore) using the specified *compare* function, and returns this *node*. The specified function is passed two nodes *a* and *b* to compare. If *a* should be before *b*, the function must return a value less than zero; if *b* should be before *a*, the function must return a value greater than zero; otherwise, the relative order of *a* and *b* are not specified. See [*array*.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for more.
 
-Unlike [*node*.sum](#node_sum), the *compare* function is passed two [nodes](#hierarchy-node) rather than two nodes’ [data](#node_data). For example, if the data has a value property, this sorts nodes by the descending aggregate [value](#node_value) of the node and all its descendants, as is recommended for [circle-packing](#pack):
+Unlike [*node*.sum](#node_sum), the *compare* function is passed two [nodes](#hierarchy) rather than two nodes’ [data](#node_data). For example, if the data has a value property, this sorts nodes by the descending aggregate [value](#node_value) of the node and all its descendants, as is recommended for [circle-packing](#pack):
 
 ```js
 root
