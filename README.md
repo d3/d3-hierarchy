@@ -88,33 +88,17 @@ function children(d) {
 }
 ```
 
-The [*node*.data](#node_data) of each node in the returned root is a reference to the corresponding value in the input data. (The data is not copied.) See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
+The returned node and each descendant has the following properties:
+
+* *node*.data - the associated data, as specified to the [constructor](#hierarchy)
+* *node*.depth - zero for the root node, and increasing by one for each descendant generation
+* *node*.height - zero for leaf nodes, and the greatest distance from any descendant leaf for internal nodes
+* *node*.parent - the parent node, or null for the root node
+* *node*.children - an array of child nodes, if any; undefined for leaf nodes.
+
+See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
 
 This method can also be used to test if a node is an `instanceof d3.hierarchy` and to extend the node prototype.
-
-<a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
-
-The combined value of this node and all its descendants; computed by [*node*.sum](#node_sum).
-
-<a name="node_data" href="#node_data">#</a> <i>node</i>.<b>data</b>
-
-A reference to the data associated with this node, as specified to the [constructor](#hierarchy).
-
-<a name="node_depth" href="#node_depth">#</a> <i>node</i>.<b>depth</b>
-
-The depth of the node: zero for the root node, and increasing by one for each descendant generation.
-
-<a name="node_height" href="#node_height">#</a> <i>node</i>.<b>height</b>
-
-The height of the node: zero for leaf nodes, and the greatest distance from any descendant leaf for internal nodes.
-
-<a name="node_parent" href="#node_parent">#</a> <i>node</i>.<b>parent</b>
-
-A reference to the parent node; null for the root node.
-
-<a name="node_children" href="#node_children">#</a> <i>node</i>.<b>children</b>
-
-An array of child nodes, if any; undefined for leaf nodes.
 
 <a name="node_ancestors" href="#node_ancestors">#</a> <i>node</i>.<b>ancestors</b>()
 
@@ -134,9 +118,9 @@ Returns the shortest path through the hierarchy from this *node* to the specifie
 
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>)
 
-Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The [value](#node_value) of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s [data](#node_data), and must return a non-negative number.
+Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The *node*.value property of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s data, and must return a non-negative number.
 
-You must call *node*.sum before invoking a hierarchical layout that requires [*node*.value](#node_value), such as [d3.treemap](#treemap). Since the API supports [method chaining](https://en.wikipedia.org/wiki/Method_chaining), you can invoke *node*.sum and [*node*.sort](#node_sort) before computing the layout, and then subsequently generate an array of all [descendant nodes](#node_descendants) like so:
+You must call *node*.sum before invoking a hierarchical layout that requires *node*.value, such as [d3.treemap](#treemap). Since the API supports [method chaining](https://en.wikipedia.org/wiki/Method_chaining), you can invoke *node*.sum and [*node*.sort](#node_sort) before computing the layout, and then subsequently generate an array of all [descendant nodes](#node_descendants) like so:
 
 ```js
 var treemap = d3.treemap()
@@ -149,13 +133,13 @@ var nodes = treemap(root
   .descendants();
 ```
 
-This example assumes that the [node data](#node_data) has a value field.
+This example assumes that the node data has a value field.
 
 <a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>compare</i>)
 
 Sorts the children of this *node*, if any, and each of this *node*’s descendants’ children, in [pre-order traversal](#node_eachBefore) using the specified *compare* function, and returns this *node*. The specified function is passed two nodes *a* and *b* to compare. If *a* should be before *b*, the function must return a value less than zero; if *b* should be before *a*, the function must return a value greater than zero; otherwise, the relative order of *a* and *b* are not specified. See [*array*.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) for more.
 
-Unlike [*node*.sum](#node_sum), the *compare* function is passed two [nodes](#hierarchy) rather than two nodes’ [data](#node_data). For example, if the data has a value property, this sorts nodes by the descending aggregate [value](#node_value) of the node and all its descendants, as is recommended for [circle-packing](#pack):
+Unlike [*node*.sum](#node_sum), the *compare* function is passed two [nodes](#hierarchy) rather than two nodes’ data. For example, if the data has a value property, this sorts nodes by the descending aggregate value of the node and all its descendants, as is recommended for [circle-packing](#pack):
 
 ```js
 root
@@ -163,7 +147,7 @@ root
     .sort(function(a, b) { return b.value - a.value; });
 ``````
 
-Similarly, to sort nodes by descending [height](#node_height) (greatest distance from any descendant leaf) and then descending value, as is recommended for [treemaps](#treemap) and [icicles](#partition):
+Similarly, to sort nodes by descending height (greatest distance from any descendant leaf) and then descending value, as is recommended for [treemaps](#treemap) and [icicles](#partition):
 
 ```js
 root
@@ -183,7 +167,7 @@ You must call *node*.sort before invoking a hierarchical layout if you want the 
 
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
 
-Invokes the specified *function* for *node* and each descendent in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser [depth](#node_depth) have already been visited, as well as all preceeding nodes of the same depth. The specified function is passed the current *node*.
+Invokes the specified *function* for *node* and each descendent in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser depth have already been visited, as well as all preceeding nodes of the same depth. The specified function is passed the current *node*.
 
 <a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>)
 
@@ -195,7 +179,7 @@ Invokes the specified *function* for *node* and each descendent in [pre-order tr
 
 <a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
 
-Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
+Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same data, however.)
 
 #### Stratify
 
@@ -527,7 +511,7 @@ You must call [*root*.sum](#node_sum) before passing the hierarchy to the pack l
 
 <a name="pack_radius" href="#pack_radius">#</a> <i>pack</i>.<b>radius</b>([<i>radius</i>])
 
-If *radius* is specified, sets the pack layout’s radius accessor to the specified function and returns this pack layout. If *radius* is not specified, returns the current radius accessor, which defaults to null. If the radius accessor is null, the radius of each leaf circle is derived from the leaf [*node*.value](#node_value) (computed by [*node*.sum](#node_sum)); the radii are then scaled proportionally to fit the [layout size](#pack_size). If the radius accessor is not null, the radius of each leaf circle is specified exactly by the function.
+If *radius* is specified, sets the pack layout’s radius accessor to the specified function and returns this pack layout. If *radius* is not specified, returns the current radius accessor, which defaults to null. If the radius accessor is null, the radius of each leaf circle is derived from the leaf *node*.value (computed by [*node*.sum](#node_sum)); the radii are then scaled proportionally to fit the [layout size](#pack_size). If the radius accessor is not null, the radius of each leaf circle is specified exactly by the function.
 
 <a name="pack_size" href="#pack_size">#</a> <i>pack</i>.<b>size</b>([<i>size</i>])
 
