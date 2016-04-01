@@ -2,9 +2,9 @@
 
 Many datasets are intrinsically hierarchical. Consider [geographic entities](https://www.census.gov/geo/reference/hierarchy.html), such as census blocks, census tracts, counties and states; the command structure of businesses and governments; file systems and software packages. And even non-hierarchical data may be arranged empirically into a hierarchy, as with [*k*-means clustering](https://en.wikipedia.org/wiki/K-means_clustering) or [phylogenetic trees](https://en.wikipedia.org/wiki/Phylogenetic_tree).
 
-This module implements several popular techniques for visualizing hierarchical data.
+This module implements several popular techniques for visualizing hierarchical data:
 
-**Node-link diagrams** show topology using discrete graphical marks for nodes and links, such as a circular dot for a node and a line connecting each parent and child. The [“tidy” tree](#tree) is delightfully compact. The [dendrogram](#cluster) places leaves at the same level. [Indented trees](https://bl.ocks.org/mbostock/1093025) are useful for interactive browsing. (These diagrams have both polar and Cartesian forms.)
+**Node-link diagrams** show topology using discrete marks for nodes and links, such as a circle for each node and a line connecting each parent and child. The [“tidy” tree](#tree) is delightfully compact, while the [dendrogram](#cluster) places leaves at the same level. (These have both polar and Cartesian forms.) [Indented trees](https://bl.ocks.org/mbostock/1093025) are useful for interactive browsing.
 
 **Adjacency diagrams** show topology through relative placement of nodes. They may also encode a quantitative dimension in the area of each node. The [“icicle” diagram](#partition) uses rectangles, while the “sunburst” uses annular segments.
 
