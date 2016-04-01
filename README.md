@@ -124,11 +124,22 @@ Returns the shortest path through the hierarchy from this *node* to the specifie
 
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>)
 
-Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The [value](#node_value) of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s [data](#node_data), and must return a non-negative number. For example, if the data has a value property:
+Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The [value](#node_value) of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s [data](#node_data), and must return a non-negative number.
+
+You must call *node*.sum before invoking a hierarchical layout that requires [*node*.value](#node_value), such as [d3.treemap](#treemap). Since the API supports [method chaining](https://en.wikipedia.org/wiki/Method_chaining), you can invoke *node*.sum and [*node*.sort](#node_sort) before computing the layout, and then subsequently generate an array of all [descendant nodes](#node_descendants) like so:
 
 ```js
-root.sum(function(d) { return d.value; });
+var treemap = d3.treemap()
+    .size([width, height])
+    .padding(2);
+
+var nodes = treemap(root
+    .sum(function(d) { return d.value; })
+    .sort(function(a, b) { return b.height - a.height || b.value - a.value; }))
+  .descendants();
 ```
+
+This example assumes that the [node data](#node_data) has a value field.
 
 <a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>compare</i>)
 
@@ -158,7 +169,7 @@ root
     .sort(function(a, b) { return b.height - a.height || a.id.localeCompare(b.id); });
 ```
 
-This sort order is recommended for [trees](#tree) and [dendrograms](#cluster).
+This sort order is recommended for [trees](#tree) and [dendrograms](#cluster). You must call *node*.sort before invoking a hierarchical layout if you want the new sort order to affect the layout; see [*node*.sum](#node_sum) for an example.
 
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
 
@@ -293,13 +304,7 @@ Lays out the specified *root* [hierarchy](#hierarchy), assigning the following p
 * *node*.x - the *x*-coordinate of the node
 * *node*.y - the *y*-coordinate of the node
 
-The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a [radial layout](http://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab).
-
-You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the cluster layout. For example:
-
-```js
-cluster(root.sort(function(a, b) { return a.id.localeCompare(b.id); }));
-```
+The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a [radial layout](http://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab). You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the cluster layout.
 
 <a name="cluster_size" href="#cluster_size">#</a> <i>cluster</i>.<b>size</b>([<i>size</i>])
 
@@ -338,13 +343,7 @@ Lays out the specified *root* [hierarchy](#hierarchy), assigning the following p
 * *node*.x - the *x*-coordinate of the node
 * *node*.y - the *y*-coordinate of the node
 
-The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a [radial layout](http://bl.ocks.org/mbostock/2e12b0bd732e7fe4000e2d11ecab0268).
-
-You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the tree layout. For example:
-
-```js
-tree(root.sort(function(a, b) { return a.id.localeCompare(b.id); }));
-```
+The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a [radial layout](http://bl.ocks.org/mbostock/2e12b0bd732e7fe4000e2d11ecab0268). You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the tree layout.
 
 <a name="tree_size" href="#tree_size">#</a> <i>tree</i>.<b>size</b>([<i>size</i>])
 
@@ -393,13 +392,7 @@ Lays out the specified *root* [hierarchy](#hierarchy), assigning the following p
 * *node*.x1 - the right edge of the rectangle
 * *node*.y1 - the bottom edge of the rectangle
 
-You must call [*root*.sum](#node_sum) before passing the hierarchy to the treemap layout. You probably also want to call [*root*.sort](#node_sort) to order the hierarchy before computing the layout. For example:
-
-```js
-treemap(root
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.value - a.value; }));
-```
+You must call [*root*.sum](#node_sum) before passing the hierarchy to the treemap layout. You probably also want to call [*root*.sort](#node_sort) to order the hierarchy before computing the layout.
 
 <a name="treemap_tile" href="#treemap_tile">#</a> <i>treemap</i>.<b>tile</b>([<i>tile</i>])
 
@@ -488,13 +481,7 @@ Lays out the specified *root* [hierarchy](#hierarchy), assigning the following p
 * *node*.x1 - the right edge of the rectangle
 * *node*.y1 - the bottom edge of the rectangle
 
-You must call [*root*.sum](#node_sum) before passing the hierarchy to the partition layout. You probably also want to call [*root*.sort](#node_sort) to order the hierarchy before computing the layout. For example:
-
-```js
-partition(root
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.value - a.value; }));
-```
+You must call [*root*.sum](#node_sum) before passing the hierarchy to the partition layout. You probably also want to call [*root*.sort](#node_sort) to order the hierarchy before computing the layout.
 
 <a name="partition_size" href="#partition_size">#</a> <i>partition</i>.<b>size</b>([<i>size</i>])
 
@@ -526,13 +513,7 @@ Lays out the specified *root* [hierarchy](#hierarchy), assigning the following p
 * *node*.y - the *y*-coordinate of the circle’s center
 * *node*.r - the radius of the circle
 
-You must call [*root*.sum](#node_sum) before passing the hierarchy to the pack layout. You probably also want to call [*root*.sort](#node_sort) to order the hierarchy before computing the layout. For example:
-
-```js
-pack(root
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.value - a.value; }));
-```
+You must call [*root*.sum](#node_sum) before passing the hierarchy to the pack layout. You probably also want to call [*root*.sort](#node_sort) to order the hierarchy before computing the layout.
 
 <a name="pack_radius" href="#pack_radius">#</a> <i>pack</i>.<b>radius</b>([<i>radius</i>])
 
