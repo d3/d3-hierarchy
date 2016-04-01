@@ -34,8 +34,8 @@ var treemap = d3_hierarchy.treemap();
 Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node. The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an array of data representing the children. If a *children* accessor is not specified, it defaults to:
 
 ```js
-function children(data) {
-  return data.children;
+function children(d) {
+  return d.children;
 }
 ```
 
