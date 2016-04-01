@@ -111,6 +111,10 @@ Returns the array of descendant nodes, starting with this node, then followed by
 
 Returns the array of leaf nodes in traversal order; leaves are nodes with no children.
 
+<a name="node_path" href="#node_path">#</a> <i>node</i>.<b>path</b>(<i>target</i>)
+
+Returns the shortest path through the hierarchy from this *node* to the specified *target* node. The path starts at this *node*, ascends to the least common ancestor of this *node* and the *target* node, and then descends to the *target* node. This is particularly useful for [hierarchical edge bundling](https://bl.ocks.org/mbostock/7607999).
+
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>)
 
 Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The [value](#node_value) of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s [data](#node_data), and must return a non-negative number. For example, if the data has a value property:
@@ -158,10 +162,6 @@ Invokes the specified *function* for *node* and each descendent in [pre-order tr
 
 Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same [data](#node_data), however.)
 
-<a name="hierarchyPath" href="#hierarchyPath">#</a> d3.<b>hierarchyPath</b>(<i>a</i>, <i>b</i>)
-
-Returns the shortest path through a hierarchy from node *a* to node *b*. The path starts at node *a*, ascends to the least common ancestor of *a* and *b*, and then descends to node *b*.
-
 ### Cluster
 
 [<img alt="Dendrogram" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/cluster.png">](http://bl.ocks.org/mbostock/ff91c1558bc570b08539547ccc90050b)
@@ -179,7 +179,7 @@ Lays out the specified *root* [hierarchy](#hierarchy), assigning the following p
 * *node*.x - the *x*-coordinate of the node
 * *node*.y - the *y*-coordinate of the node
 
-The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a radial rather than Cartesian layout.
+The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a [radial layout](http://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab).
 
 You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the cluster layout. For example:
 
@@ -189,7 +189,7 @@ cluster(root.sort(function(a, b) { return a.id.localeCompare(b.id); }));
 
 <a name="cluster_size" href="#cluster_size">#</a> <i>cluster</i>.<b>size</b>([<i>size</i>])
 
-If *size* is specified, sets the layout size to the specified two-element array [*width*, *height*] and returns this cluster layout. If *size* is not specified, returns the current layout size, which defaults to [1, 1]. A layout size of null indicates that a [node size](#node_size) will be used instead. The coordinates *x* and *y* represent an arbitrary coordinate system; for example,to produce a radial layout, a size of [360, *radius*] corresponds to a breadth of 360° and a depth of *radius*.
+If *size* is specified, sets the layout size to the specified two-element array [*width*, *height*] and returns this cluster layout. If *size* is not specified, returns the current layout size, which defaults to [1, 1]. A layout size of null indicates that a [node size](#node_size) will be used instead. The coordinates *x* and *y* represent an arbitrary coordinate system; for example, to produce a [radial layout](http://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab), a size of [360, *radius*] corresponds to a breadth of 360° and a depth of *radius*.
 
 <a name="cluster_nodeSize" href="#cluster_nodeSize">#</a> <i>cluster</i>.<b>nodeSize</b>([<i>size</i>])
 
@@ -202,14 +202,6 @@ If *separation* is specified, sets the separation accessor to the specified func
 ```javascript
 function separation(a, b) {
   return a.parent == b.parent ? 1 : 2;
-}
-```
-
-A variation that is more appropriate for radial layouts reduces the separation gap proportionally to the radius:
-
-```javascript
-function separation(a, b) {
-  return (a.parent == b.parent ? 1 : 2) / a.depth;
 }
 ```
 
@@ -230,7 +222,7 @@ Lays out the specified *root* [hierarchy](#hierarchy), assigning the following p
 * *node*.x - the *x*-coordinate of the node
 * *node*.y - the *y*-coordinate of the node
 
-The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a radial rather than Cartesian layout.
+The coordinates *x* and *y* represent an arbitrary coordinate system; for example, you can treat *x* as a radius and *y* as an angle to produce a [radial layout](http://bl.ocks.org/mbostock/2e12b0bd732e7fe4000e2d11ecab0268).
 
 You may want to call [*root*.sort](#node_sort) before passing the hierarchy to the tree layout. For example:
 
@@ -240,7 +232,7 @@ tree(root.sort(function(a, b) { return a.id.localeCompare(b.id); }));
 
 <a name="tree_size" href="#tree_size">#</a> <i>tree</i>.<b>size</b>([<i>size</i>])
 
-If *size* is specified, sets the layout size to the specified two-element array [*width*, *height*] and returns this tree layout. If *size* is not specified, returns the current layout size, which defaults to [1, 1]. A layout size of null indicates that a [node size](#node_size) will be used instead. The coordinates *x* and *y* represent an arbitrary coordinate system; for example,to produce a radial layout, a size of [360, *radius*] corresponds to a breadth of 360° and a depth of *radius*.
+If *size* is specified, sets the layout size to the specified two-element array [*width*, *height*] and returns this tree layout. If *size* is not specified, returns the current layout size, which defaults to [1, 1]. A layout size of null indicates that a [node size](#node_size) will be used instead. The coordinates *x* and *y* represent an arbitrary coordinate system; for example, to produce a [radial layout](http://bl.ocks.org/mbostock/2e12b0bd732e7fe4000e2d11ecab0268), a size of [360, *radius*] corresponds to a breadth of 360° and a depth of *radius*.
 
 <a name="tree_nodeSize" href="#tree_nodeSize">#</a> <i>tree</i>.<b>nodeSize</b>([<i>size</i>])
 
