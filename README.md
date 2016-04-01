@@ -153,7 +153,7 @@ root
     .sort(function(a, b) { return b.value - a.value; });
 ``````
 
-Similarly, to sort nodes by descending [height](#node_height) (greatest distance from any descendant leaf) and then descending value:
+Similarly, to sort nodes by descending [height](#node_height) (greatest distance from any descendant leaf) and then descending value, as is recommended for [treemaps](#treemap):
 
 ```js
 root
@@ -161,7 +161,7 @@ root
     .sort(function(a, b) { return b.height - a.height || b.value - a.value; });
 ```
 
-This sort order is recommended for [treemaps](#treemap). To sort nodes by descending height and then ascending id:
+To sort nodes by descending height and then ascending id, as is recommended for [trees](#tree) and [dendrograms](#cluster):
 
 ```js
 root
@@ -169,7 +169,7 @@ root
     .sort(function(a, b) { return b.height - a.height || a.id.localeCompare(b.id); });
 ```
 
-This sort order is recommended for [trees](#tree) and [dendrograms](#cluster). You must call *node*.sort before invoking a hierarchical layout if you want the new sort order to affect the layout; see [*node*.sum](#node_sum) for an example.
+You must call *node*.sort before invoking a hierarchical layout if you want the new sort order to affect the layout; see [*node*.sum](#node_sum) for an example.
 
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
 
