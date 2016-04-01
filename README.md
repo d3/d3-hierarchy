@@ -10,7 +10,7 @@ This module implements several popular techniques for visualizing hierarchical d
 
 **Enclosure diagrams** also use an area encoding, but show topology through containment. A [treemap](#treemap) recursively subdivides area into rectangles. [Circle-packing](#pack) tightly nests circles; this is not as space-efficient as a treemap, but perhaps more readily shows topology.
 
-A good hierarchical visualization should facilitate rapid multiscale inference: micro-observations of individual elements and macro-observations of large groups.
+A good hierarchical visualization facilitates rapid multiscale inference: micro-observations of individual elements and macro-observations of large groups.
 
 ## Installing
 
