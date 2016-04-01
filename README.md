@@ -71,7 +71,7 @@ For example, given the following input data:
 }
 ```
 
-The following code returns a root *node*, which can then be passed to [*treemap*](#_treemap) or any other hierarchical layout:
+The following code returns a root *node*, which can then be passed to [*tree*](#_tree) or another hierarchical layout:
 
 ```js
 var root = d3.hierarchy(data);
