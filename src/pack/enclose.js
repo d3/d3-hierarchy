@@ -20,7 +20,7 @@ function encloseN(L, B) {
       p1;
 
   switch (B.length) {
-    case 1: circle = B[0]; break;
+    case 1: circle = enclose1(B[0]); break;
     case 2: circle = enclose2(B[0], B[1]); break;
     case 3: circle = enclose3(B[0], B[1], B[2]); break;
   }
@@ -50,6 +50,14 @@ function encloseN(L, B) {
 
   L.tail = l0;
   return circle;
+}
+
+function enclose1(a) {
+  return {
+    x: a.x,
+    y: a.y,
+    r: a.r
+  };
 }
 
 function enclose2(a, b) {

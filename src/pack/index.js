@@ -1,6 +1,7 @@
 import enclose from "./enclose";
 import packSiblings from "./siblings";
 import {optional} from "../accessors";
+import constant, {constantZero} from "../constant";
 
 function defaultRadius(d) {
   return Math.sqrt(d.value);
@@ -10,16 +11,19 @@ export default function() {
   var radius = null,
       dx = 1,
       dy = 1,
-      padding = 0;
+      padding = constantZero;
 
   function pack(root) {
     root.x = dx / 2, root.y = dy / 2;
     if (radius) {
-      root.eachBefore(radiusLeaf(radius)).eachAfter(padChildren(padding / 2)).eachBefore(translateChild(1));
+      root.eachBefore(radiusLeaf(radius))
+          .eachAfter(packChildren(padding, 0.5))
+          .eachBefore(translateChild(1));
     } else {
-      root.eachBefore(radiusLeaf(defaultRadius)).eachAfter(packChildren);
-      if (padding) root.eachAfter(padChildren(padding * root.r / Math.min(dx, dy)));
-      root.eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
+      root.eachBefore(radiusLeaf(defaultRadius))
+          .eachAfter(packChildren(constantZero, 1))
+          .eachAfter(packChildren(padding, root.r / Math.min(dx, dy)))
+          .eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
     }
     return root;
   }
@@ -33,7 +37,7 @@ export default function() {
   };
 
   pack.padding = function(x) {
-    return arguments.length ? (padding = Math.max(0, +x || 0), pack) : padding;
+    return arguments.length ? (padding = typeof x === "function" ? x : constant(+x), pack) : padding;
   };
 
   return pack;
@@ -47,34 +51,28 @@ function radiusLeaf(radius) {
   };
 }
 
-function packChildren(node) {
-  if (children = node.children) {
-    packSiblings(children);
-
-    var circle = enclose(children),
-        children,
-        child,
-        i,
-        n = children.length;
-
-    for (i = 0; i < n; ++i) {
-      child = children[i];
-      child.x -= circle.x;
-      child.y -= circle.y;
-    }
-
-    node.r = circle.r;
-  }
-}
-
-function padChildren(padRadius) {
+function packChildren(padding, k) {
   return function(node) {
     if (children = node.children) {
-      var children, i, n = children.length;
-      for (i = 0; i < n; ++i) children[i].r += padRadius;
-      packChildren(node);
-      for (i = 0; i < n; ++i) children[i].r -= padRadius;
-      node.r += padRadius;
+      var circle,
+          children,
+          child,
+          i,
+          n = children.length,
+          r = padding(node) * k;
+
+      if (r) for (i = 0; i < n; ++i) {
+        children[i].r += r;
+      }
+
+      for (i = 0, circle = enclose(packSiblings(children)); i < n; ++i) {
+        child = children[i];
+        child.x -= circle.x;
+        child.y -= circle.y;
+        child.r -= r;
+      }
+
+      node.r = circle.r + r;
     }
   };
 }
