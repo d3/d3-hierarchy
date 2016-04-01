@@ -96,8 +96,6 @@ The returned node and each descendant has the following properties:
 * *node*.parent - the parent node, or null for the root node
 * *node*.children - an array of child nodes, if any; undefined for leaf nodes.
 
-See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
-
 This method can also be used to test if a node is an `instanceof d3.hierarchy` and to extend the node prototype.
 
 <a name="node_ancestors" href="#node_ancestors">#</a> <i>node</i>.<b>ancestors</b>()
