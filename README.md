@@ -28,19 +28,11 @@ var treemap = d3_hierarchy.treemap();
 
 ### Hierarchy
 
-Before you can compute a hierarchical layout, you need a hierarchy. If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
+Before you can compute a hierarchical layout, you need a [root node](#node). If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
 
 <a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>(<i>data</i>[, <i>children</i>])
 
-Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node. The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an array of data representing the children, or null if the current datum has no children. If *children* is not specified, it defaults to:
-
-```js
-function children(d) {
-  return d.children;
-}
-```
-
-For example, given the following input data:
+Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node. For example:
 
 ```json
 {
@@ -78,13 +70,17 @@ For example, given the following input data:
 }
 ```
 
-The following code returns a root *node*, which can then be passed to [*tree*](#_tree) or another hierarchical layout:
+The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an array of data representing the children, or null if the current datum has no children. If *children* is not specified, it defaults to:
 
 ```js
-var root = d3.hierarchy(data);
+function children(d) {
+  return d.children;
+}
 ```
 
-The [*node*.data](#node_data) of each node in the returned hierarchy is a reference to the corresponding object in the input data. (The data is not copied.) See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
+The [*node*.data](#node_data) of each node in the returned root is a reference to the corresponding value in the input data. (The data is not copied.) See also [Stratify](#stratify) for how to convert tabular data into a hierarchy.
+
+#### Node
 
 <a name="node_value" href="#node_value">#</a> <i>node</i>.<b>value</b>
 
