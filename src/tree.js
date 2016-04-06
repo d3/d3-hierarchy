@@ -124,8 +124,9 @@ export default function() {
         if (node.x > right.x) right = node;
         if (node.depth > bottom.depth) bottom = node;
       });
-      var tx = separation(left, right) / 2 - left.x,
-          kx = dx / (right.x + separation(right, left) / 2 + tx),
+      var s = left === right ? 1 : separation(left, right) / 2,
+          tx = s - left.x,
+          kx = dx / (right.x + s + tx),
           ky = dy / (bottom.depth || 1);
       root.eachBefore(function(node) {
         node.x = (node.x + tx) * kx;
