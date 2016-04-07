@@ -20,7 +20,7 @@ export default function hierarchy(data, children) {
 
   if (children == null) children = defaultChildren;
 
-  while ((node = nodes.pop()) != null) {
+  while (node = nodes.pop()) {
     if (valued) node.value = +node.data.value;
     if ((childs = children(node.data)) && (n = childs.length)) {
       node.children = new Array(n);

@@ -82,7 +82,7 @@ function treeRoot(root) {
       i,
       n;
 
-  while ((node = nodes.pop()) != null) {
+  while (node = nodes.pop()) {
     if (children = node._.children) {
       node.children = new Array(n = children.length);
       for (i = n - 1; i >= 0; --i) {
