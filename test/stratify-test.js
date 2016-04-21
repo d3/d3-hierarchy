@@ -210,9 +210,9 @@ tape("stratify(data) throws an error if the hierarchy is cyclical", function(tes
   test.end();
 });
 
-tape("stratify(data) throws an error if multiple nodes have the same id", function(test) {
+tape("stratify(data) throws an error if multiple parents have the same id", function(test) {
   var s = d3_hierarchy.stratify();
-  test.throws(function() { s([{id: "foo"}, {id: "foo"}]); }, /\bduplicate\b/);
+  test.throws(function() { s([{id: "a"}, {id: "b", parentId: "a"}, {id: "b", parentId: "a"}, {id: "c", parentId: "b"}]); }, /\bambiguous\b/);
   test.end();
 });
 
@@ -244,6 +244,36 @@ tape("stratify(data) allows the id to be undefined for leaf nodes", function(tes
         depth: 1,
         height: 0,
         data: {parentId: "a"}
+      }
+    ]
+  });
+  test.end();
+});
+
+tape("stratify(data) allows the id to be non-unique for leaf nodes", function(test) {
+  var s = d3_hierarchy.stratify(),
+      root = s([
+          {id: "a", parentId: null},
+          {id: "b", parentId: "a"},
+          {id: "b", parentId: "a"}
+        ]);
+  test.deepEqual(noparent(root), {
+    id: "a",
+    depth: 0,
+    height: 1,
+    data: {id: "a", parentId: null},
+    children: [
+      {
+        id: "b",
+        depth: 1,
+        height: 0,
+        data: {id: "b", parentId: "a"}
+      },
+      {
+        id: "b",
+        depth: 1,
+        height: 0,
+        data: {id: "b", parentId: "a"}
       }
     ]
   });

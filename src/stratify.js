@@ -2,7 +2,8 @@ import {required} from "./accessors";
 import {Node, computeHeight} from "./hierarchy/index";
 
 var keyPrefix = "$", // Protect against keys like “__proto__”.
-    preroot = {depth: -1};
+    preroot = {depth: -1},
+    ambiguous = {};
 
 function defaultId(d) {
   return d.id;
@@ -32,8 +33,7 @@ export default function() {
       d = data[i], node = nodes[i] = new Node(d);
       if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
         nodeKey = keyPrefix + (node.id = nodeId);
-        if (nodeKey in nodeByKey) throw new Error("duplicate: " + nodeId);
-        nodeByKey[nodeKey] = node;
+        nodeByKey[nodeKey] = nodeKey in nodeByKey ? ambiguous : node;
       }
     }
 
@@ -45,6 +45,7 @@ export default function() {
       } else {
         parent = nodeByKey[keyPrefix + nodeId];
         if (!parent) throw new Error("missing: " + nodeId);
+        if (parent === ambiguous) throw new Error("ambiguous: " + nodeId);
         if (parent.children) parent.children.push(node);
         else parent.children = [node];
         node.parent = parent;
