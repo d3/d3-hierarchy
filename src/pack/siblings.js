@@ -24,29 +24,44 @@ function intersects(a, b) {
   return dr * dr > dx * dx + dy * dy;
 }
 
+function distance2(circle, x, y) {
+  var dx = circle.x - x,
+      dy = circle.y - y;
+  return dx * dx + dy * dy;
+}
+
 function Node(circle) {
   this._ = circle;
   this.next = null;
   this.previous = null;
-  this.score = circle.x * circle.x + circle.y * circle.y;
 }
 
 export default function(circles) {
   if (!(n = circles.length)) return circles;
 
-  var a, b, c,
-      i, j, k,
-      sj, sk,
-      n;
+  var a, b, c, n;
 
+  // Place the first circle.
   a = circles[0], a.x = a.r, a.y = 0;
   if (!(n > 1)) return circles;
 
+  // Place the second circle.
   b = circles[1], b.x = -b.r, b.y = 0;
   if (!(n > 2)) return circles;
 
-  // Initialize the front-chain using the first three circles a, b and c.
+  // Place the third circle.
   place(b, a, c = circles[2]);
+
+  // Initialize the weighted centroid.
+  var aa = a.r * a.r,
+      ba = b.r * b.r,
+      ca = c.r * c.r,
+      oa = aa + ba + ca,
+      ox = aa * a.x + ba * b.x + ca * c.x,
+      oy = aa * a.y + ba * b.y + ca * c.y,
+      cx, cy, i, j, k, sj, sk;
+
+  // Initialize the front-chain using the first three circles a, b and c.
   a = new Node(a), b = new Node(b), c = new Node(c);
   a.next = c.previous = b;
   b.next = a.previous = c;
@@ -89,8 +104,18 @@ export default function(circles) {
     // Success! Insert the new circle c between a and b.
     c.previous = a, c.next = b, a.next = b.previous = b = c;
 
-    // Now recompute the closest circle a to the origin.
-    while ((c = c.next) !== b) if (c.score < a.score) a = c;
+    // Update the weighted centroid.
+    oa += ca = c._.r * c._.r;
+    ox += ca * c._.x;
+    oy += ca * c._.y;
+
+    // Compute the new closest circle a to centroid.
+    aa = distance2(a._, cx = ox / oa, cy = oy / oa);
+    while ((c = c.next) !== b) {
+      if ((ca = distance2(c._, cx, cy)) < aa) {
+        a = c, aa = ca;
+      }
+    }
     b = a.next;
   }
 
