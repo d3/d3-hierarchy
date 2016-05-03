@@ -1,5 +1,4 @@
-import enclose from "./enclose";
-import packSiblings from "./siblings";
+import {packEnclose} from "./siblings";
 import {optional} from "../accessors";
 import constant, {constantZero} from "../constant";
 
@@ -54,26 +53,16 @@ function radiusLeaf(radius) {
 function packChildren(padding, k) {
   return function(node) {
     if (children = node.children) {
-      var circle,
-          children,
-          child,
+      var children,
           i,
           n = children.length,
-          r = padding(node) * k || 0;
+          r = padding(node) * k || 0,
+          e;
 
-      if (r) for (i = 0; i < n; ++i) {
-        children[i].r += r;
-      }
-
-      for (i = 0, circle = enclose(packSiblings(children)); i < n; ++i) {
-        child = children[i], child.x -= circle.x, child.y -= circle.y;
-      }
-
-      if (r) for (i = 0; i < n; ++i) {
-        children[i].r -= r;
-      }
-
-      node.r = circle.r + r;
+      if (r) for (i = 0; i < n; ++i) children[i].r += r;
+      e = packEnclose(children);
+      if (r) for (i = 0; i < n; ++i) children[i].r -= r;
+      node.r = e + r;
     }
   };
 }

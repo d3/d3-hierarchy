@@ -1,3 +1,5 @@
+import enclose from "./enclose";
+
 function place(a, b, c) {
   var ax = a.x,
       ay = a.y,
@@ -36,18 +38,18 @@ function Node(circle) {
   this.previous = null;
 }
 
-export default function(circles) {
-  if (!(n = circles.length)) return circles;
+export function packEnclose(circles) {
+  if (!(n = circles.length)) return 0;
 
   var a, b, c, n;
 
   // Place the first circle.
-  a = circles[0], a.x = a.r, a.y = 0;
-  if (!(n > 1)) return circles;
+  a = circles[0], a.x = 0, a.y = 0;
+  if (!(n > 1)) return a.r;
 
   // Place the second circle.
-  b = circles[1], b.x = -b.r, b.y = 0;
-  if (!(n > 2)) return circles;
+  b = circles[1], a.x = -b.r, b.x = a.r, b.y = 0;
+  if (!(n > 2)) return a.r + b.r;
 
   // Place the third circle.
   place(b, a, c = circles[2]);
@@ -119,5 +121,16 @@ export default function(circles) {
     b = a.next;
   }
 
+  // Compute the enclosing circle of the front chain.
+  a = [b._], c = b; while ((c = c.next) !== b) a.push(c._); c = enclose(a);
+
+  // Translate the circles to put the enclosing circle around the origin.
+  for (i = 0; i < n; ++i) a = circles[i], a.x -= c.x, a.y -= c.y;
+
+  return c.r;
+}
+
+export default function(circles) {
+  packEnclose(circles);
   return circles;
 }
