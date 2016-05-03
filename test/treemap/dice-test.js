@@ -3,7 +3,7 @@ var tape = require("tape"),
     round = require("./round");
 
 tape("treemapDice(parent, x0, y0, x1, y1) generates a diced layout", function(test) {
-  var dice = d3_hierarchy.treemapDice,
+  var tile = d3_hierarchy.treemapDice,
       root = {
         value: 24,
         children: [
@@ -16,7 +16,7 @@ tape("treemapDice(parent, x0, y0, x1, y1) generates a diced layout", function(te
           {value: 1}
         ]
       };
-  dice(root, 0, 0, 4, 6);
+  tile(root, 0, 0, 4, 6);
   test.deepEqual(root.children.map(round), [
     {x0: 0.00, x1: 1.00, y0: 0.00, y1: 6.00},
     {x0: 1.00, x1: 2.00, y0: 0.00, y1: 6.00},
@@ -25,6 +25,23 @@ tape("treemapDice(parent, x0, y0, x1, y1) generates a diced layout", function(te
     {x0: 3.17, x1: 3.50, y0: 0.00, y1: 6.00},
     {x0: 3.50, x1: 3.83, y0: 0.00, y1: 6.00},
     {x0: 3.83, x1: 4.00, y0: 0.00, y1: 6.00}
+  ]);
+  test.end();
+});
+
+tape("treemapDice(parent, x0, y0, x1, y1) handles a degenerate empty parent", function(test) {
+  var tile = d3_hierarchy.treemapDice,
+      root = {
+        value: 0,
+        children: [
+          {value: 0},
+          {value: 0}
+        ]
+      };
+  tile(root, 0, 0, 0, 4);
+  test.deepEqual(root.children.map(round), [
+    {x0: 0.00, x1: 0.00, y0: 0.00, y1: 4.00},
+    {x0: 0.00, x1: 0.00, y0: 0.00, y1: 4.00}
   ]);
   test.end();
 });

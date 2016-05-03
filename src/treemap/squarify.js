@@ -43,8 +43,8 @@ export default (function custom(ratio) {
 
       // Position and record the row orientation.
       squarified.push(row = {value: sumValue, dice: dx < dy, children: nodes.slice(i0, i1)});
-      if (row.dice) treemapDice(row, x0, y0, x1, y0 += dy * sumValue / value);
-      else treemapSlice(row, x0, y0, x0 += dx * sumValue / value, y1);
+      if (row.dice) treemapDice(row, x0, y0, x1, value ? y0 += dy * sumValue / value : y1);
+      else treemapSlice(row, x0, y0, value ? x0 += dx * sumValue / value : x1, y1);
       value -= sumValue, i0 = i1;
     }
   }

@@ -55,3 +55,37 @@ tape("treemapSquarify.ratio(ratio) observes the specified ratio", function(test)
   ]);
   test.end();
 });
+
+tape("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate tall empty parent", function(test) {
+  var tile = d3_hierarchy.treemapSquarify,
+      root = {
+        value: 0,
+        children: [
+          {value: 0},
+          {value: 0}
+        ]
+      };
+  tile(root, 0, 0, 0, 4);
+  test.deepEqual(root.children.map(round), [
+    {x0: 0.00, x1: 0.00, y0: 0.00, y1: 4.00},
+    {x0: 0.00, x1: 0.00, y0: 0.00, y1: 4.00}
+  ]);
+  test.end();
+});
+
+tape("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate wide empty parent", function(test) {
+  var tile = d3_hierarchy.treemapSquarify,
+      root = {
+        value: 0,
+        children: [
+          {value: 0},
+          {value: 0}
+        ]
+      };
+  tile(root, 0, 0, 4, 0);
+  test.deepEqual(root.children.map(round), [
+    {x0: 0.00, x1: 4.00, y0: 0.00, y1: 0.00},
+    {x0: 0.00, x1: 4.00, y0: 0.00, y1: 0.00}
+  ]);
+  test.end();
+});
