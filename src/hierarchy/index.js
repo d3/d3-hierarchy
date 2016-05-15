@@ -7,6 +7,7 @@ import node_path from "./path";
 import node_ancestors from "./ancestors";
 import node_descendants from "./descendants";
 import node_leaves from "./leaves";
+import node_links from "./links";
 
 export default function hierarchy(data, children) {
   var root = new Node(data),
@@ -71,5 +72,6 @@ Node.prototype = hierarchy.prototype = {
   ancestors: node_ancestors,
   descendants: node_descendants,
   leaves: node_leaves,
+  links: node_links,
   copy: node_copy
 };
