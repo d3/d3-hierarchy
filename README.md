@@ -460,7 +460,7 @@ Specifies the desired aspect ratio of the generated rectangles. The specified *r
 
 <a name="treemapResquarify" href="#treemapResquarify">#</a> d3.<b>treemapResquarify</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
 
-Like [d3.treemapSquarify](#treemapSquarify), except preserves the topology of the previous layout computed by d3.treemapResquarify, if any, and if that layout was generated using the same [target aspect ratio](#resquarify_ratio).
+Like [d3.treemapSquarify](#treemapSquarify), except preserves the topology (node adjacencies) of the previous layout computed by d3.treemapResquarify, if there is a previous layout and that layout used the same [target aspect ratio](#resquarify_ratio). This tiling method is good for animating changes to treemaps because it only changes node sizes and not their relative positions, thus avoiding distracting shuffling and occlusion. The downside of a stable update, however, is a suboptimal layout for subsequent updates: only the first layout uses the Bruls *et al.* squarified algorithm.
 
 <a name="resquarify_ratio" href="#resquarify_ratio">#</a> <i>resquarify</i>.<b>ratio</b>(<i>ratio</i>)
 
