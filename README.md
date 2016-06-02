@@ -458,6 +458,14 @@ Implements the [squarified treemap](https://www.win.tue.nl/~vanwijk/stm.pdf) alg
 
 Specifies the desired aspect ratio of the generated rectangles. The specified *ratio* is merely a hint; the rectangles are not guaranteed to have the specified aspect ratio. If not specified, the aspect ratio defaults to the golden ratio, φ = (1 + sqrt(5)) / 2, per [Kong *et al.*](http://vis.stanford.edu/papers/perception-treemaps)
 
+<a name="treemapResquarify" href="#treemapResquarify">#</a> d3.<b>treemapResquarify</b>(<i>node</i>, <i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
+
+Like [d3.treemapSquarify](#treemapSquarify), except preserves the topology of the previous layout computed by d3.treemapResquarify, if any, and if that layout was generated using the same [target aspect ratio](#resquarify_ratio).
+
+<a name="resquarify_ratio" href="#resquarify_ratio">#</a> <i>resquarify</i>.<b>ratio</b>(<i>ratio</i>)
+
+Specifies the desired aspect ratio of the generated rectangles. The specified *ratio* is merely a hint; the rectangles are not guaranteed to have the specified aspect ratio. If not specified, the aspect ratio defaults to the golden ratio, φ = (1 + sqrt(5)) / 2, per [Kong *et al.*](http://vis.stanford.edu/papers/perception-treemaps)
+
 ### Partition
 
 [<img alt="Partition" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/partition.png">](http://bl.ocks.org/mbostock/2e73ec84221cb9773f4c)
