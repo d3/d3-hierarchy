@@ -1,4 +1,3 @@
-export {version} from "./build/package";
 export {default as cluster} from "./src/cluster";
 export {default as hierarchy} from "./src/hierarchy/index";
 export {default as pack} from "./src/pack/index";
