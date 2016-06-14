@@ -4,6 +4,7 @@
   "description": "Layout algorithms for visualizing hierarchical data.",
   "keywords": [
     "d3",
+    "d3-module",
     "layout",
     "tree",
     "treemap",
