@@ -169,15 +169,15 @@ You must call *node*.sort before invoking a hierarchical layout if you want the 
 
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>)
 
-Invokes the specified *function* for *node* and each descendent in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser depth have already been visited, as well as all preceeding nodes of the same depth. The specified function is passed the current *node*.
+Invokes the specified *function* for *node* and each descendant in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser depth have already been visited, as well as all preceeding nodes of the same depth. The specified function is passed the current *node*.
 
 <a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>)
 
-Invokes the specified *function* for *node* and each descendent in [post-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Post-order), such that a given *node* is only visited after all of its descendants have already been visited. The specified function is passed the current *node*.
+Invokes the specified *function* for *node* and each descendant in [post-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Post-order), such that a given *node* is only visited after all of its descendants have already been visited. The specified function is passed the current *node*.
 
 <a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>)
 
-Invokes the specified *function* for *node* and each descendent in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *node*.
+Invokes the specified *function* for *node* and each descendant in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *node*.
 
 <a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
 
