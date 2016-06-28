@@ -95,6 +95,7 @@ The returned node and each descendant has the following properties:
 * *node*.height - zero for leaf nodes, and the greatest distance from any descendant leaf for internal nodes
 * *node*.parent - the parent node, or null for the root node
 * *node*.children - an array of child nodes, if any; undefined for leaf nodes.
+* *node*.value - the summed value of the node and its [descendants](#node_descendants); optional, set by [*node*.sum](#node_sum).
 
 This method can also be used to test if a node is an `instanceof d3.hierarchy` and to extend the node prototype.
 
