@@ -186,7 +186,7 @@ Invokes the specified *function* for *node* and each descendant in [pre-order tr
 
 <a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>()
 
-Return a deep copy of the tree starting at this root *node*. (The returned deep copy shares the same data, however.)
+Return a deep copy of the subtree starting at this *node*. (The returned deep copy shares the same data, however.) The returned node is the root of a new tree; the returned node’s parent is always null and its depth is always zero.
 
 #### Stratify
 
