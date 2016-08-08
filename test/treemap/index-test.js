@@ -1,7 +1,8 @@
 var tape = require("tape"),
     d3_hierarchy = require("../../"),
     round = require("./round"),
-    simple = require("../data/simple2");
+    simple = require("../data/simple2"),
+    nested = require("../data/simple");
 
 tape("treemap() has the expected defaults", function(test) {
   var treemap = d3_hierarchy.treemap();
@@ -178,6 +179,20 @@ tape("treemap(data) observes the specified sibling order", function(test) {
   test.deepEqual(root.descendants().map(function(d) { return d.value; }), [24, 1, 2, 2, 3, 4, 6, 6]);
   test.end();
 });
+
+tape("treemap(data) accepts non-root node", function(test) {
+  var treemap = d3_hierarchy.treemap(),
+      root = d3_hierarchy.hierarchy(nested).sum(defaultValue).sort(ascendingValue),
+      child = treemap(root.children[1]),
+      nodes = child.descendants().map(round);
+  test.deepEqual(nodes, [
+    { x0: 0.00, y0: 0.00, x1: 1.00, y1: 1.00 },
+    { x0: 0.00, y0: 0.00, x1: 0.56, y1: 0.40 },
+    { x0: 0.00, y0: 0.40, x1: 0.56, y1: 1.00 },
+    { x0: 0.56, y0: 0.00, x1: 1.00, y1: 1.00 }
+  ]);
+  test.end();
+})
 
 function defaultValue(d) {
   return d.value;
