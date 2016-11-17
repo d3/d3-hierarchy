@@ -9,7 +9,7 @@ export function squarifyRatio(ratio, parent, x0, y0, x1, y1) {
       row,
       nodeValue,
       i0 = 0,
-      i1,
+      i1 = 0,
       n = nodes.length,
       dx, dy,
       value = parent.value,
@@ -23,13 +23,16 @@ export function squarifyRatio(ratio, parent, x0, y0, x1, y1) {
 
   while (i0 < n) {
     dx = x1 - x0, dy = y1 - y0;
-    minValue = maxValue = sumValue = nodes[i0].value;
+
+    // Find the next non-empty node.
+    do sumValue = nodes[i1++].value; while (!sumValue && i1 < n);
+    minValue = maxValue = sumValue;
     alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
     beta = sumValue * sumValue * alpha;
     minRatio = Math.max(maxValue / beta, beta / minValue);
 
     // Keep adding nodes while the aspect ratio maintains or improves.
-    for (i1 = i0 + 1; i1 < n; ++i1) {
+    for (; i1 < n; ++i1) {
       sumValue += nodeValue = nodes[i1].value;
       if (nodeValue < minValue) minValue = nodeValue;
       if (nodeValue > maxValue) maxValue = nodeValue;
