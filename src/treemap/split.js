@@ -10,7 +10,7 @@ export default function(parent, x0, y0, x1, y1) {
     return;
   }
 
-  splitTree(parent.children, null, x0, y0, x1, y1);
+  splitTree(parent.children, parent.value, x0, y0, x1, y1);
 
   function splitTree(nodes, sum, x0, y0, x1, y1) {
 
@@ -26,7 +26,7 @@ export default function(parent, x0, y0, x1, y1) {
       nodes[0].y0 = y0;
       nodes[0].y1 = y1;
       if (nodes[0].children && nodes[0].children.length > 0) {
-        splitTree(nodes[0].children, null, x0, y0, x1, y1);
+        splitTree(nodes[0].children, parent.value, x0, y0, x1, y1);
         return;
       } else {
         return;
