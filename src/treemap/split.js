@@ -10,9 +10,9 @@ export default function(parent, x0, y0, x1, y1) {
     return;
   }
 
-  splitTree(parent.children, x0, y0, x1, y1);
+  splitTree(parent.children, null, x0, y0, x1, y1);
 
-  function splitTree(nodes, x0, y0, x1, y1) {
+  function splitTree(nodes, sum, x0, y0, x1, y1) {
 
     var i, n = nodes.length;
 
@@ -26,16 +26,11 @@ export default function(parent, x0, y0, x1, y1) {
       nodes[0].y0 = y0;
       nodes[0].y1 = y1;
       if (nodes[0].children && nodes[0].children.length > 0) {
-        splitTree(nodes[0].children, x0, y0, x1, y1);
+        splitTree(nodes[0].children, null, x0, y0, x1, y1);
+        return;
       } else {
         return;
       }
-    }
-
-    var sum, sums = new Array(n + 1);
-
-    for (sums[0] = sum = i = 0; i < n; ++i) {
-      sums[i + 1] = sum += nodes[i].value;
     }
 
     var width = x1 - x0,
@@ -51,10 +46,21 @@ export default function(parent, x0, y0, x1, y1) {
       r2x1 = 0,
       r2y0 = 0,
       r2y1 = 0,
-      halfSize = sum / 2,
+      halfSize = 0,
+      tmp = 0,
       w1 = 0,
-      tmp = 0;
+      w2 = 0;
 
+
+    if (sum === null) {
+      // if not provided a sum then calculate
+      //   sum total
+      for (sum = i = 0; i < n; ++i) {
+        sum += nodes[i].value;
+      }
+    }
+
+    halfSize = sum / 2;
     for (i = 0; i < n; i++) {
       tmp += nodes[i].value;
       if (Math.abs(halfSize - tmp) > Math.abs(halfSize - w1)) {
@@ -65,6 +71,7 @@ export default function(parent, x0, y0, x1, y1) {
     }
 
     list2 = nodes.slice(i);
+    w2 = w1 - sum;
 
     if (width > height) {
       r1x0 = x0;
@@ -88,7 +95,11 @@ export default function(parent, x0, y0, x1, y1) {
       r2y1 = y1;
     }
 
-    splitTree(list1, r1x0, r1y0, r1x1, r1y1);
-    splitTree(list2, r2x0, r2y0, r2x1, r2y1);
+    if (list1.length > 0 && w1 > 0) {
+      splitTree(list1, w1, r1x0, r1y0, r1x1, r1y1);
+    }
+    if (list2.length > 0 && w2 > 0 ) {
+      splitTree(list2, w2, r2x0, r2y0, r2x1, r2y1);
+    }
   }
 }
