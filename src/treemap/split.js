@@ -12,6 +12,17 @@ export default function(parent, x0, y0, x1, y1) {
 
   splitTree(parent.children, null, x0, y0, x1, y1);
 
+  function calcSum(nodes, n) {
+    // if not provided a sum then calculate
+    //   sum total
+    var sum = 0,
+        i = 0;
+    for ( ; i < n; ++i) {
+      sum += nodes[i].value;
+    }
+    return sum;
+  }
+
   function splitTree(nodes, sum, x0, y0, x1, y1) {
 
     var i, n = nodes.length;
@@ -25,12 +36,7 @@ export default function(parent, x0, y0, x1, y1) {
       nodes[0].x1 = x1;
       nodes[0].y0 = y0;
       nodes[0].y1 = y1;
-      if (nodes[0].children && nodes[0].children.length > 0) {
-        splitTree(nodes[0].children, null, x0, y0, x1, y1);
-        return;
-      } else {
-        return;
-      }
+      return;
     }
 
     var width = x1 - x0,
@@ -53,11 +59,7 @@ export default function(parent, x0, y0, x1, y1) {
 
 
     if (sum === null) {
-      // if not provided a sum then calculate
-      //   sum total
-      for (sum = i = 0; i < n; ++i) {
-        sum += nodes[i].value;
-      }
+      sum = calcSum(nodes, n);
     }
 
     halfSize = sum / 2;
