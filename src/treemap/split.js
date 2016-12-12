@@ -71,7 +71,7 @@ export default function(parent, x0, y0, x1, y1) {
     }
 
     list2 = nodes.slice(i);
-    w2 = w1 - sum;
+    w2 = sum - w1;
 
     if (width > height) {
       r1x0 = x0;
