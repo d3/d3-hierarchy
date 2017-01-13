@@ -1,3 +1,4 @@
+import node_count from "./count";
 import node_each from "./each";
 import node_eachBefore from "./eachBefore";
 import node_eachAfter from "./eachAfter";
@@ -63,6 +64,7 @@ export function Node(data) {
 
 Node.prototype = hierarchy.prototype = {
   constructor: Node,
+  count: node_count,
   each: node_each,
   eachAfter: node_eachAfter,
   eachBefore: node_eachBefore,

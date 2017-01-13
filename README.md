@@ -95,7 +95,7 @@ The returned node and each descendant has the following properties:
 * *node*.height - zero for leaf nodes, and the greatest distance from any descendant leaf for internal nodes
 * *node*.parent - the parent node, or null for the root node
 * *node*.children - an array of child nodes, if any; undefined for leaf nodes.
-* *node*.value - the summed value of the node and its [descendants](#node_descendants); optional, set by [*node*.sum](#node_sum).
+* *node*.value - the summed value of the node and its [descendants](#node_descendants); optional, set by [*node*.sum](#node_sum) or [*node*.count](#node_count).
 
 This method can also be used to test if a node is an `instanceof d3.hierarchy` and to extend the node prototype.
 
@@ -121,13 +121,13 @@ Returns an array of links for this *node*, where each *link* is an object that d
 
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>) [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/sum.js "Source")
 
-Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The *node*.value property of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s data, and must return a non-negative number. The *value* accessor is evaluated for *node* and every descendant, including internal nodes; if you only want leaf nodes to have internal value, then return zero for any node with children. [For example](http://bl.ocks.org/mbostock/b4c0f143db88a9eb01a315a1063c1d77):
+Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The *node*.value property of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s data, and must return a non-negative number. The *value* accessor is evaluated for *node* and every descendant, including internal nodes; if you only want leaf nodes to have internal value, then return zero for any node with children. [For example](http://bl.ocks.org/mbostock/b4c0f143db88a9eb01a315a1063c1d77), as an alternative to [*node*.count](#node_count):
 
 ```js
 root.sum(function(d) { return d.value ? 1 : 0; });
 ```
 
-You must call *node*.sum before invoking a hierarchical layout that requires *node*.value, such as [d3.treemap](#treemap). Since the API supports [method chaining](https://en.wikipedia.org/wiki/Method_chaining), you can invoke *node*.sum and [*node*.sort](#node_sort) before computing the layout, and then subsequently generate an array of all [descendant nodes](#node_descendants) like so:
+You must call *node*.sum or [*node*.count](#node_count) before invoking a hierarchical layout that requires *node*.value, such as [d3.treemap](#treemap). Since the API supports [method chaining](https://en.wikipedia.org/wiki/Method_chaining), you can invoke *node*.sum and [*node*.sort](#node_sort) before computing the layout, and then subsequently generate an array of all [descendant nodes](#node_descendants) like so:
 
 ```js
 var treemap = d3.treemap()
@@ -141,6 +141,10 @@ var nodes = treemap(root
 ```
 
 This example assumes that the node data has a value field.
+
+<a name="node_count" href="#node_count">#</a> <i>node</i>.<b>count</b>() [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/count.js "Source")
+
+Computes the number of leaves under this *node* and assigns it to *node*.value, and similarly for every descendant of *node*. If this *node* is a leaf, its count is one. Returns this *node*. See also [*node*.sum](#node_sum).
 
 <a name="node_sort" href="#node_sort">#</a> <i>node</i>.<b>sort</b>(<i>compare</i>) [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/sort.js "Source")
 
