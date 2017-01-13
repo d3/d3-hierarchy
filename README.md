@@ -90,10 +90,10 @@ function children(d) {
 
 The returned node and each descendant has the following properties:
 
-* *node*.data - the associated data, as specified to the [constructor](#hierarchy)
-* *node*.depth - zero for the root node, and increasing by one for each descendant generation
-* *node*.height - zero for leaf nodes, and the greatest distance from any descendant leaf for internal nodes
-* *node*.parent - the parent node, or null for the root node
+* *node*.data - the associated data, as specified to the [constructor](#hierarchy).
+* *node*.depth - zero for the root node, and increasing by one for each descendant generation.
+* *node*.height - zero for leaf nodes, and the greatest distance from any descendant leaf for internal nodes.
+* *node*.parent - the parent node, or null for the root node.
 * *node*.children - an array of child nodes, if any; undefined for leaf nodes.
 * *node*.value - the summed value of the node and its [descendants](#node_descendants); optional, see [*node*.sum](#node_sum) and [*node*.count](#node_count).
 
