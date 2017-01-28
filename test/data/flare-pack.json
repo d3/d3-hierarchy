@@ -1,0 +1,1828 @@
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "value": 12870,
+                  "r": 32.32,
+                  "x": 193.74,
+                  "y": 550.35,
+                  "name": "NodeLinkTreeLayout"
+                },
+                {
+                  "value": 12348,
+                  "r": 31.66,
+                  "x": 257.71,
+                  "y": 550.35,
+                  "name": "RadialTreeLayout"
+                },
+                {
+                  "value": 12003,
+                  "r": 31.21,
+                  "x": 226.38,
+                  "y": 604.85,
+                  "name": "CirclePackingLayout"
+                },
+                {
+                  "value": 9317,
+                  "r": 27.5,
+                  "x": 226.34,
+                  "y": 500.21,
+                  "name": "CircleLayout"
+                },
+                {
+                  "value": 9191,
+                  "r": 27.31,
+                  "x": 171.79,
+                  "y": 494.91,
+                  "name": "TreeMapLayout"
+                },
+                {
+                  "value": 9121,
+                  "r": 27.21,
+                  "x": 135.97,
+                  "y": 536.01,
+                  "name": "StackedAreaLayout"
+                },
+                {
+                  "value": 8411,
+                  "r": 26.13,
+                  "x": 148.84,
+                  "y": 587.77,
+                  "name": "ForceDirectedLayout"
+                },
+                {
+                  "value": 7881,
+                  "r": 25.29,
+                  "x": 176.39,
+                  "y": 631.18,
+                  "name": "Layout"
+                },
+                {
+                  "value": 6725,
+                  "r": 23.36,
+                  "x": 216.61,
+                  "y": 658.54,
+                  "name": "AxisLayout"
+                },
+                {
+                  "value": 4864,
+                  "r": 19.87,
+                  "x": 257.72,
+                  "y": 645.18,
+                  "name": "IcicleTreeLayout"
+                },
+                {
+                  "value": 4853,
+                  "r": 19.84,
+                  "x": 277.12,
+                  "y": 610.53,
+                  "name": "DendrogramLayout"
+                },
+                {
+                  "value": 3727,
+                  "r": 17.39,
+                  "x": 297.33,
+                  "y": 579.26,
+                  "name": "BundledEdgeRouter"
+                },
+                {
+                  "value": 3174,
+                  "r": 16.05,
+                  "x": 305.28,
+                  "y": 546.78,
+                  "name": "IndentedTreeLayout"
+                },
+                {
+                  "value": 2728,
+                  "r": 14.88,
+                  "x": 291.97,
+                  "y": 518.86,
+                  "name": "PieLayout"
+                },
+                {
+                  "value": 870,
+                  "r": 8.4,
+                  "x": 269.68,
+                  "y": 512.13,
+                  "name": "RandomLayout"
+                }
+              ],
+              "value": 108083,
+              "r": 112.24,
+              "x": 211.88,
+              "y": 569.79,
+              "name": "layout"
+            },
+            {
+              "children": [
+                {
+                  "value": 9956,
+                  "r": 28.42,
+                  "x": 353,
+                  "y": 565.76,
+                  "name": "Labeler"
+                },
+                {
+                  "value": 3899,
+                  "r": 17.79,
+                  "x": 399.21,
+                  "y": 565.76,
+                  "name": "RadialLabeler"
+                },
+                {
+                  "value": 3202,
+                  "r": 16.12,
+                  "x": 385.13,
+                  "y": 596.61,
+                  "name": "StackedAreaLabeler"
+                }
+              ],
+              "value": 17057,
+              "r": 46.58,
+              "x": 370.7,
+              "y": 569.79,
+              "name": "label"
+            },
+            {
+              "children": [
+                {
+                  "value": 4138,
+                  "r": 18.32,
+                  "x": 333.79,
+                  "y": 656.49,
+                  "name": "PropertyEncoder"
+                },
+                {
+                  "value": 4060,
+                  "r": 18.15,
+                  "x": 370.27,
+                  "y": 656.49,
+                  "name": "Encoder"
+                },
+                {
+                  "value": 3179,
+                  "r": 16.06,
+                  "x": 352.19,
+                  "y": 685.54,
+                  "name": "ColorEncoder"
+                },
+                {
+                  "value": 1830,
+                  "r": 12.19,
+                  "x": 352.18,
+                  "y": 632.14,
+                  "name": "SizeEncoder"
+                },
+                {
+                  "value": 1690,
+                  "r": 11.71,
+                  "x": 328.87,
+                  "y": 626.86,
+                  "name": "ShapeEncoder"
+                }
+              ],
+              "value": 14897,
+              "r": 45.51,
+              "x": 342.94,
+              "y": 657.59,
+              "name": "encoder"
+            },
+            {
+              "children": [
+                {
+                  "value": 6314,
+                  "r": 22.64,
+                  "x": 322.73,
+                  "y": 479.71,
+                  "name": "Distortion"
+                },
+                {
+                  "value": 4461,
+                  "r": 19.03,
+                  "x": 364.39,
+                  "y": 479.71,
+                  "name": "BifocalDistortion"
+                },
+                {
+                  "value": 3444,
+                  "r": 16.72,
+                  "x": 346.82,
+                  "y": 510.83,
+                  "name": "FisheyeDistortion"
+                }
+              ],
+              "value": 14219,
+              "r": 42.48,
+              "x": 341.69,
+              "y": 485.59,
+              "name": "distortion"
+            },
+            {
+              "children": [
+                {
+                  "value": 5219,
+                  "r": 20.58,
+                  "x": 261.9,
+                  "y": 427.29,
+                  "name": "FisheyeTreeFilter"
+                },
+                {
+                  "value": 3509,
+                  "r": 16.87,
+                  "x": 299.35,
+                  "y": 427.29,
+                  "name": "VisibilityFilter"
+                },
+                {
+                  "value": 3165,
+                  "r": 16.03,
+                  "x": 284.06,
+                  "y": 456.43,
+                  "name": "GraphDistanceFilter"
+                }
+              ],
+              "value": 11893,
+              "r": 38.75,
+              "x": 278.64,
+              "y": 434.35,
+              "name": "filter"
+            },
+            {
+              "value": 5248,
+              "r": 20.64,
+              "x": 219.32,
+              "y": 437.12,
+              "name": "OperatorList"
+            },
+            {
+              "value": 4190,
+              "r": 18.44,
+              "x": 180.67,
+              "y": 442.89,
+              "name": "OperatorSequence"
+            },
+            {
+              "value": 2581,
+              "r": 14.47,
+              "x": 151.6,
+              "y": 458.33,
+              "name": "OperatorSwitch"
+            },
+            {
+              "value": 2490,
+              "r": 14.21,
+              "x": 128.23,
+              "y": 474.95,
+              "name": "Operator"
+            },
+            {
+              "value": 2023,
+              "r": 12.81,
+              "x": 111.05,
+              "y": 495.82,
+              "name": "SortOperator"
+            },
+            {
+              "value": 1286,
+              "r": 10.22,
+              "x": 101.49,
+              "y": 516.77,
+              "name": "IOperator"
+            }
+          ],
+          "value": 183967,
+          "r": 172.67,
+          "x": 254.62,
+          "y": 566.09,
+          "name": "operator"
+        },
+        {
+          "children": [
+            {
+              "value": 20544,
+              "r": 40.83,
+              "x": 536.58,
+              "y": 564.72,
+              "name": "Data"
+            },
+            {
+              "value": 19788,
+              "r": 40.07,
+              "x": 617.48,
+              "y": 564.72,
+              "name": "DataList"
+            },
+            {
+              "value": 19382,
+              "r": 39.66,
+              "x": 577.78,
+              "y": 633.87,
+              "name": "NodeSprite"
+            },
+            {
+              "value": 11275,
+              "r": 30.25,
+              "x": 577.7,
+              "y": 506.74,
+              "name": "ScaleBinding"
+            },
+            {
+              "value": 10349,
+              "r": 28.98,
+              "x": 519.26,
+              "y": 497.09,
+              "name": "DataSprite"
+            },
+            {
+              "value": 9930,
+              "r": 28.39,
+              "x": 474.85,
+              "y": 533.41,
+              "name": "TreeBuilder"
+            },
+            {
+              "children": [
+                {
+                  "value": 5569,
+                  "r": 21.26,
+                  "x": 454.34,
+                  "y": 596.17,
+                  "name": "EdgeRenderer"
+                },
+                {
+                  "value": 2247,
+                  "r": 13.5,
+                  "x": 489.1,
+                  "y": 596.17,
+                  "name": "ShapeRenderer"
+                },
+                {
+                  "value": 698,
+                  "r": 7.53,
+                  "x": 477.27,
+                  "y": 613.56,
+                  "name": "ArrowType"
+                },
+                {
+                  "value": 353,
+                  "r": 5.35,
+                  "x": 476.79,
+                  "y": 581.89,
+                  "name": "IRenderer"
+                }
+              ],
+              "value": 8867,
+              "r": 34.76,
+              "x": 467.84,
+              "y": 596.17,
+              "name": "render"
+            },
+            {
+              "value": 7147,
+              "r": 24.08,
+              "x": 514.05,
+              "y": 632.6,
+              "name": "Tree"
+            },
+            {
+              "value": 3301,
+              "r": 16.37,
+              "x": 624.27,
+              "y": 508.69,
+              "name": "EdgeSprite"
+            }
+          ],
+          "value": 110583,
+          "r": 115.8,
+          "x": 543.09,
+          "y": 566.09,
+          "name": "data"
+        },
+        {
+          "children": [
+            {
+              "value": 8435,
+              "r": 26.16,
+              "x": 429.51,
+              "y": 724.84,
+              "name": "TooltipControl"
+            },
+            {
+              "value": 7862,
+              "r": 25.26,
+              "x": 480.93,
+              "y": 724.84,
+              "name": "SelectionControl"
+            },
+            {
+              "value": 5222,
+              "r": 20.59,
+              "x": 456.03,
+              "y": 763.33,
+              "name": "PanZoomControl"
+            },
+            {
+              "value": 4896,
+              "r": 19.93,
+              "x": 456.02,
+              "y": 687.13,
+              "name": "HoverControl"
+            },
+            {
+              "value": 4665,
+              "r": 19.46,
+              "x": 417.12,
+              "y": 680.93,
+              "name": "ControlList"
+            },
+            {
+              "value": 3824,
+              "r": 17.62,
+              "x": 389.93,
+              "y": 706.13,
+              "name": "ClickControl"
+            },
+            {
+              "value": 2832,
+              "r": 15.16,
+              "x": 390.65,
+              "y": 738.89,
+              "name": "ExpandControl"
+            },
+            {
+              "value": 2649,
+              "r": 14.66,
+              "x": 410.63,
+              "y": 761.03,
+              "name": "DragControl"
+            },
+            {
+              "value": 2138,
+              "r": 13.17,
+              "x": 428.28,
+              "y": 782.55,
+              "name": "AnchorControl"
+            },
+            {
+              "value": 1353,
+              "r": 10.48,
+              "x": 486.34,
+              "y": 689.51,
+              "name": "Control"
+            },
+            {
+              "value": 763,
+              "r": 7.87,
+              "x": 479.62,
+              "y": 672.44,
+              "name": "IControl"
+            }
+          ],
+          "value": 44639,
+          "r": 72.52,
+          "x": 441.59,
+          "y": 724.72,
+          "name": "controls"
+        },
+        {
+          "children": [
+            {
+              "value": 20859,
+              "r": 41.14,
+              "x": 411.93,
+              "y": 410.3,
+              "name": "Legend"
+            },
+            {
+              "value": 10530,
+              "r": 29.23,
+              "x": 482.31,
+              "y": 410.3,
+              "name": "LegendRange"
+            },
+            {
+              "value": 4614,
+              "r": 19.35,
+              "x": 456.35,
+              "y": 451.37,
+              "name": "LegendItem"
+            }
+          ],
+          "value": 36003,
+          "r": 70.37,
+          "x": 441.17,
+          "y": 410.3,
+          "name": "legend"
+        },
+        {
+          "children": [
+            {
+              "value": 24593,
+              "r": 44.67,
+              "x": 301.23,
+              "y": 335.82,
+              "name": "Axis"
+            },
+            {
+              "value": 6703,
+              "r": 23.32,
+              "x": 369.23,
+              "y": 335.82,
+              "name": "CartesianAxes"
+            },
+            {
+              "value": 1302,
+              "r": 10.28,
+              "x": 349.13,
+              "y": 362.75,
+              "name": "Axes"
+            },
+            {
+              "value": 652,
+              "r": 7.27,
+              "x": 348.19,
+              "y": 313.6,
+              "name": "AxisGridLine"
+            },
+            {
+              "value": 636,
+              "r": 7.18,
+              "x": 340.17,
+              "y": 301.57,
+              "name": "AxisLabel"
+            }
+          ],
+          "value": 33886,
+          "r": 68,
+          "x": 324.55,
+          "y": 335.82,
+          "name": "axis"
+        },
+        {
+          "value": 16540,
+          "r": 36.64,
+          "x": 222.58,
+          "y": 359.26,
+          "name": "Visualization"
+        },
+        {
+          "children": [
+            {
+              "value": 2313,
+              "r": 13.7,
+              "x": 146.87,
+              "y": 383.45,
+              "name": "DataEvent"
+            },
+            {
+              "value": 1880,
+              "r": 12.35,
+              "x": 172.92,
+              "y": 383.45,
+              "name": "SelectionEvent"
+            },
+            {
+              "value": 1701,
+              "r": 11.75,
+              "x": 161.18,
+              "y": 404.49,
+              "name": "TooltipEvent"
+            },
+            {
+              "value": 1117,
+              "r": 9.52,
+              "x": 161.06,
+              "y": 365.07,
+              "name": "VisualizationEvent"
+            }
+          ],
+          "value": 7011,
+          "r": 30.35,
+          "x": 161.12,
+          "y": 385.9,
+          "name": "events"
+        }
+      ],
+      "value": 432629,
+      "r": 290.67,
+      "x": 369.99,
+      "y": 541.27,
+      "name": "vis"
+    },
+    {
+      "children": [
+        {
+          "value": 22026,
+          "r": 42.28,
+          "x": 783.37,
+          "y": 518.07,
+          "name": "Strings"
+        },
+        {
+          "value": 19118,
+          "r": 39.39,
+          "x": 865.04,
+          "y": 518.07,
+          "name": "Shapes"
+        },
+        {
+          "value": 17705,
+          "r": 37.9,
+          "x": 826.99,
+          "y": 585.36,
+          "name": "Maths"
+        },
+        {
+          "value": 12555,
+          "r": 31.92,
+          "x": 826.78,
+          "y": 457.9,
+          "name": "Displays"
+        },
+        {
+          "children": [
+            {
+              "value": 6367,
+              "r": 22.73,
+              "x": 745.81,
+              "y": 438.78,
+              "name": "ColorPalette"
+            },
+            {
+              "value": 2291,
+              "r": 13.64,
+              "x": 782.18,
+              "y": 438.78,
+              "name": "SizePalette"
+            },
+            {
+              "value": 2059,
+              "r": 12.93,
+              "x": 771.77,
+              "y": 463.22,
+              "name": "ShapePalette"
+            },
+            {
+              "value": 1229,
+              "r": 9.99,
+              "x": 771.04,
+              "y": 417.95,
+              "name": "Palette"
+            }
+          ],
+          "value": 11946,
+          "r": 37.01,
+          "x": 759.61,
+          "y": 442.43,
+          "name": "palette"
+        },
+        {
+          "value": 10993,
+          "r": 29.87,
+          "x": 715.75,
+          "y": 492.92,
+          "name": "Geometry"
+        },
+        {
+          "children": [
+            {
+              "value": 9354,
+              "r": 27.55,
+              "x": 705.65,
+              "y": 560.34,
+              "name": "FibonacciHeap"
+            },
+            {
+              "value": 1233,
+              "r": 10,
+              "x": 743.2,
+              "y": 560.34,
+              "name": "HeapNode"
+            }
+          ],
+          "value": 10587,
+          "r": 37.55,
+          "x": 715.65,
+          "y": 560.34,
+          "name": "heap"
+        },
+        {
+          "value": 10001,
+          "r": 28.49,
+          "x": 763.76,
+          "y": 605.59,
+          "name": "Colors"
+        },
+        {
+          "children": [
+            {
+              "value": 3366,
+              "r": 16.53,
+              "x": 787.98,
+              "y": 646.08,
+              "name": "SparseMatrix"
+            },
+            {
+              "value": 3165,
+              "r": 16.03,
+              "x": 820.54,
+              "y": 646.08,
+              "name": "DenseMatrix"
+            },
+            {
+              "value": 2815,
+              "r": 15.11,
+              "x": 804.74,
+              "y": 672.92,
+              "name": "IMatrix"
+            }
+          ],
+          "value": 9346,
+          "r": 34.28,
+          "x": 803.98,
+          "y": 653.77,
+          "name": "math"
+        },
+        {
+          "value": 8258,
+          "r": 25.89,
+          "x": 862.19,
+          "y": 638.56,
+          "name": "Arrays"
+        },
+        {
+          "value": 8217,
+          "r": 25.82,
+          "x": 889.99,
+          "y": 594.96,
+          "name": "Dates"
+        },
+        {
+          "value": 6887,
+          "r": 23.64,
+          "x": 917.11,
+          "y": 553.59,
+          "name": "Sort"
+        },
+        {
+          "value": 6557,
+          "r": 23.07,
+          "x": 926.66,
+          "y": 507.87,
+          "name": "Stats"
+        },
+        {
+          "value": 5559,
+          "r": 21.24,
+          "x": 902.72,
+          "y": 470.58,
+          "name": "Property"
+        },
+        {
+          "value": 2324,
+          "r": 13.73,
+          "x": 872.22,
+          "y": 453.47,
+          "name": "Filter"
+        },
+        {
+          "value": 1486,
+          "r": 10.98,
+          "x": 724.37,
+          "y": 608.09,
+          "name": "Orientation"
+        },
+        {
+          "value": 874,
+          "r": 8.42,
+          "x": 732.74,
+          "y": 625.59,
+          "name": "IValueProxy"
+        },
+        {
+          "value": 383,
+          "r": 5.58,
+          "x": 744.27,
+          "y": 633.53,
+          "name": "IPredicate"
+        },
+        {
+          "value": 335,
+          "r": 5.21,
+          "x": 754.14,
+          "y": 637.89,
+          "name": "IEvaluable"
+        }
+      ],
+      "value": 165157,
+      "r": 146.83,
+      "x": 807.48,
+      "y": 541.27,
+      "name": "util"
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "value": 8746,
+              "r": 26.64,
+              "x": 676.15,
+              "y": 774.06,
+              "name": "Interpolator"
+            },
+            {
+              "value": 2202,
+              "r": 13.37,
+              "x": 716.15,
+              "y": 774.06,
+              "name": "MatrixInterpolator"
+            },
+            {
+              "value": 2047,
+              "r": 12.89,
+              "x": 707.06,
+              "y": 798.69,
+              "name": "ColorInterpolator"
+            },
+            {
+              "value": 2042,
+              "r": 12.87,
+              "x": 707.06,
+              "y": 749.45,
+              "name": "RectangleInterpolator"
+            },
+            {
+              "value": 1983,
+              "r": 12.69,
+              "x": 685.42,
+              "y": 735.84,
+              "name": "ArrayInterpolator"
+            },
+            {
+              "value": 1675,
+              "r": 11.66,
+              "x": 661.25,
+              "y": 738.77,
+              "name": "PointInterpolator"
+            },
+            {
+              "value": 1629,
+              "r": 11.5,
+              "x": 643.75,
+              "y": 753.93,
+              "name": "ObjectInterpolator"
+            },
+            {
+              "value": 1382,
+              "r": 10.59,
+              "x": 638.94,
+              "y": 775.49,
+              "name": "NumberInterpolator"
+            },
+            {
+              "value": 1375,
+              "r": 10.56,
+              "x": 645.75,
+              "y": 795.52,
+              "name": "DateInterpolator"
+            }
+          ],
+          "value": 23081,
+          "r": 51.18,
+          "x": 678.35,
+          "y": 773.36,
+          "name": "interpolate"
+        },
+        {
+          "value": 19975,
+          "r": 40.26,
+          "x": 769.79,
+          "y": 773.36,
+          "name": "Transitioner"
+        },
+        {
+          "value": 17010,
+          "r": 37.15,
+          "x": 733.96,
+          "y": 841.99,
+          "name": "Easing"
+        },
+        {
+          "value": 9201,
+          "r": 27.33,
+          "x": 732.79,
+          "y": 716.8,
+          "name": "Transition"
+        },
+        {
+          "value": 6006,
+          "r": 22.08,
+          "x": 686.15,
+          "y": 700.52,
+          "name": "Tween"
+        },
+        {
+          "value": 5842,
+          "r": 21.77,
+          "x": 643.21,
+          "y": 709.43,
+          "name": "FunctionSequence"
+        },
+        {
+          "value": 5593,
+          "r": 21.3,
+          "x": 613.62,
+          "y": 740.74,
+          "name": "Scheduler"
+        },
+        {
+          "value": 5534,
+          "r": 21.19,
+          "x": 606.58,
+          "y": 782.65,
+          "name": "Sequence"
+        },
+        {
+          "value": 5176,
+          "r": 20.49,
+          "x": 624.27,
+          "y": 820.39,
+          "name": "Parallel"
+        },
+        {
+          "value": 1116,
+          "r": 9.52,
+          "x": 653.14,
+          "y": 828.57,
+          "name": "TransitionEvent"
+        },
+        {
+          "value": 1041,
+          "r": 9.19,
+          "x": 671.24,
+          "y": 833.31,
+          "name": "ISchedulable"
+        },
+        {
+          "value": 449,
+          "r": 6.04,
+          "x": 686.11,
+          "y": 830.05,
+          "name": "Pause"
+        }
+      ],
+      "value": 100024,
+      "r": 112.47,
+      "x": 697.63,
+      "y": 776.16,
+      "name": "animate"
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "value": 772,
+              "r": 7.92,
+              "x": 665.13,
+              "y": 316.39,
+              "name": "range"
+            },
+            {
+              "value": 748,
+              "r": 7.79,
+              "x": 680.84,
+              "y": 316.39,
+              "name": "iff"
+            },
+            {
+              "value": 625,
+              "r": 7.12,
+              "x": 673.1,
+              "y": 329.14,
+              "name": "gte"
+            },
+            {
+              "value": 619,
+              "r": 7.09,
+              "x": 673.1,
+              "y": 303.68,
+              "name": "lte"
+            },
+            {
+              "value": 603,
+              "r": 7,
+              "x": 659.05,
+              "y": 302.78,
+              "name": "gt"
+            },
+            {
+              "value": 603,
+              "r": 7,
+              "x": 650.45,
+              "y": 313.81,
+              "name": "mul"
+            },
+            {
+              "value": 600,
+              "r": 6.98,
+              "x": 654.78,
+              "y": 327.09,
+              "name": "sub"
+            },
+            {
+              "value": 599,
+              "r": 6.97,
+              "x": 662.66,
+              "y": 338.6,
+              "name": "neq"
+            },
+            {
+              "value": 597,
+              "r": 6.96,
+              "x": 675.9,
+              "y": 342.94,
+              "name": "lt"
+            },
+            {
+              "value": 595,
+              "r": 6.95,
+              "x": 686.38,
+              "y": 333.8,
+              "name": "div"
+            },
+            {
+              "value": 594,
+              "r": 6.94,
+              "x": 694.3,
+              "y": 322.38,
+              "name": "eq"
+            },
+            {
+              "value": 593,
+              "r": 6.94,
+              "x": 693.3,
+              "y": 308.54,
+              "name": "add"
+            },
+            {
+              "value": 591,
+              "r": 6.93,
+              "x": 685.47,
+              "y": 297.1,
+              "name": "mod"
+            },
+            {
+              "value": 461,
+              "r": 6.12,
+              "x": 674.21,
+              "y": 290.52,
+              "name": "isa"
+            },
+            {
+              "value": 460,
+              "r": 6.11,
+              "x": 662,
+              "y": 290.01,
+              "name": "fn"
+            },
+            {
+              "value": 386,
+              "r": 5.6,
+              "x": 650.76,
+              "y": 293.3,
+              "name": "not"
+            },
+            {
+              "value": 363,
+              "r": 5.43,
+              "x": 644.95,
+              "y": 302.67,
+              "name": "stddev"
+            },
+            {
+              "value": 354,
+              "r": 5.36,
+              "x": 642.94,
+              "y": 323.62,
+              "name": "xor"
+            },
+            {
+              "value": 335,
+              "r": 5.21,
+              "x": 644.76,
+              "y": 334.04,
+              "name": "variance"
+            },
+            {
+              "value": 330,
+              "r": 5.17,
+              "x": 651.08,
+              "y": 342.28,
+              "name": "and"
+            },
+            {
+              "value": 323,
+              "r": 5.12,
+              "x": 638.64,
+              "y": 311.11,
+              "name": "or"
+            },
+            {
+              "value": 307,
+              "r": 4.99,
+              "x": 633.35,
+              "y": 319.73,
+              "name": "orderby"
+            },
+            {
+              "value": 307,
+              "r": 4.99,
+              "x": 658.08,
+              "y": 349.65,
+              "name": "update"
+            },
+            {
+              "value": 299,
+              "r": 4.93,
+              "x": 667.8,
+              "y": 351.64,
+              "name": "where"
+            },
+            {
+              "value": 296,
+              "r": 4.9,
+              "x": 634.56,
+              "y": 329.55,
+              "name": "select"
+            },
+            {
+              "value": 292,
+              "r": 4.87,
+              "x": 636.1,
+              "y": 339.2,
+              "name": "distinct"
+            },
+            {
+              "value": 287,
+              "r": 4.83,
+              "x": 642.15,
+              "y": 346.77,
+              "name": "average"
+            },
+            {
+              "value": 283,
+              "r": 4.79,
+              "x": 677.04,
+              "y": 354.64,
+              "name": "max"
+            },
+            {
+              "value": 283,
+              "r": 4.79,
+              "x": 685.37,
+              "y": 349.9,
+              "name": "min"
+            },
+            {
+              "value": 280,
+              "r": 4.77,
+              "x": 692.64,
+              "y": 343.7,
+              "name": "sum"
+            },
+            {
+              "value": 277,
+              "r": 4.74,
+              "x": 697.9,
+              "y": 335.78,
+              "name": "count"
+            },
+            {
+              "value": 264,
+              "r": 4.63,
+              "x": 704.01,
+              "y": 328.67,
+              "name": "_"
+            }
+          ],
+          "value": 14326,
+          "r": 40.66,
+          "x": 668.33,
+          "y": 323.64,
+          "name": "methods"
+        },
+        {
+          "value": 13896,
+          "r": 33.58,
+          "x": 742.57,
+          "y": 323.64,
+          "name": "Query"
+        },
+        {
+          "value": 5130,
+          "r": 20.4,
+          "x": 710.94,
+          "y": 367.38,
+          "name": "Expression"
+        },
+        {
+          "value": 5103,
+          "r": 20.35,
+          "x": 710.93,
+          "y": 279.97,
+          "name": "Comparison"
+        },
+        {
+          "value": 4141,
+          "r": 18.33,
+          "x": 675.24,
+          "y": 265.05,
+          "name": "DateUtil"
+        },
+        {
+          "value": 4130,
+          "r": 18.31,
+          "x": 639.33,
+          "y": 272.3,
+          "name": "StringUtil"
+        },
+        {
+          "value": 3891,
+          "r": 17.77,
+          "x": 615.27,
+          "y": 299.18,
+          "name": "Arithmetic"
+        },
+        {
+          "value": 3748,
+          "r": 17.44,
+          "x": 611.19,
+          "y": 334.15,
+          "name": "Match"
+        },
+        {
+          "value": 3677,
+          "r": 17.27,
+          "x": 627.54,
+          "y": 364.78,
+          "name": "CompositeExpression"
+        },
+        {
+          "value": 3617,
+          "r": 17.13,
+          "x": 658.13,
+          "y": 380.53,
+          "name": "ExpressionIterator"
+        },
+        {
+          "value": 3240,
+          "r": 16.22,
+          "x": 687.79,
+          "y": 395.76,
+          "name": "Fn"
+        },
+        {
+          "value": 2893,
+          "r": 15.32,
+          "x": 718.65,
+          "y": 402.27,
+          "name": "BinaryExpression"
+        },
+        {
+          "value": 2732,
+          "r": 14.89,
+          "x": 742.33,
+          "y": 383.51,
+          "name": "If"
+        },
+        {
+          "value": 2039,
+          "r": 12.86,
+          "x": 763.23,
+          "y": 365.24,
+          "name": "IsA"
+        },
+        {
+          "value": 1876,
+          "r": 12.34,
+          "x": 743.55,
+          "y": 277.73,
+          "name": "Variance"
+        },
+        {
+          "value": 1616,
+          "r": 11.45,
+          "x": 732.55,
+          "y": 256.64,
+          "name": "AggregateExpression"
+        },
+        {
+          "value": 1594,
+          "r": 11.37,
+          "x": 711.32,
+          "y": 248.25,
+          "name": "Range"
+        },
+        {
+          "value": 1554,
+          "r": 11.23,
+          "x": 690.4,
+          "y": 239.68,
+          "name": "Not"
+        },
+        {
+          "value": 1214,
+          "r": 9.93,
+          "x": 778.44,
+          "y": 348.27,
+          "name": "Literal"
+        },
+        {
+          "value": 1124,
+          "r": 9.55,
+          "x": 785.23,
+          "y": 330.02,
+          "name": "Variable"
+        },
+        {
+          "value": 1101,
+          "r": 9.45,
+          "x": 783.73,
+          "y": 311.08,
+          "name": "Xor"
+        },
+        {
+          "value": 1027,
+          "r": 9.13,
+          "x": 774.31,
+          "y": 295.06,
+          "name": "And"
+        },
+        {
+          "value": 970,
+          "r": 8.87,
+          "x": 764.65,
+          "y": 279.87,
+          "name": "Or"
+        },
+        {
+          "value": 933,
+          "r": 8.7,
+          "x": 670.51,
+          "y": 238.44,
+          "name": "Distinct"
+        },
+        {
+          "value": 891,
+          "r": 8.5,
+          "x": 655.51,
+          "y": 246.87,
+          "name": "Average"
+        },
+        {
+          "value": 843,
+          "r": 8.27,
+          "x": 638.78,
+          "y": 245.73,
+          "name": "Maximum"
+        },
+        {
+          "value": 843,
+          "r": 8.27,
+          "x": 758.72,
+          "y": 263.79,
+          "name": "Minimum"
+        },
+        {
+          "value": 791,
+          "r": 8.01,
+          "x": 750.7,
+          "y": 249.62,
+          "name": "Sum"
+        },
+        {
+          "value": 781,
+          "r": 7.96,
+          "x": 634.52,
+          "y": 389.03,
+          "name": "Count"
+        }
+      ],
+      "value": 89721,
+      "r": 101.31,
+      "x": 693.96,
+      "y": 320.63,
+      "name": "query"
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "value": 7840,
+              "r": 25.22,
+              "x": 485.54,
+              "y": 183.02,
+              "name": "MaxFlowMinCut"
+            },
+            {
+              "value": 5914,
+              "r": 21.91,
+              "x": 532.67,
+              "y": 183.02,
+              "name": "ShortestPaths"
+            },
+            {
+              "value": 5731,
+              "r": 21.57,
+              "x": 512.28,
+              "y": 221.42,
+              "name": "LinkDistance"
+            },
+            {
+              "value": 3534,
+              "r": 16.93,
+              "x": 511.95,
+              "y": 150.17,
+              "name": "BetweennessCentrality"
+            },
+            {
+              "value": 3416,
+              "r": 16.65,
+              "x": 479.48,
+              "y": 141.59,
+              "name": "SpanningTree"
+            }
+          ],
+          "value": 26435,
+          "r": 62.26,
+          "x": 496.81,
+          "y": 183.78,
+          "name": "graph"
+        },
+        {
+          "children": [
+            {
+              "value": 6714,
+              "r": 23.34,
+              "x": 584.15,
+              "y": 175.76,
+              "name": "HierarchicalCluster"
+            },
+            {
+              "value": 3938,
+              "r": 17.88,
+              "x": 625.37,
+              "y": 175.76,
+              "name": "AgglomerativeCluster"
+            },
+            {
+              "value": 3812,
+              "r": 17.59,
+              "x": 609.82,
+              "y": 207.64,
+              "name": "CommunityStructure"
+            },
+            {
+              "value": 743,
+              "r": 7.76,
+              "x": 608.52,
+              "y": 156.43,
+              "name": "MergeEdge"
+            }
+          ],
+          "value": 15207,
+          "r": 42.75,
+          "x": 601.82,
+          "y": 183.78,
+          "name": "cluster"
+        },
+        {
+          "children": [
+            {
+              "value": 7074,
+              "r": 23.96,
+              "x": 563.52,
+              "y": 238.4,
+              "name": "AspectRatioBanker"
+            }
+          ],
+          "value": 7074,
+          "r": 23.96,
+          "x": 563.52,
+          "y": 238.4,
+          "name": "optimization"
+        }
+      ],
+      "value": 48716,
+      "r": 105.01,
+      "x": 539.56,
+      "y": 183.78,
+      "name": "analytics"
+    },
+    {
+      "children": [
+        {
+          "value": 5833,
+          "r": 21.76,
+          "x": 373.03,
+          "y": 186.04,
+          "name": "TimeScale"
+        },
+        {
+          "value": 4839,
+          "r": 19.82,
+          "x": 414.6,
+          "y": 186.04,
+          "name": "QuantitativeScale"
+        },
+        {
+          "value": 4268,
+          "r": 18.61,
+          "x": 395.65,
+          "y": 219.47,
+          "name": "Scale"
+        },
+        {
+          "value": 3770,
+          "r": 17.49,
+          "x": 395.6,
+          "y": 153.93,
+          "name": "OrdinalScale"
+        },
+        {
+          "value": 3151,
+          "r": 15.99,
+          "x": 362.37,
+          "y": 149.83,
+          "name": "LogScale"
+        },
+        {
+          "value": 2435,
+          "r": 14.06,
+          "x": 340.7,
+          "y": 170.64,
+          "name": "QuantileScale"
+        },
+        {
+          "value": 2105,
+          "r": 13.07,
+          "x": 340.23,
+          "y": 197.76,
+          "name": "IScaleMap"
+        },
+        {
+          "value": 1821,
+          "r": 12.16,
+          "x": 357.47,
+          "y": 216.17,
+          "name": "ScaleType"
+        },
+        {
+          "value": 1756,
+          "r": 11.94,
+          "x": 370.33,
+          "y": 236.55,
+          "name": "RootScale"
+        },
+        {
+          "value": 1316,
+          "r": 10.33,
+          "x": 335.44,
+          "y": 220.67,
+          "name": "LinearScale"
+        }
+      ],
+      "value": 31294,
+      "r": 59.8,
+      "x": 374.9,
+      "y": 190.84,
+      "name": "scale"
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "value": 9800,
+              "r": 28.2,
+              "x": 215.7,
+              "y": 204.8,
+              "name": "GraphMLConverter"
+            },
+            {
+              "value": 4294,
+              "r": 18.67,
+              "x": 262.57,
+              "y": 204.8,
+              "name": "DelimitedTextConverter"
+            },
+            {
+              "value": 2220,
+              "r": 13.42,
+              "x": 246.63,
+              "y": 232.66,
+              "name": "JSONConverter"
+            },
+            {
+              "value": 1314,
+              "r": 10.33,
+              "x": 246,
+              "y": 181.01,
+              "name": "IDataConverter"
+            },
+            {
+              "value": 721,
+              "r": 7.65,
+              "x": 230.39,
+              "y": 172.1,
+              "name": "Converters"
+            }
+          ],
+          "value": 18349,
+          "r": 46.87,
+          "x": 234.36,
+          "y": 204.8,
+          "name": "converters"
+        },
+        {
+          "value": 3331,
+          "r": 16.44,
+          "x": 297.67,
+          "y": 204.8,
+          "name": "DataSource"
+        },
+        {
+          "value": 3322,
+          "r": 16.42,
+          "x": 289.12,
+          "y": 236.53,
+          "name": "DataUtil"
+        },
+        {
+          "value": 2165,
+          "r": 13.25,
+          "x": 287.6,
+          "y": 176.87,
+          "name": "DataSchema"
+        },
+        {
+          "value": 1759,
+          "r": 11.95,
+          "x": 270.48,
+          "y": 158.38,
+          "name": "DataField"
+        },
+        {
+          "value": 772,
+          "r": 7.92,
+          "x": 251.43,
+          "y": 152.75,
+          "name": "DataTable"
+        },
+        {
+          "value": 586,
+          "r": 6.9,
+          "x": 236.71,
+          "y": 151.09,
+          "name": "DataSet"
+        }
+      ],
+      "value": 30284,
+      "r": 64.34,
+      "x": 251.75,
+      "y": 206.53,
+      "name": "data"
+    },
+    {
+      "children": [
+        {
+          "value": 10498,
+          "r": 29.19,
+          "x": 117.14,
+          "y": 279.92,
+          "name": "NBodyForce"
+        },
+        {
+          "value": 9983,
+          "r": 28.46,
+          "x": 174.79,
+          "y": 279.92,
+          "name": "Simulation"
+        },
+        {
+          "value": 2822,
+          "r": 15.13,
+          "x": 146.52,
+          "y": 313.1,
+          "name": "Particle"
+        },
+        {
+          "value": 2213,
+          "r": 13.4,
+          "x": 146.5,
+          "y": 249.06,
+          "name": "Spring"
+        },
+        {
+          "value": 1681,
+          "r": 11.68,
+          "x": 123.3,
+          "y": 239.52,
+          "name": "SpringForce"
+        },
+        {
+          "value": 1336,
+          "r": 10.41,
+          "x": 101.58,
+          "y": 243.5,
+          "name": "GravityForce"
+        },
+        {
+          "value": 1082,
+          "r": 9.37,
+          "x": 86.58,
+          "y": 256.41,
+          "name": "DragForce"
+        },
+        {
+          "value": 319,
+          "r": 5.09,
+          "x": 84.14,
+          "y": 270.66,
+          "name": "IForce"
+        }
+      ],
+      "value": 29934,
+      "r": 64.56,
+      "x": 139.91,
+      "y": 270.62,
+      "name": "physics"
+    },
+    {
+      "children": [
+        {
+          "value": 10066,
+          "r": 28.58,
+          "x": 43.54,
+          "y": 368.28,
+          "name": "TextSprite"
+        },
+        {
+          "value": 8833,
+          "r": 26.77,
+          "x": 98.9,
+          "y": 368.28,
+          "name": "DirtySprite"
+        },
+        {
+          "value": 3623,
+          "r": 17.15,
+          "x": 72.68,
+          "y": 403.51,
+          "name": "RectSprite"
+        },
+        {
+          "value": 1732,
+          "r": 11.86,
+          "x": 72.51,
+          "y": 340.06,
+          "name": "LineSprite"
+        }
+      ],
+      "value": 24254,
+      "r": 55.35,
+      "x": 70.32,
+      "y": 368.28,
+      "name": "display"
+    },
+    {
+      "children": [
+        {
+          "value": 4116,
+          "r": 18.28,
+          "x": 77.58,
+          "y": 441.55,
+          "name": "FlareVis"
+        }
+      ],
+      "value": 4116,
+      "r": 18.28,
+      "x": 77.58,
+      "y": 441.55,
+      "name": "flex"
+    }
+  ],
+  "value": 956129,
+  "x": 480,
+  "y": 480,
+  "r": 480,
+  "name": "flare"
+}

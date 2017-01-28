@@ -23,7 +23,18 @@ function intersects(a, b) {
   var dx = b.x - a.x,
       dy = b.y - a.y,
       dr = a.r + b.r;
-  return dr * dr > dx * dx + dy * dy;
+  return dr * dr - 1e-6 > dx * dx + dy * dy;
+}
+
+function distance1(a, b) {
+  var l = 0, dx, dy, x = a._.x, y = a._.y;
+  while (a !== b) {
+    a = a.next;
+    dx = x - (x = a._.x);
+    dy = y - (y = a._.y);
+    l += dx * dx + dy * dy;
+  }
+  return l;
 }
 
 function distance2(circle, x, y) {
@@ -84,21 +95,25 @@ export function packEnclose(circles) {
     }
 
     // Find the closest intersecting circle on the front-chain, if any.
+    // “Closeness” is determined by linear distance along the front-chain.
+    // “Ahead” or “behind” is likewise determined by linear distance.
     else {
-      sj = j._.r, sk = k._.r;
+      sj = b._.r + j._.r, sk = a._.r + k._.r;
       do {
         if (sj <= sk) {
           if (intersects(j._, c._)) {
-            b = j, a.next = b, b.previous = a, --i;
+            if (distance1(a, j) > distance1(j, b)) a = j; else b = j;
+            a.next = b, b.previous = a, --i;
             continue pack;
           }
-          j = j.next, sj += j._.r;
+          sj += (j = j.next)._.r;
         } else {
           if (intersects(k._, c._)) {
-            a = k, a.next = b, b.previous = a, --i;
+            if (distance1(a, k) > distance1(k, b)) a = k; else b = k;
+            a.next = b, b.previous = a, --i;
             continue pack;
           }
-          k = k.previous, sk += k._.r;
+          sk += (k = k.previous)._.r;
         }
       } while (j !== k.next);
     }
