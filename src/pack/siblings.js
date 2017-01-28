@@ -84,39 +84,27 @@ export function packEnclose(circles) {
   pack: for (i = 3; i < n; ++i) {
     place(a._, b._, c = circles[i]), c = new Node(c);
 
-    // If there are only three elements in the front-chain…
-    if ((k = a.previous) === (j = b.next)) {
-      // If the new circle intersects the third circle,
-      // rotate the front chain to try the next position.
-      if (intersects(j._, c._)) {
-        a = b, b = j, --i;
-        continue pack;
-      }
-    }
-
     // Find the closest intersecting circle on the front-chain, if any.
     // “Closeness” is determined by linear distance along the front-chain.
     // “Ahead” or “behind” is likewise determined by linear distance.
-    else {
-      sj = b._.r + j._.r, sk = a._.r + k._.r;
-      do {
-        if (sj <= sk) {
-          if (intersects(j._, c._)) {
-            if (distance1(a, j) > distance1(j, b)) a = j; else b = j;
-            a.next = b, b.previous = a, --i;
-            continue pack;
-          }
-          sj += (j = j.next)._.r;
-        } else {
-          if (intersects(k._, c._)) {
-            if (distance1(a, k) > distance1(k, b)) a = k; else b = k;
-            a.next = b, b.previous = a, --i;
-            continue pack;
-          }
-          sk += (k = k.previous)._.r;
+    j = b.next, k = a.previous, sj = b._.r + j._.r, sk = a._.r + k._.r;
+    do {
+      if (sj <= sk) {
+        if (intersects(j._, c._)) {
+          if (distance1(a, j) > distance1(j, b)) a = j; else b = j;
+          a.next = b, b.previous = a, --i;
+          continue pack;
         }
-      } while (j !== k.next);
-    }
+        sj += (j = j.next)._.r;
+      } else {
+        if (intersects(k._, c._)) {
+          if (distance1(a, k) > distance1(k, b)) a = k; else b = k;
+          a.next = b, b.previous = a, --i;
+          continue pack;
+        }
+        sk += (k = k.previous)._.r;
+      }
+    } while (j !== k.next);
 
     // Success! Insert the new circle c between a and b.
     c.previous = a, c.next = b, a.next = b.previous = b = c;

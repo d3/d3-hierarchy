@@ -2,8 +2,9 @@ var tape = require("tape"),
     d3 = require("../../");
 
 tape("packSiblings(circles) produces a non-overlapping layout of circles", function(test) {
-  test.equal(intersectsAny(d3.packSiblings([3, 30, 50, 400, 600].map(circleValue))), false);
-  test.equal(intersectsAny(d3.packSiblings([1, 1, 3, 30, 50, 400, 600].map(circleValue))), false);
+  permute([100, 200, 500, 70, 3].map(circleValue), p => intersectsAny(d3.packSiblings(p)) && test.fail(p.map(c => c.r)));
+  permute([3, 30, 50, 400, 600].map(circleValue), p => intersectsAny(d3.packSiblings(p)) && test.fail(p.map(c => c.r)));
+  permute([1, 1, 3, 30, 50, 400, 600].map(circleValue), p => intersectsAny(d3.packSiblings(p)) && test.fail(p.map(c => c.r)));
   test.equal(intersectsAny(d3.packSiblings([2, 9071, 79, 51, 325, 867, 546, 19773, 371, 16, 165781, 10474, 6928, 40201, 31062, 14213, 8626, 12, 299, 1075, 98918, 4738, 664, 2694, 2619, 51237, 21431, 99, 5920, 1117, 321, 519162, 33559, 234, 4207].map(circleValue))), false);
   test.equal(intersectsAny(d3.packSiblings([0.3371386860049076, 58.65337373332081, 2.118883785686244, 1.7024669121097333, 5.834919697833051, 8.949453403094978, 6.792586534702093, 105.30490014617664, 6.058936212213754, 0.9535722042975694, 313.7636051642043].map(circleRadius))), false);
   test.equal(intersectsAny(d3.packSiblings([6.26551789195159, 1.707773433636342, 9.43220282933871, 9.298909705475646, 5.753163715613753, 8.882383159012575, 0.5819319661882536, 2.0234859171687747, 2.096171518434433, 9.762727931304937].map(circleRadius))), false);
@@ -11,6 +12,22 @@ tape("packSiblings(circles) produces a non-overlapping layout of circles", funct
   test.equal(intersectsAny(d3.packSiblings([2.23606797749979, 52.07088264296293, 5.196152422706632, 20.09975124224178, 357.11557267679996, 4.898979485566356, 14.7648230602334, 17.334875731491763].map(circleRadius))), false);
   test.end();
 });
+
+function swap(array, i, j) {
+  var t = array[i];
+  array[i] = array[j];
+  array[j] = t;
+}
+
+function permute(array, f, n) {
+  if (n == null) n = array.length;
+  if (n === 1) return void f(array);
+  for (var i = 0; i < n - 1; ++i) {
+    permute(array, f, n - 1);
+    swap(array, n & 1 ? 0 : i, n - 1);
+  }
+  permute(array, f, n - 1);
+}
 
 function circleValue(value) {
   return {r: Math.sqrt(value)};
