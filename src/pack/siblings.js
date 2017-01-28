@@ -27,14 +27,9 @@ function intersects(a, b) {
 }
 
 function distance1(a, b) {
-  var l = 0, dx, dy, x = a._.x, y = a._.y;
-  while (a !== b) {
-    a = a.next;
-    dx = x - (x = a._.x);
-    dy = y - (y = a._.y);
-    l += dx * dx + dy * dy;
-  }
-  return l;
+  var l = a._.r;
+  while (a !== b) l += 2 * (a = a.next)._.r;
+  return l - b._.r;
 }
 
 function distance2(circle, x, y) {
@@ -91,18 +86,18 @@ export function packEnclose(circles) {
     do {
       if (sj <= sk) {
         if (intersects(j._, c._)) {
-          if (distance1(a, j) > distance1(j, b)) a = j; else b = j;
+          if (sj + a._.r + b._.r > distance1(j, b)) a = j; else b = j;
           a.next = b, b.previous = a, --i;
           continue pack;
         }
-        sj += (j = j.next)._.r;
+        sj += j._.r + (j = j.next)._.r;
       } else {
         if (intersects(k._, c._)) {
-          if (distance1(a, k) > distance1(k, b)) a = k; else b = k;
+          if (distance1(a, k) > sk + a._.r + b._.r) a = k; else b = k;
           a.next = b, b.previous = a, --i;
           continue pack;
         }
-        sk += (k = k.previous)._.r;
+        sk += k._.r + (k = k.previous)._.r;
       }
     } while (j !== k.next);
 
