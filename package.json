@@ -35,7 +35,7 @@
     "d3-queue": "3",
     "eslint": "3",
     "package-preamble": "0.0",
-    "rollup": "0.36",
+    "rollup": "0.41",
     "tape": "4",
     "uglify-js": "2"
   }
