@@ -6,7 +6,7 @@ while (true) {
   if (!(n % 100)) process.stdout.write(".");
   if (!(n % 10000)) process.stdout.write("\n" + n + " ");
   ++n;
-  var radii = [0, 1, 2, 3, 4].map(r).map(Math.abs);
+  var radii = new Array(20).fill().map(r).map(Math.abs);
   if (intersectsAny(d3.packSiblings(radii.map(r => ({r: r}))))) {
     process.stdout.write("\n");
     process.stdout.write(JSON.stringify(radii));
