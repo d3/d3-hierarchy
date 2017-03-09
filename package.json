@@ -20,6 +20,10 @@
   "main": "build/d3-hierarchy.js",
   "module": "index",
   "jsnext:main": "index",
+  "browser": "index.js",
+  "browserify": {
+    "transform": ["babelify"]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d3/d3-hierarchy.git"
@@ -38,5 +42,8 @@
     "rollup": "0.41",
     "tape": "4",
     "uglify-js": "2"
+  },
+  "dependencies": {
+    "babelify": "^6.1.2"
   }
 }
