@@ -1,7 +1,7 @@
-import shuffle from "./shuffle";
+import list from "./list";
 
 export default function(circles) {
-  return encloseN(shuffle(circles), []);
+  return encloseN(list(circles), []);
 }
 
 function encloses(a, b) {
