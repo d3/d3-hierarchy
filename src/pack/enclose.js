@@ -18,9 +18,11 @@ function encloseN(L, B) {
       p1;
 
   switch (B.length) {
+    case 0: break;
     case 1: circle = enclose1(B[0]); break;
     case 2: circle = enclose2(B[0], B[1]); break;
     case 3: circle = enclose3(B[0], B[1], B[2]); break;
+    default: return null;
   }
 
   while (l1) {
