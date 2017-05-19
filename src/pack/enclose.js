@@ -90,7 +90,7 @@ function enclose3(a, b, c) {
       A = xb * xb + yb * yb - 1,
       B = 2 * (xa * xb + ya * yb + r1),
       C = xa * xa + ya * ya - r1 * r1,
-      r = (-B - Math.sqrt(B * B - 4 * A * C)) / (2 * A);
+      r = A ? (-B - Math.sqrt(B * B - 4 * A * C)) / (2 * A) : (-C / B);
   return {
     x: xa + xb * r + x1,
     y: ya + yb * r + y1,
