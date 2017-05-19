@@ -1,45 +1,37 @@
-var d3 = require("../../");
+var d3 = Object.assign({}, require("../../"), require("d3-array"), require("d3-random"));
 
-var n = 0, r = randomNormal();
+var n = 0,
+    m = 1000,
+    r = d3.randomLogNormal(),
+    x = d3.randomUniform(0, 100),
+    y = x;
 
 while (true) {
-  if (!(n % 100)) process.stdout.write(".");
-  if (!(n % 10000)) process.stdout.write("\n" + n + " ");
+  if (!(n % 10)) process.stdout.write(".");
+  if (!(n % 1000)) process.stdout.write("\n" + n + " ");
   ++n;
-  var radii = new Array(20).fill().map(r).map(Math.abs),
-      circles = d3.packSiblings(radii.map(r => ({r: r}))),
-      enclose = d3.packEnclose(circles);
-  if (circles.some(circle => !encloses(enclose, circle))) {
-    process.stdout.write("\n");
-    process.stdout.write(JSON.stringify(radii));
-    process.stdout.write("\n");
+  var circles = new Array(20).fill().map(() => ({r: r(), x: x(), y: y()})), circles2,
+      enclose = d3.packEnclose(circles), enclose2;
+  if (circles.some(circle => !circleEncloses(enclose, circle))) {
+    console.log(JSON.stringify(circles));
+  }
+  for (var i = 0; i < m; ++i) {
+    if (!circleEquals(enclose, enclose2 = d3.packEnclose(circles2 = d3.shuffle(circles.slice())))) {
+      console.log(JSON.stringify(enclose));
+      console.log(JSON.stringify(enclose2));
+      console.log(JSON.stringify(circles));
+      console.log(JSON.stringify(circles2));
+    }
   }
 }
 
-function randomNormal(mu, sigma) {
-  var x, r;
-  mu = mu == null ? 0 : +mu;
-  sigma = sigma == null ? 1 : +sigma;
-  return function() {
-    var y;
-
-    // If available, use the second previously-generated uniform random.
-    if (x != null) y = x, x = null;
-
-    // Otherwise, generate a new x and y.
-    else do {
-      x = Math.random() * 2 - 1;
-      y = Math.random() * 2 - 1;
-      r = x * x + y * y;
-    } while (!r || r > 1);
-
-    return mu + sigma * y * Math.sqrt(-2 * Math.log(r) / r);
-  };
+function circleEncloses(a, b) {
+  var dx = b.x - a.x, dy = b.y - a.y;
+  return a.r + 1e-6 > Math.sqrt(dx * dx + dy * dy) + b.r;
 }
 
-function encloses(a, b) {
-  var dx = b.x - a.x,
-      dy = b.y - a.y,
-      dr = a.r - b.r;
-  return dr * dr + 1e-6 > dx * dx + dy * dy;
+function circleEquals(a, b) {
+  return Math.abs(a.r - b.r) < 1e-6
+      && Math.abs(a.x - b.x) < 1e-6
+      && Math.abs(a.y - b.y) < 1e-6;
 }

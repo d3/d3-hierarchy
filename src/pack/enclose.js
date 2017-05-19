@@ -5,10 +5,8 @@ export default function(circles) {
 }
 
 function encloses(a, b) {
-  var dx = b.x - a.x,
-      dy = b.y - a.y,
-      dr = a.r - b.r;
-  return dr * dr + 1e-6 > dx * dx + dy * dy;
+  var dx = b.x - a.x, dy = b.y - a.y;
+  return a.r + 1e-6 > Math.sqrt(dx * dx + dy * dy) + b.r;
 }
 
 // Returns the smallest circle that contains circles L and intersects circles B.
