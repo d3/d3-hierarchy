@@ -93,10 +93,16 @@ function enclose3(a, b, c) {
       A = xb * xb + yb * yb - 1,
       B = 2 * (r1 + xa * xb + ya * yb),
       C = xa * xa + ya * ya - r1 * r1,
-      r = -(A ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
+      r = A ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B,
+      x = x1 + xa - xb * r,
+      y = y1 + ya - yb * r;
   return {
-    x: x1 + xa + xb * r,
-    y: y1 + ya + yb * r,
-    r: r
+    x: x,
+    y: y,
+    r: Math.max(
+      Math.sqrt((x1 -= x) * x1 + (y1 -= y) * y1) + r1,
+      Math.sqrt((x2 -= x) * x2 + (y2 -= y) * y2) + r2,
+      Math.sqrt((x3 -= x) * x3 + (y3 -= y) * y3) + r3
+    )
   };
 }
