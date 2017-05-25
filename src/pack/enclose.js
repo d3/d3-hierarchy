@@ -1,55 +1,69 @@
 import list from "./list";
 
 export default function(circles) {
-  return encloseN(list(circles), []);
+  return encloseBasis(findBasis(circles, circles.length, []));
+}
+
+function findBasis(L, n, B) {
+  var circle = encloseBasis(B);
+
+  for (var i = 0; i < n; i++) {
+    var p = L[i];
+    if (!circle || !encloses(circle, p)) {
+      B = findBasis(L, i + 1, extendBasis(B, p));
+      circle = encloseBasis(B);
+    }
+  }
+
+  return B;
+}
+
+function encloseBasis(B) {
+  switch(B.length) {
+    case 1: return enclose1(B[0]);
+    case 2: return enclose2(B[0], B[1]);
+    case 3: return enclose3(B[0], B[1], B[2]);
+  }
+}
+
+function extendBasis(B, p) {
+  var i, j;
+  if (enclosesAll(p, B)) return [p];
+
+  // If we get here then B must have at least one element
+  for (i = 0; i < B.length; i++) {
+    if (enclosesAll(enclose2(B[i], p), B)) return [B[i], p];
+  }
+
+  // If we get here then B must have at least two elements
+  for (i = 0; i < B.length-1; i++) {
+    for (j = i+1; j < B.length; j++) {
+      if (isBasis(B[i], B[j], p) && enclosesAll(enclose3(B[i], B[j], p), B)) {
+        return [B[i], B[j], p];
+      }
+    }
+  }
+
+  // If we get here then something is very wrong
+  throw new Error("extendBasis: we should never get here");
+}
+
+function isBasis(a, b, c) {
+  return !encloses(enclose2(a, b), c)
+    && !encloses(enclose2(a, c), b)
+    && !encloses(enclose2(b, c), a);
+}
+
+function enclosesAll(a, B) {
+  for (var i = 0; i < B.length; i++) {
+    if (!encloses(a, B[i])) return false;
+  }
+  return true;
 }
 
 function encloses(a, b) {
   var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
-  return dr >= -1e-6 && dr * dr * 1.000001 > dx * dx + dy * dy;
-}
-
-// Returns the smallest circle that contains circles L and intersects circles B.
-function encloseN(L, B) {
-  var circle,
-      l0 = null,
-      l1 = L.head,
-      l2,
-      p1;
-
-  switch (B.length) {
-    case 0: break;
-    case 1: circle = enclose1(B[0]); break;
-    case 2: circle = enclose2(B[0], B[1]); break;
-    case 3: circle = enclose3(B[0], B[1], B[2]); break;
-    default: return null;
-  }
-
-  while (l1) {
-    p1 = l1._, l2 = l1.next;
-    if (!circle || !encloses(circle, p1)) {
-
-      // Temporarily truncate L before l1.
-      if (l0) L.tail = l0, l0.next = null;
-      else L.head = L.tail = null;
-
-      B.push(p1);
-      circle = encloseN(L, B); // Note: reorders L!
-      B.pop();
-
-      // Move l1 to the front of L and reconnect the truncated list L.
-      if (L.head) l1.next = L.head, L.head = l1;
-      else l1.next = null, L.head = L.tail = l1;
-      l0 = L.tail, l0.next = l2;
-
-    } else {
-      l0 = l1;
-    }
-    l1 = l2;
-  }
-
-  L.tail = l0;
-  return circle;
+  return dr >= -1e-6 && dr * dr * (1 + 1e-9) > dx * dx + dy * dy;
 }
 
 function enclose1(a) {
