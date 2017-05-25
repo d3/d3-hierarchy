@@ -1,5 +1,3 @@
-import list from "./list";
-
 export default function(circles) {
   return encloseBasis(findBasis(circles, circles.length, []));
 }
