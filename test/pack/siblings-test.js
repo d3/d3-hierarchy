@@ -14,6 +14,25 @@ tape("packSiblings(circles) produces a non-overlapping layout of circles", funct
   test.end();
 });
 
+tape("packSiblings(circles) can successfully pack a circle with a tiny radius", function(test) {
+  test.equal(intersectsAny(d3.packSiblings([
+    0.5672035864083508,
+    0.6363498687452267,
+    0.5628456216244132,
+    1.5619458670239148,
+    1.5658933259424268,
+    0.9195955097595698,
+    0.4747083763630309,
+    0.38341282734497434,
+    1.3475593361729394,
+    0.7492342961633259,
+    1.0716990115071823,
+    0.31686823341701664,
+    2.8766442376551415e-7
+  ].map(circleRadius))), false);
+  test.end();
+});
+
 function swap(array, i, j) {
   var t = array[i];
   array[i] = array[j];
