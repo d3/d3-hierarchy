@@ -7,10 +7,15 @@ while (true) {
   if (!(n % 10000)) process.stdout.write("\n" + n + " ");
   ++n;
   var radii = new Array(20).fill().map(r).map(Math.abs);
-  if (intersectsAny(d3.packSiblings(radii.map(r => ({r: r}))))) {
+  try {
+    if (intersectsAny(d3.packSiblings(radii.map(r => ({r: r}))))) {
+      throw new Error("overlap");
+    }
+  } catch (error) {
     process.stdout.write("\n");
     process.stdout.write(JSON.stringify(radii));
     process.stdout.write("\n");
+    throw error;
   }
 }
 
