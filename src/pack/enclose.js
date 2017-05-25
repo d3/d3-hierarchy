@@ -57,7 +57,7 @@ function enclosesAll(a, B) {
 
 function encloses(a, b) {
   var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
-  return dr >= -1e-6 && dr * dr * (1 + 1e-9) >= dx * dx + dy * dy;
+  return dr > -1e-9 && dr * dr * (1 + 1e-9) + 1e-9 > dx * dx + dy * dy;
 }
 
 function enclose1(a) {
