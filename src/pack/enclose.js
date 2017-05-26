@@ -8,8 +8,7 @@ function findBasis(L, n, B) {
   for (var i = 0; i < n; ++i) {
     var p = L[i];
     if (!circle || !encloses(circle, p)) {
-      B = findBasis(L, i, extendBasis(B, p));
-      circle = encloseBasis(B);
+      circle = encloseBasis(B = findBasis(L, i, extendBasis(B, p)));
     }
   }
 
@@ -22,7 +21,11 @@ function extendBasis(B, p) {
   if (enclosesAll(p, B)) return [p];
 
   // If we get here then B must have at least one element.
-  for (i = 0; i < B.length; ++i) if (enclosesAll(encloseBasis2(B[i], p), B)) return [B[i], p];
+  for (i = 0; i < B.length; ++i) {
+    if (enclosesAll(encloseBasis2(B[i], p), B)) {
+      return [B[i], p];
+    }
+  }
 
   // If we get here then B must have at least two elements.
   for (i = 0; i < B.length - 1; ++i) {
@@ -43,7 +46,11 @@ function encloses(a, b) {
 }
 
 function enclosesAll(a, B) {
-  for (var i = 0; i < B.length; ++i) if (!encloses(a, B[i])) return false;
+  for (var i = 0; i < B.length; ++i) {
+    if (!encloses(a, B[i])) {
+      return false;
+    }
+  }
   return true;
 }
 
