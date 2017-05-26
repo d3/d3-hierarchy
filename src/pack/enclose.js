@@ -8,7 +8,7 @@ function findBasis(L, n, B) {
   for (var i = 0; i < n; ++i) {
     var p = L[i];
     if (!circle || !encloses(circle, p)) {
-      B = findBasis(L, i + 1, extendBasis(B, p));
+      B = findBasis(L, i, extendBasis(B, p));
       circle = encloseBasis(B);
     }
   }
