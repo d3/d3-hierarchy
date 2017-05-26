@@ -16,25 +16,17 @@ function findBasis(L, n, B) {
   return B;
 }
 
-function encloseBasis(B) {
-  switch (B.length) {
-    case 1: return enclose1(B[0]);
-    case 2: return enclose2(B[0], B[1]);
-    case 3: return enclose3(B[0], B[1], B[2]);
-  }
-}
-
 function extendBasis(B, p) {
   var i, j;
   if (enclosesAll(p, B)) return [p];
 
   // If we get here then B must have at least one element.
-  for (i = 0; i < B.length; ++i) if (enclosesAll(enclose2(B[i], p), B)) return [B[i], p];
+  for (i = 0; i < B.length; ++i) if (enclosesAll(encloseBasis2(B[i], p), B)) return [B[i], p];
 
   // If we get here then B must have at least two elements.
   for (i = 0; i < B.length - 1; ++i) {
     for (j = i + 1; j < B.length; ++j) {
-      if (isBasis(B[i], B[j], p) && enclosesAll(enclose3(B[i], B[j], p), B)) {
+      if (isBasis3(B[i], B[j], p) && enclosesAll(encloseBasis3(B[i], B[j], p), B)) {
         return [B[i], B[j], p];
       }
     }
@@ -44,10 +36,9 @@ function extendBasis(B, p) {
   throw new Error;
 }
 
-function isBasis(a, b, c) {
-  return !encloses(enclose2(a, b), c)
-      && !encloses(enclose2(a, c), b)
-      && !encloses(enclose2(b, c), a);
+function encloses(a, b) {
+  var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
+  return dr > -1e-9 && dr * dr * (1 + 1e-9) + 1e-9 > dx * dx + dy * dy;
 }
 
 function enclosesAll(a, B) {
@@ -55,12 +46,15 @@ function enclosesAll(a, B) {
   return true;
 }
 
-function encloses(a, b) {
-  var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
-  return dr > -1e-9 && dr * dr * (1 + 1e-9) + 1e-9 > dx * dx + dy * dy;
+function encloseBasis(B) {
+  switch (B.length) {
+    case 1: return encloseBasis1(B[0]);
+    case 2: return encloseBasis2(B[0], B[1]);
+    case 3: return encloseBasis3(B[0], B[1], B[2]);
+  }
 }
 
-function enclose1(a) {
+function encloseBasis1(a) {
   return {
     x: a.x,
     y: a.y,
@@ -68,7 +62,7 @@ function enclose1(a) {
   };
 }
 
-function enclose2(a, b) {
+function encloseBasis2(a, b) {
   var x1 = a.x, y1 = a.y, r1 = a.r,
       x2 = b.x, y2 = b.y, r2 = b.r,
       x21 = x2 - x1, y21 = y2 - y1, r21 = r2 - r1,
@@ -80,7 +74,7 @@ function enclose2(a, b) {
   };
 }
 
-function enclose3(a, b, c) {
+function encloseBasis3(a, b, c) {
   var x1 = a.x, y1 = a.y, r1 = a.r,
       x2 = b.x, y2 = b.y, r2 = b.r,
       x3 = c.x, y3 = c.y, r3 = c.r,
@@ -113,4 +107,10 @@ function enclose3(a, b, c) {
       Math.sqrt((x3 -= x) * x3 + (y3 -= y) * y3) + r3
     )
   };
+}
+
+function isBasis3(a, b, c) {
+  return !encloses(encloseBasis2(a, b), c)
+      && !encloses(encloseBasis2(a, c), b)
+      && !encloses(encloseBasis2(b, c), a);
 }
