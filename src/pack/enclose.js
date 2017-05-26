@@ -18,6 +18,7 @@ function findBasis(L, n, B) {
 
 function extendBasis(B, p) {
   var i, j;
+
   if (enclosesAll(p, B)) return [p];
 
   // If we get here then B must have at least one element.
