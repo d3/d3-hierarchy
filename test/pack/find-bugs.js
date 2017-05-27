@@ -1,12 +1,12 @@
 var d3 = Object.assign({}, require("../../"), require("d3-random"));
 
-var n = 0, r = d3.randomLogNormal();
+var n = 0, r = d3.randomLogNormal(4);
 
 while (true) {
   if (!(n % 100)) process.stdout.write(".");
   if (!(n % 10000)) process.stdout.write("\n" + n + " ");
   ++n;
-  var radii = new Array(20).fill().map(r);
+  var radii = new Array(20).fill().map(r).map(Math.ceil);
   try {
     if (intersectsAny(d3.packSiblings(radii.map(r => ({r: r}))))) {
       throw new Error("overlap");
@@ -31,8 +31,6 @@ function intersectsAny(circles) {
 }
 
 function intersects(a, b) {
-  var dx = b.x - a.x,
-      dy = b.y - a.y,
-      dr = a.r + b.r;
-  return dr * dr - 1e-6 > dx * dx + dy * dy;
+  var dr = a.r + b.r - 1e-9, dx = b.x - a.x, dy = b.y - a.y;
+  return dr * dr > dx * dx + dy * dy;
 }

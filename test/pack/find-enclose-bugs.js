@@ -2,7 +2,7 @@ var d3 = Object.assign({}, require("../../"), require("d3-array"), require("d3-r
 
 var n = 0,
     m = 1000,
-    r = d3.randomLogNormal(),
+    r = d3.randomLogNormal(10),
     x = d3.randomUniform(0, 100),
     y = x;
 
@@ -12,11 +12,11 @@ while (true) {
   ++n;
   var circles = new Array(20).fill().map(() => ({r: r(), x: x(), y: y()})), circles2,
       enclose = d3.packEnclose(circles), enclose2;
-  if (circles.some(circle => !circleEncloses(enclose, circle))) {
+  if (circles.some(circle => !encloses(enclose, circle))) {
     console.log(JSON.stringify(circles));
   }
   for (var i = 0; i < m; ++i) {
-    if (!circleEquals(enclose, enclose2 = d3.packEnclose(circles2 = d3.shuffle(circles.slice())))) {
+    if (!equals(enclose, enclose2 = d3.packEnclose(circles2 = d3.shuffle(circles.slice())))) {
       console.log(JSON.stringify(enclose));
       console.log(JSON.stringify(enclose2));
       console.log(JSON.stringify(circles));
@@ -25,12 +25,12 @@ while (true) {
   }
 }
 
-function circleEncloses(a, b) {
-  var dx = b.x - a.x, dy = b.y - a.y;
-  return a.r + 1e-6 > Math.sqrt(dx * dx + dy * dy) + b.r;
+function encloses(a, b) {
+  var dr = a.r - b.r + 1e-9, dx = b.x - a.x, dy = b.y - a.y;
+  return dr > 0 && dr * dr > dx * dx + dy * dy;
 }
 
-function circleEquals(a, b) {
+function equals(a, b) {
   return Math.abs(a.r - b.r) < 1e-6
       && Math.abs(a.x - b.x) < 1e-6
       && Math.abs(a.y - b.y) < 1e-6;
