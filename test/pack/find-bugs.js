@@ -1,12 +1,12 @@
-var d3 = require("../../");
+var d3 = Object.assign({}, require("../../"), require("d3-random"));
 
-var n = 0, r = randomNormal();
+var n = 0, r = d3.randomLogNormal();
 
 while (true) {
   if (!(n % 100)) process.stdout.write(".");
   if (!(n % 10000)) process.stdout.write("\n" + n + " ");
   ++n;
-  var radii = new Array(20).fill().map(r).map(Math.abs);
+  var radii = new Array(20).fill().map(r);
   try {
     if (intersectsAny(d3.packSiblings(radii.map(r => ({r: r}))))) {
       throw new Error("overlap");
@@ -17,27 +17,6 @@ while (true) {
     process.stdout.write("\n");
     throw error;
   }
-}
-
-function randomNormal(mu, sigma) {
-  var x, r;
-  mu = mu == null ? 0 : +mu;
-  sigma = sigma == null ? 1 : +sigma;
-  return function() {
-    var y;
-
-    // If available, use the second previously-generated uniform random.
-    if (x != null) y = x, x = null;
-
-    // Otherwise, generate a new x and y.
-    else do {
-      x = Math.random() * 2 - 1;
-      y = Math.random() * 2 - 1;
-      r = x * x + y * y;
-    } while (!r || r > 1);
-
-    return mu + sigma * y * Math.sqrt(-2 * Math.log(r) / r);
-  };
 }
 
 function intersectsAny(circles) {
