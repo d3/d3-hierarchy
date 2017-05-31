@@ -406,6 +406,54 @@ tape("stratify.parentId(id) tests that id is a function", function(test) {
   test.end();
 });
 
+tape("stratify.props(props) observes the specified props function", function(test) {
+  var foo = function(d) { return { foo: d.foo }; },
+    s = d3_hierarchy.stratify().props(foo),
+    root = s([
+      {foo: "zz", id: "a"},
+      {foo: "zz", id: "aa", parentId: "a"},
+      {foo: "zz", id: "ab", parentId: "a"},
+      {foo: "zz", id: "aaa", parentId: "aa"}
+    ]);
+  test.equal(s.props(), foo);
+  test.deepEqual(noparent(root), {
+    id: "a",
+    depth: 0,
+    height: 2,
+    data: {foo: "zz"},
+    children: [
+      {
+        id: "aa",
+        depth: 1,
+        height: 1,
+        data: {foo: "zz"},
+        children: [
+          {
+            id: "aaa",
+            depth: 2,
+            height: 0,
+            data: {foo: "zz"}
+          }
+        ]
+      },
+      {
+        id: "ab",
+        depth: 1,
+        height: 0,
+        data: {foo: "zz"}
+      }
+    ]
+  });
+  test.end();
+});
+
+tape("stratify.props(props) tests that props is a function", function(test) {
+  var s = d3_hierarchy.stratify();
+  test.throws(function() { s.props(42); });
+  test.throws(function() { s.props(null); });
+  test.end();
+});
+
 function noparent(node) {
   var copy = {};
   for (var k in node) {

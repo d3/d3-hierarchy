@@ -13,9 +13,14 @@ function defaultParentId(d) {
   return d.parentId;
 }
 
+function defaultProps(d) {
+  return d;
+}
+
 export default function() {
   var id = defaultId,
-      parentId = defaultParentId;
+      parentId = defaultParentId,
+      props = defaultProps;
 
   function stratify(data) {
     var d,
@@ -30,8 +35,8 @@ export default function() {
         nodeByKey = {};
 
     for (i = 0; i < n; ++i) {
-      d = data[i], node = nodes[i] = new Node(d);
-      if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
+      d = props(data[i]), node = nodes[i] = new Node(d);
+      if ((nodeId = id(data[i], i, data)) != null && (nodeId += "")) {
         nodeKey = keyPrefix + (node.id = nodeId);
         nodeByKey[nodeKey] = nodeKey in nodeByKey ? ambiguous : node;
       }
@@ -67,6 +72,10 @@ export default function() {
 
   stratify.parentId = function(x) {
     return arguments.length ? (parentId = required(x), stratify) : parentId;
+  };
+
+  stratify.props = function(x) {
+    return arguments.length ? (props = required(x), stratify) : props;
   };
 
   return stratify;
