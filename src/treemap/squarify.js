@@ -34,6 +34,7 @@ export function squarifyRatio(ratio, parent, x0, y0, x1, y1) {
     // Keep adding nodes while the aspect ratio maintains or improves.
     for (; i1 < n; ++i1) {
       sumValue += nodeValue = nodes[i1].value;
+      if (nodeValue === 0) { continue; }
       if (nodeValue < minValue) minValue = nodeValue;
       if (nodeValue > maxValue) maxValue = nodeValue;
       beta = sumValue * sumValue * alpha;
