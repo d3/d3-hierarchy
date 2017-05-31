@@ -1,18 +1,17 @@
 export default function(circles) {
-  return encloseBasis(findBasis(circles, circles.length, []));
-}
+  var basis = [], circle;
+  var i = 0;
 
-function findBasis(L, n, B) {
-  var circle = encloseBasis(B);
-
-  for (var i = 0; i < n; ++i) {
-    var p = L[i];
-    if (!circle || !encloses(circle, p)) {
-      circle = encloseBasis(B = findBasis(L, i + 1, extendBasis(B, p)));
+  while (i < circles.length) {
+    var p = circles[i];
+    if (circle && encloses(circle, p)) ++i;
+    else {
+      circle = encloseBasis(basis = extendBasis(basis, p));
+      i = 0;
     }
   }
 
-  return B;
+  return circle;
 }
 
 function extendBasis(B, p) {
