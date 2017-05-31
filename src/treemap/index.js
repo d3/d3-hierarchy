@@ -8,7 +8,7 @@ export default function() {
       round = false,
       dx = 1,
       dy = 1,
-      paddingStack = [0],
+      paddingStack = [],
       paddingInner = constantZero,
       paddingTop = constantZero,
       paddingRight = constantZero,
@@ -20,8 +20,9 @@ export default function() {
     root.y0 = 0;
     root.x1 = dx;
     root.y1 = dy;
+    paddingStack[root.depth] = 0;
     root.eachBefore(positionNode);
-    paddingStack = [0];
+    paddingStack = [];
     if (round) root.eachBefore(roundNode);
     return root;
   }
