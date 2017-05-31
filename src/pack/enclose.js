@@ -1,17 +1,13 @@
 export default function(circles) {
-  var basis = [], circle;
-  var i = 0;
+  var i = 0, n = circles.length, B = [], p, e;
 
-  while (i < circles.length) {
-    var p = circles[i];
-    if (circle && encloses(circle, p)) ++i;
-    else {
-      circle = encloseBasis(basis = extendBasis(basis, p));
-      i = 0;
-    }
+  while (i < n) {
+    p = circles[i];
+    if (e && encloses(e, p)) ++i;
+    else e = encloseBasis(B = extendBasis(B, p)), i = 0;
   }
 
-  return circle;
+  return e;
 }
 
 function extendBasis(B, p) {
