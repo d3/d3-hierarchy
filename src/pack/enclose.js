@@ -17,7 +17,7 @@ function extendBasis(B, p) {
 
   // If we get here then B must have at least one element.
   for (i = 0; i < B.length; ++i) {
-    if (isBasis2(B[i], p) && enclosesAll(encloseBasis2(B[i], p), B)) {
+    if (!encloses(p, B[i]) && enclosesAll(encloseBasis2(B[i], p), B)) {
       return [B[i], p];
     }
   }
@@ -110,11 +110,6 @@ function encloseBasis3(a, b, c) {
       Math.sqrt((x3 -= x) * x3 + (y3 -= y) * y3) + r3
     )
   };
-}
-
-function isBasis2(a, b) {
-  return !encloses(a, b)
-      && !encloses(b, a);
 }
 
 function isBasis3(a, b, c) {
