@@ -38,8 +38,8 @@ function extendBasis(B, p) {
 }
 
 function encloses(a, b) {
-  var dr = a.r - b.r + 1e-9, dx = b.x - a.x, dy = b.y - a.y;
-  return dr > 0 && dr * dr > dx * dx + dy * dy;
+  var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
+  return dr > -1e-9 && dr * dr * (1 + 1e-9) + 1e-9 > dx * dx + dy * dy;
 }
 
 function enclosesAll(a, B) {
