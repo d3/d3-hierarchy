@@ -185,6 +185,23 @@ function encloseShuffle(L) {
   return e;
 }
 
+function enclosePrePass(L) {
+  var i, n = L.length, B = [], p, e;
+
+  for (i = 0; i < n; ++i) {
+    p = L[i];
+    if (!(e && enclosesWeak(e, p))) e = encloseBasis(B = extendBasis(B, p));
+  }
+
+  for (i = 0; i < n;) {
+    p = L[i];
+    if (e && enclosesWeak(e, p)) ++i;
+    else e = encloseBasis(B = extendBasis(B, p)), i = 0;
+  }
+
+  return e;
+}
+
 function encloseShufflePrePass(L) {
   var i, n = shuffle(L = slice.call(L)).length, B = [], p, e;
 
@@ -202,9 +219,43 @@ function encloseShufflePrePass(L) {
   return e;
 }
 
+function encloseCompletePasses(L) {
+  var i, n = L.length, B = [], p, e, dirty = false;
+
+  do {
+    for (i = 0, dirty = false; i < n;) {
+      p = L[i];
+      if (e && enclosesWeak(e, p)) ++i;
+      else e = encloseBasis(B = extendBasis(B, p)), dirty = true;
+    }
+  } while (dirty);
+
+  return e;
+}
+
+function encloseShuffleCompletePasses(L) {
+  var i, n = shuffle(L = slice.call(L)).length, B = [], p, e, dirty = false;
+
+  do {
+    for (i = 0, dirty = false; i < n;) {
+      p = L[i];
+      if (e && enclosesWeak(e, p)) ++i;
+      else e = encloseBasis(B = extendBasis(B, p)), dirty = true;
+    }
+  } while (dirty);
+
+  return e;
+}
+
 (new benchmark.Suite)
     .add("encloseShufflePrePass (forward)", () => encloseShufflePrePass(circles0))
     .add("encloseShufflePrePass (reverse)", () => encloseShufflePrePass(circles1))
+    .add("encloseShuffleCompletePasses (forward)", () => encloseShuffleCompletePasses(circles0))
+    .add("encloseShuffleCompletePasses (reverse)", () => encloseShuffleCompletePasses(circles1))
+    .add("enclosePrePass (forward)", () => enclosePrePass(circles0))
+    .add("enclosePrePass (reverse)", () => enclosePrePass(circles1))
+    .add("encloseCompletePasses (forward)", () => encloseCompletePasses(circles0))
+    .add("encloseCompletePasses (reverse)", () => encloseCompletePasses(circles1))
     .add("encloseShuffle (forward)", () => encloseShuffle(circles0))
     .add("encloseShuffle (reverse)", () => encloseShuffle(circles1))
     .add("encloseNoShuffle (forward)", () => encloseNoShuffle(circles0))
