@@ -19,7 +19,7 @@ function extendBasis(B, p) {
 
   // If we get here then B must have at least one element.
   for (i = 0; i < B.length; ++i) {
-    if (!encloses(p, B[i])
+    if (enclosesNot(p, B[i])
         && enclosesWeakAll(encloseBasis2(B[i], p), B)) {
       return [B[i], p];
     }
@@ -28,9 +28,9 @@ function extendBasis(B, p) {
   // If we get here then B must have at least two elements.
   for (i = 0; i < B.length - 1; ++i) {
     for (j = i + 1; j < B.length; ++j) {
-      if (!encloses(encloseBasis2(B[i], B[j]), p)
-          && !encloses(encloseBasis2(B[i], p), B[j])
-          && !encloses(encloseBasis2(B[j], p), B[i])
+      if (enclosesNot(encloseBasis2(B[i], B[j]), p)
+          && enclosesNot(encloseBasis2(B[i], p), B[j])
+          && enclosesNot(encloseBasis2(B[j], p), B[i])
           && enclosesWeakAll(encloseBasis3(B[i], B[j], p), B)) {
         return [B[i], B[j], p];
       }
@@ -41,9 +41,9 @@ function extendBasis(B, p) {
   throw new Error;
 }
 
-function encloses(a, b) {
+function enclosesNot(a, b) {
   var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
-  return dr >= 0 && dr * dr >= dx * dx + dy * dy;
+  return dr < 0 || dr * dr < dx * dx + dy * dy;
 }
 
 function enclosesWeak(a, b) {
