@@ -9,8 +9,8 @@ var n = 0,
     r = d3.randomLogNormal(10),
     x = d3.randomUniform(0, 100),
     y = x,
-    circles0 = d3.packSiblings(new Array(100).fill().map(() => ({r: r(), x: x(), y: y()}))),
-    circles1 = circles0.slice().reverse();
+    circles0,
+    circles1;
 
 function extendBasis(B, p) {
   var i, j;
@@ -262,26 +262,32 @@ function encloseShuffleCompletePasses(L) {
   return e;
 }
 
+function recycle(event) {
+  circles0 = d3.packSiblings(new Array(10).fill().map(() => ({r: r(), x: x(), y: y()})));
+  circles1 = circles0.slice().reverse();
+}
+
 (new benchmark.Suite)
-    .add("encloseNoShuffle (forward)", () => encloseNoShuffle(circles0))
-    .add("encloseNoShuffle (reverse)", () => encloseNoShuffle(circles1))
-    .add("enclosePrePass (forward)", () => enclosePrePass(circles0))
-    .add("enclosePrePass (reverse)", () => enclosePrePass(circles1))
-    .add("encloseCompletePasses (forward)", () => encloseCompletePasses(circles0))
-    .add("encloseCompletePasses (reverse)", () => encloseCompletePasses(circles1))
-    .add("encloseCircular (forward)", () => encloseCircular(circles0))
-    .add("encloseCircular (reverse)", () => encloseCircular(circles1))
-    .add("encloseShufflePrePass (forward)", () => encloseShufflePrePass(circles0))
-    .add("encloseShufflePrePass (reverse)", () => encloseShufflePrePass(circles1))
-    .add("encloseShuffleCompletePasses (forward)", () => encloseShuffleCompletePasses(circles0))
-    .add("encloseShuffleCompletePasses (reverse)", () => encloseShuffleCompletePasses(circles1))
-    .add("enclosePrePassThenLazyShuffle (forward)", () => enclosePrePassThenLazyShuffle(circles0))
-    .add("enclosePrePassThenLazyShuffle (reverse)", () => enclosePrePassThenLazyShuffle(circles1))
-    .add("encloseShuffle (forward)", () => encloseShuffle(circles0))
-    .add("encloseShuffle (reverse)", () => encloseShuffle(circles1))
-    .add("encloseLazyShuffle (forward)", () => encloseLazyShuffle(circles0))
-    .add("encloseLazyShuffle (reverse)", () => encloseLazyShuffle(circles1))
-    .add("encloseCircularShuffle (forward)", () => encloseCircularShuffle(circles0))
-    .add("encloseCircularShuffle (reverse)", () => encloseCircularShuffle(circles1))
+    .add("encloseNoShuffle (forward)", {onCycle: recycle, fn: () => encloseNoShuffle(circles0)})
+    .add("encloseNoShuffle (reverse)", {onCycle: recycle, fn: () => encloseNoShuffle(circles1)})
+    .add("enclosePrePass (forward)", {onCycle: recycle, fn: () => enclosePrePass(circles0)})
+    .add("enclosePrePass (reverse)", {onCycle: recycle, fn: () => enclosePrePass(circles1)})
+    .add("encloseCompletePasses (forward)", {onCycle: recycle, fn: () => encloseCompletePasses(circles0)})
+    .add("encloseCompletePasses (reverse)", {onCycle: recycle, fn: () => encloseCompletePasses(circles1)})
+    .add("encloseCircular (forward)", {onCycle: recycle, fn: () => encloseCircular(circles0)})
+    .add("encloseCircular (reverse)", {onCycle: recycle, fn: () => encloseCircular(circles1)})
+    .add("encloseShufflePrePass (forward)", {onCycle: recycle, fn: () => encloseShufflePrePass(circles0)})
+    .add("encloseShufflePrePass (reverse)", {onCycle: recycle, fn: () => encloseShufflePrePass(circles1)})
+    .add("encloseShuffleCompletePasses (forward)", {onCycle: recycle, fn: () => encloseShuffleCompletePasses(circles0)})
+    .add("encloseShuffleCompletePasses (reverse)", {onCycle: recycle, fn: () => encloseShuffleCompletePasses(circles1)})
+    .add("enclosePrePassThenLazyShuffle (forward)", {onCycle: recycle, fn: () => enclosePrePassThenLazyShuffle(circles0)})
+    .add("enclosePrePassThenLazyShuffle (reverse)", {onCycle: recycle, fn: () => enclosePrePassThenLazyShuffle(circles1)})
+    .add("encloseShuffle (forward)", {onCycle: recycle, fn: () => encloseShuffle(circles0)})
+    .add("encloseShuffle (reverse)", {onCycle: recycle, fn: () => encloseShuffle(circles1)})
+    .add("encloseLazyShuffle (forward)", {onCycle: recycle, fn: () => encloseLazyShuffle(circles0)})
+    .add("encloseLazyShuffle (reverse)", {onCycle: recycle, fn: () => encloseLazyShuffle(circles1)})
+    .add("encloseCircularShuffle (forward)", {onCycle: recycle, fn: () => encloseCircularShuffle(circles0)})
+    .add("encloseCircularShuffle (reverse)", {onCycle: recycle, fn: () => encloseCircularShuffle(circles1)})
+    .on("start", recycle)
     .on("cycle", event => console.log(event.target + ""))
     .run();
