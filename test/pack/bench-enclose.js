@@ -202,6 +202,23 @@ function enclosePrePass(L) {
   return e;
 }
 
+function enclosePrePassThenLazyShuffle(L) {
+  var i, j, n = L.length, B = [], p, e;
+
+  for (i = 0; i < n; ++i) {
+    p = L[i];
+    if (!(e && enclosesWeak(e, p))) e = encloseBasis(B = extendBasis(B, p));
+  }
+
+  for (i = 0; i < n;) {
+    p = L[j = i + (Math.random() * (n - i) | 0)], L[j] = L[i], L[i] = p;
+    if (e && enclosesWeak(e, p)) ++i;
+    else e = encloseBasis(B = extendBasis(B, p)), i = 0;
+  }
+
+  return e;
+}
+
 function encloseShufflePrePass(L) {
   var i, n = shuffle(L = slice.call(L)).length, B = [], p, e;
 
@@ -252,6 +269,8 @@ function encloseShuffleCompletePasses(L) {
     .add("encloseShuffleCompletePasses (reverse)", () => encloseShuffleCompletePasses(circles1))
     .add("enclosePrePass (forward)", () => enclosePrePass(circles0))
     .add("enclosePrePass (reverse)", () => enclosePrePass(circles1))
+    .add("enclosePrePassThenLazyShuffle (forward)", () => enclosePrePassThenLazyShuffle(circles0))
+    .add("enclosePrePassThenLazyShuffle (reverse)", () => enclosePrePassThenLazyShuffle(circles1))
     .add("encloseCompletePasses (forward)", () => encloseCompletePasses(circles0))
     .add("encloseCompletePasses (reverse)", () => encloseCompletePasses(circles1))
     .add("encloseShuffle (forward)", () => encloseShuffle(circles0))
