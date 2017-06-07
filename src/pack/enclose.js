@@ -5,7 +5,7 @@ export default function(circles) {
 
   while (i < n) {
     p = circles[i];
-    if (e && encloses(e, p)) ++i;
+    if (e && enclosesWeak(e, p)) ++i;
     else e = encloseBasis(B = extendBasis(B, p)), i = 0;
   }
 
@@ -15,11 +15,12 @@ export default function(circles) {
 function extendBasis(B, p) {
   var i, j;
 
-  if (enclosesAll(p, B)) return [p];
+  if (enclosesWeakAll(p, B)) return [p];
 
   // If we get here then B must have at least one element.
   for (i = 0; i < B.length; ++i) {
-    if (!encloses(p, B[i]) && enclosesAll(encloseBasis2(B[i], p), B)) {
+    if (!encloses(p, B[i])
+        && enclosesWeakAll(encloseBasis2(B[i], p), B)) {
       return [B[i], p];
     }
   }
@@ -27,7 +28,10 @@ function extendBasis(B, p) {
   // If we get here then B must have at least two elements.
   for (i = 0; i < B.length - 1; ++i) {
     for (j = i + 1; j < B.length; ++j) {
-      if (isBasis3(B[i], B[j], p) && enclosesAll(encloseBasis3(B[i], B[j], p), B)) {
+      if (!encloses(encloseBasis2(B[i], B[j]), p)
+          && !encloses(encloseBasis2(B[i], p), B[j])
+          && !encloses(encloseBasis2(B[j], p), B[i])
+          && enclosesWeakAll(encloseBasis3(B[i], B[j], p), B)) {
         return [B[i], B[j], p];
       }
     }
@@ -39,12 +43,17 @@ function extendBasis(B, p) {
 
 function encloses(a, b) {
   var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
-  return dr > -1e-9 && dr * dr * (1 + 1e-9) + 1e-9 > dx * dx + dy * dy;
+  return dr >= 0 && dr * dr >= dx * dx + dy * dy;
 }
 
-function enclosesAll(a, B) {
+function enclosesWeak(a, b) {
+  var dr = a.r - b.r + 1e-6, dx = b.x - a.x, dy = b.y - a.y;
+  return dr > 0 && dr * dr > dx * dx + dy * dy;
+}
+
+function enclosesWeakAll(a, B) {
   for (var i = 0; i < B.length; ++i) {
-    if (!encloses(a, B[i])) {
+    if (!enclosesWeak(a, B[i])) {
       return false;
     }
   }
@@ -100,22 +109,10 @@ function encloseBasis3(a, b, c) {
       A = xb * xb + yb * yb - 1,
       B = 2 * (r1 + xa * xb + ya * yb),
       C = xa * xa + ya * ya - r1 * r1,
-      r = A ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B,
-      x = x1 + xa - xb * r,
-      y = y1 + ya - yb * r;
+      r = -(A ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
   return {
-    x: x,
-    y: y,
-    r: Math.max(
-      Math.sqrt((x1 -= x) * x1 + (y1 -= y) * y1) + r1,
-      Math.sqrt((x2 -= x) * x2 + (y2 -= y) * y2) + r2,
-      Math.sqrt((x3 -= x) * x3 + (y3 -= y) * y3) + r3
-    )
+    x: x1 + xa + xb * r,
+    y: y1 + ya + yb * r,
+    r: r
   };
-}
-
-function isBasis3(a, b, c) {
-  return !encloses(encloseBasis2(a, b), c)
-      && !encloses(encloseBasis2(a, c), b)
-      && !encloses(encloseBasis2(b, c), a);
 }
