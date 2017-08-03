@@ -8,8 +8,8 @@ export default function() {
       round = false;
 
   function partition(root) {
-    var n = root.height + 1;
-    var rootDepth = root.depth;
+    var n = root.height + 1,
+        rootDepth = root.depth;
     root.x0 =
     root.y0 = padding;
     root.x1 = dx;
