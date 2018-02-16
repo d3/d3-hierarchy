@@ -134,7 +134,7 @@ var treemap = d3.treemap()
     .size([width, height])
     .padding(2);
 
-var nodes = treemap(root
+var nodes = treemap(root)
     .sum(function(d) { return d.value; })
     .sort(function(a, b) { return b.height - a.height || b.value - a.value; }))
   .descendants();
