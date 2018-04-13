@@ -66,11 +66,20 @@ export function packEnclose(circles) {
   // Attempt to place each remaining circle…
   pack: for (i = 3; i < n; ++i) {
     place(a._, b._, c = circles[i]), c = new Node(c);
+    j = b.next, k = a.previous;
+
+    // If there are only three elements in the front-chain,
+    // and the new circle intersects the third circle,
+    // rotate the front chain to try the next position.
+    if (k === j && intersects(j._, c._)) {
+      a = b, b = j, --i;
+      continue pack;
+    }
 
     // Find the closest intersecting circle on the front-chain, if any.
     // “Closeness” is determined by linear distance along the front-chain.
     // “Ahead” or “behind” is likewise determined by linear distance.
-    j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
+    sj = b._.r, sk = a._.r;
     do {
       if (sj <= sk) {
         if (intersects(j._, c._)) {
