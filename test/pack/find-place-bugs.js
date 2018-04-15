@@ -19,7 +19,9 @@ function place(a, b, c) {
     c.y = a.y;
   }
   if (intersects(a, c) || intersects(b, c)) {
-    console.log(a, b, c);
+    console.log(`a = {x: ${a.x}, y: ${a.y}, r: ${a.r}},`);
+    console.log(`b = {x: ${b.x}, y: ${b.y}, r: ${b.r}},`);
+    console.log(`c = {r: ${c.r}}`);
     throw new Error;
   }
 }
