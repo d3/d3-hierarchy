@@ -5,13 +5,20 @@ function place(a, b, c) {
       dy = b.y - a.y,
       dc = dx * dx + dy * dy;
   if (dc) {
-    var k = 2 * dc,
-        da = a.r * a.r + 2 * a.r * c.r + c.r * c.r,
-        db = b.r * b.r + 2 * b.r * c.r + c.r * c.r,
-        x = (dc + da - db) / k,
-        y = Math.sqrt(Math.max(0, 2 * (db * da + db * dc + da * dc) - db * db - da * da - dc * dc)) / k;
-    c.x = a.x + x * dx + y * dy;
-    c.y = a.y + x * dy - y * dx;
+    var scale = Math.sqrt(dc);
+    var ar = a.r / scale, br = b.r / scale, cr = c.r / scale;
+    var x, y;
+     if (a.r > b.r) {
+      x = (1 - (ar - br) * (ar + br + 2*cr)) / 2;
+      y = Math.sqrt(Math.max(0, (br + cr) * (br + cr) - x * x));
+      c.x = b.x - x * dx - y * dy;
+      c.y = b.y - x * dy + y * dx;
+    } else {
+      x = (1 - (br - ar) * (ar + br + 2*cr)) / 2;
+      y = Math.sqrt(Math.max(0, (ar + cr) * (ar + cr) - x * x));
+      c.x = a.x + x * dx - y * dy;
+      c.y = a.y + x * dy + y * dx;
+    }
   } else {
     c.x = a.x + a.r + c.r;
     c.y = a.y;
