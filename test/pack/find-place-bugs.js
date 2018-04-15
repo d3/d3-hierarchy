@@ -34,20 +34,20 @@ function intersects(a, b) {
 // Create n random circles.
 // The first two are placed touching on the x-axis; the rest are unplaced
 function randomCircles(n) {
-	const r = [];
-	for (var i = 0; i < n; i++) {
-		r.push({ r: Math.random() * (1 << (Math.random() * 30)) });
-	}
-	r[0].x = -r[1].r, r[1].x = r[0].r, r[0].y = r[1].y = 0;
-	return r;
+  const r = [];
+  for (var i = 0; i < n; i++) {
+    r.push({ r: Math.random() * (1 << (Math.random() * 30)) });
+  }
+  r[0].x = -r[1].r, r[1].x = r[0].r, r[0].y = r[1].y = 0;
+  return r;
 }
 
 function test() {
-	for(;;) {
-		const [a,b,c,d] = randomCircles(4);
-		place(b, a, c);
-		place(a, c, d);
-	}
+  for(;;) {
+    const [a,b,c,d] = randomCircles(4);
+    place(b, a, c);
+    place(a, c, d);
+  }
 }
 
 test();
