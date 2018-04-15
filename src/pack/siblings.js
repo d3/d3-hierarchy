@@ -1,29 +1,26 @@
 import enclose from "./enclose";
 
 function place(a, b, c) {
-  var ax = a.x,
-      ay = a.y,
-      da = b.r + c.r,
-      db = a.r + c.r,
-      dx = b.x - ax,
-      dy = b.y - ay,
+  var dx = b.x - a.x,
+      dy = b.y - a.y,
       dc = dx * dx + dy * dy;
   if (dc) {
-    var x = 0.5 + ((db *= db) - (da *= da)) / (2 * dc),
-        y = Math.sqrt(Math.max(0, 2 * da * (db + dc) - (db -= dc) * db - da * da)) / (2 * dc);
-    c.x = ax + x * dx + y * dy;
-    c.y = ay + x * dy - y * dx;
+    var k = 2 * dc,
+        da = a.r * a.r + 2 * a.r * c.r + c.r * c.r,
+        db = b.r * b.r + 2 * b.r * c.r + c.r * c.r,
+        x = (dc + da - db) / k,
+        y = Math.sqrt(Math.max(0, 2 * (db * da + db * dc + da * dc) - db * db - da * da - dc * dc)) / k;
+    c.x = a.x + x * dx + y * dy;
+    c.y = a.y + x * dy - y * dx;
   } else {
-    c.x = ax + db;
-    c.y = ay;
+    c.x = a.x + a.r + c.r;
+    c.y = a.y;
   }
 }
 
 function intersects(a, b) {
-  var dx = b.x - a.x,
-      dy = b.y - a.y,
-      dr = a.r + b.r;
-  return dr * dr - 1e-6 > dx * dx + dy * dy;
+  var dr = a.r + b.r - 1e-6, dx = b.x - a.x, dy = b.y - a.y;
+  return dr > 0 && dr * dr > dx * dx + dy * dy;
 }
 
 function score(node) {
