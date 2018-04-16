@@ -1,24 +1,25 @@
 import enclose from "./enclose";
 
 function place(a, b, c) {
-  var dx = b.x - a.x,
-      dy = b.y - a.y,
-      dc = dx * dx + dy * dy;
-  if (dc) {
-    var x, y;
-     if (a.r > b.r) {
-      x = (1 - (a.r - b.r) * (a.r + b.r + 2*c.r) / dc) / 2;
-      y = Math.sqrt(Math.max(0, (b.r + c.r) * (b.r + c.r) / dc - x * x));
+  var dx = b.x - a.x, x, a2,
+      dy = b.y - a.y, y, b2,
+      d2 = dx * dx + dy * dy;
+  if (d2) {
+    a2 = a.r + c.r, a2 *= a2;
+    b2 = b.r + c.r, b2 *= b2;
+    if (a2 > b2) {
+      x = (d2 + b2 - a2) / (2 * d2);
+      y = Math.sqrt(Math.max(0, b2 / d2 - x * x));
       c.x = b.x - x * dx - y * dy;
       c.y = b.y - x * dy + y * dx;
     } else {
-      x = (1 - (b.r - a.r) * (a.r + b.r + 2*c.r) / dc) / 2;
-      y = Math.sqrt(Math.max(0, (a.r + c.r) * (a.r + c.r) / dc - x * x));
+      x = (d2 + a2 - b2) / (2 * d2);
+      y = Math.sqrt(Math.max(0, a2 / d2 - x * x));
       c.x = a.x + x * dx - y * dy;
       c.y = a.y + x * dy + y * dx;
     }
   } else {
-    c.x = a.x + a.r + c.r;
+    c.x = a.x + c.r;
     c.y = a.y;
   }
 }
