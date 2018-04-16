@@ -40,7 +40,7 @@ var treemap = d3.treemap();
 
 Before you can compute a hierarchical layout, you need a root node. If your data is already in a hierarchical format, such as JSON, you can pass it directly to [d3.hierarchy](#hierarchy); otherwise, you can rearrange tabular data, such as comma-separated values (CSV), into a hierarchy using [d3.stratify](#stratify).
 
-<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>(<i>data</i>[, <i>children</i>]) [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/index.js#L12 "Source")
+<a name="hierarchy" href="#hierarchy">#</a> d3.<b>hierarchy</b>(<i>data</i>[, <i>children</i>, <i>lengthAccessor</i>, <i>childAccessor</i>]) [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/index.js#L12 "Source")
 
 Constructs a root node from the specified hierarchical *data*. The specified *data* must be an object representing the root node. For example:
 
@@ -85,6 +85,22 @@ The specified *children* accessor function is invoked for each datum, starting w
 ```js
 function children(d) {
   return d.children;
+}
+```
+
+The specified *lengthAccessor* function is invoked for each datum's children, it must return a number relating to the length of the children list. This provides a hook for data structures to resolve the length of their children if `length` isn't specified on the object.  If *lengthAccessor* is not specified, it defaults to:
+
+```js
+function defaultLength(d) {
+  return d.length;
+}
+```
+
+The specified *childAccessor* function is invoked when accessing the nodes in the list of children. This provides a hook for accessing the nodes in the child list, if they are not a standard array. If *childAccessor* is not specified, it defaults to:
+
+```js
+function defaultChild(d, i) {
+  return d[i];
 }
 ```
 

@@ -10,7 +10,7 @@ import node_descendants from "./descendants";
 import node_leaves from "./leaves";
 import node_links from "./links";
 
-export default function hierarchy(data, children) {
+export default function hierarchy(data, children, lengthAccessor, childAccessor) {
   var root = new Node(data),
       valued = +data.value && (root.value = data.value),
       node,
@@ -21,13 +21,15 @@ export default function hierarchy(data, children) {
       n;
 
   if (children == null) children = defaultChildren;
+  if (lengthAccessor == null) lengthAccessor = defaultLength;
+  if (childAccessor == null) childAccessor = defaultChild;
 
   while (node = nodes.pop()) {
     if (valued) node.value = +node.data.value;
-    if ((childs = children(node.data)) && (n = childs.length)) {
+    if ((childs = children(node.data)) && (n = lengthAccessor(childs))) {
       node.children = new Array(n);
       for (i = n - 1; i >= 0; --i) {
-        nodes.push(child = node.children[i] = new Node(childs[i]));
+        nodes.push(child = node.children[i] = new Node(childAccessor(childs, i)));
         child.parent = node;
         child.depth = node.depth + 1;
       }
@@ -43,6 +45,14 @@ function node_copy() {
 
 function defaultChildren(d) {
   return d.children;
+}
+
+function defaultLength(d) {
+  return d.length;
+}
+
+function defaultChild(d, i) {
+  return d[i];
 }
 
 function copyData(node) {
