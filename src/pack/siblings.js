@@ -1,6 +1,6 @@
 import enclose from "./enclose";
 
-function place(a, b, c) {
+function place(b, a, c) {
   var dx = b.x - a.x, x, a2,
       dy = b.y - a.y, y, b2,
       d2 = dx * dx + dy * dy;
