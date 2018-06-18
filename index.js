@@ -6,6 +6,7 @@ export {default as packEnclose} from "./src/pack/enclose";
 export {default as partition} from "./src/partition";
 export {default as stratify} from "./src/stratify";
 export {default as tree} from "./src/tree";
+export {default as gratzl} from "./src/gratzl";
 export {default as treemap} from "./src/treemap/index";
 export {default as treemapBinary} from "./src/treemap/binary";
 export {default as treemapDice} from "./src/treemap/dice";
