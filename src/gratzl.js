@@ -54,7 +54,7 @@ export default function() {
     setTreeX(deepestLeaf, 0);
 
     var maxX = Math.max.apply(null, widths);
-    var maxY = deepestLeaf.depth;
+    var maxY = Math.max.apply(null, root.leaves().map(function(leaf) { return leaf.depth; }));
     root.each(function(node) {
       sizeNode(node, maxX, maxY)
     });
