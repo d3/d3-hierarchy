@@ -198,12 +198,12 @@ cross-spawn@^6.0.5:
     which "^1.2.9"
 
 d3-array@^1.2.0:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.3.tgz#d705413d19a48fd82c570b4442170d6b9f5df794"
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
 
 d3-dsv@1:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/d3-dsv/-/d3-dsv-1.0.9.tgz#9cd3165ada9dbe4434d7238c1ddf1c78b99a8e0c"
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/d3-dsv/-/d3-dsv-1.0.10.tgz#4371c489a2a654a297aca16fcaf605a6f31a6f51"
   dependencies:
     commander "2"
     iconv-lite "0.4"
@@ -214,8 +214,8 @@ d3-queue@3:
   resolved "https://registry.yarnpkg.com/d3-queue/-/d3-queue-3.0.7.tgz#c93a2e54b417c0959129d7d73f6cf7d4292e7618"
 
 d3-random@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/d3-random/-/d3-random-1.1.0.tgz#6642e506c6fa3a648595d2b2469788a8d12529d3"
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/d3-random/-/d3-random-1.1.1.tgz#de6a1fc321e31c4f7468709cd0e7858c3c850315"
 
 debug@^3.1.0:
   version "3.1.0"
