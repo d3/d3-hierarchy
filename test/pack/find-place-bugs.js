@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // Look for numerical inconsistencies between the place() and intersects()
 // methods from pack/siblings.js
 

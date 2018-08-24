@@ -9,7 +9,7 @@ tape("pack(flare) produces the expected result", test(
   "test/data/flare-pack.json"
 ));
 
-function test(input, expected, tile) {
+function test(input, expected) {
   return function(test) {
 
     d3_queue.queue()

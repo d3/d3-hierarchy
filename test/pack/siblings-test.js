@@ -59,8 +59,8 @@ function circleRadius(radius) {
 
 function intersectsAny(circles) {
   for (var i = 0, n = circles.length; i < n; ++i) {
-    for (var j = i + 1, ci = circles[i], cj; j < n; ++j) {
-      if (intersects(ci, cj = circles[j])) {
+    for (var j = i + 1, ci = circles[i]; j < n; ++j) {
+      if (intersects(ci, circles[j])) {
         return true;
       }
     }

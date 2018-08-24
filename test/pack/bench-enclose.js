@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var d3 = Object.assign({}, require("../../"), require("d3-array"), require("d3-random")),
     benchmark = require("benchmark");
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var d3 = Object.assign({}, require("../../"), require("d3-random"));
 
 var n = 0, r = d3.randomLogNormal(4);
