@@ -8,20 +8,21 @@ export default function() {
       round = false;
 
   function partition(root) {
-    var n = root.height + 1;
+    var n = root.height + 1,
+        rootDepth = root.depth;
     root.x0 =
     root.y0 = padding;
     root.x1 = dx;
     root.y1 = dy / n;
-    root.eachBefore(positionNode(dy, n));
+    root.eachBefore(positionNode(dy, n, rootDepth));
     if (round) root.eachBefore(roundNode);
     return root;
   }
 
-  function positionNode(dy, n) {
+  function positionNode(dy, n, rootDepth) {
     return function(node) {
       if (node.children) {
-        treemapDice(node, node.x0, dy * (node.depth + 1) / n, node.x1, dy * (node.depth + 2) / n);
+        treemapDice(node, node.x0, dy * (node.depth - rootDepth + 1) / n, node.x1, dy * (node.depth - rootDepth + 2) / n);
       }
       var x0 = node.x0,
           y0 = node.y0,

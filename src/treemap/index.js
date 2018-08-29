@@ -16,37 +16,40 @@ export default function() {
       paddingLeft = constantZero;
 
   function treemap(root) {
+    var rootDepth = root.depth
     root.x0 =
     root.y0 = 0;
     root.x1 = dx;
     root.y1 = dy;
-    root.eachBefore(positionNode);
+    root.eachBefore(positionNode(rootDepth));
     paddingStack = [0];
     if (round) root.eachBefore(roundNode);
     return root;
   }
 
-  function positionNode(node) {
-    var p = paddingStack[node.depth],
-        x0 = node.x0 + p,
-        y0 = node.y0 + p,
-        x1 = node.x1 - p,
-        y1 = node.y1 - p;
-    if (x1 < x0) x0 = x1 = (x0 + x1) / 2;
-    if (y1 < y0) y0 = y1 = (y0 + y1) / 2;
-    node.x0 = x0;
-    node.y0 = y0;
-    node.x1 = x1;
-    node.y1 = y1;
-    if (node.children) {
-      p = paddingStack[node.depth + 1] = paddingInner(node) / 2;
-      x0 += paddingLeft(node) - p;
-      y0 += paddingTop(node) - p;
-      x1 -= paddingRight(node) - p;
-      y1 -= paddingBottom(node) - p;
+  function positionNode(rootDepth) {
+    return function(node) {
+      var p = paddingStack[node.depth - rootDepth],
+          x0 = node.x0 + p,
+          y0 = node.y0 + p,
+          x1 = node.x1 - p,
+          y1 = node.y1 - p;
       if (x1 < x0) x0 = x1 = (x0 + x1) / 2;
       if (y1 < y0) y0 = y1 = (y0 + y1) / 2;
-      tile(node, x0, y0, x1, y1);
+      node.x0 = x0;
+      node.y0 = y0;
+      node.x1 = x1;
+      node.y1 = y1;
+      if (node.children) {
+        p = paddingStack[node.depth - rootDepth + 1] = paddingInner(node) / 2;
+        x0 += paddingLeft(node) - p;
+        y0 += paddingTop(node) - p;
+        x1 -= paddingRight(node) - p;
+        y1 -= paddingBottom(node) - p;
+        if (x1 < x0) x0 = x1 = (x0 + x1) / 2;
+        if (y1 < y0) y0 = y1 = (y0 + y1) / 2;
+        tile(node, x0, y0, x1, y1);
+      }
     }
   }
 
