@@ -121,7 +121,7 @@ Returns an array of links for this *node*, where each *link* is an object that d
 
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>) [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/sum.js "Source")
 
-Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The *node*.value property of each node is set to the numeric value returned by the specified function plus the combined value of all descendants. The function is passed the node’s data, and must return a non-negative number. The *value* accessor is evaluated for *node* and every descendant, including internal nodes; if you only want leaf nodes to have internal value, then return zero for any node with children. [For example](http://bl.ocks.org/mbostock/b4c0f143db88a9eb01a315a1063c1d77), as an alternative to [*node*.count](#node_count):
+Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The *node*.value property of each node is set to the numeric value returned by the specified function plus the combined value of all children. The function is passed the node’s data, and must return a non-negative number. The *value* accessor is evaluated for *node* and every descendant, including internal nodes; if you only want leaf nodes to have internal value, then return zero for any node with children. [For example](http://bl.ocks.org/mbostock/b4c0f143db88a9eb01a315a1063c1d77), as an alternative to [*node*.count](#node_count):
 
 ```js
 root.sum(function(d) { return d.value ? 1 : 0; });
