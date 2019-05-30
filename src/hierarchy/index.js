@@ -57,7 +57,7 @@ export function computeHeight(node) {
 
 export function Node(data) {
   this.data = data;
-  this.depth =
+  this.depth = 0;
   this.height = 0;
   this.parent = null;
 }
