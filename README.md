@@ -294,7 +294,7 @@ The parent id accessor is invoked for each element in the input data passed to t
 
 [<img alt="Dendrogram" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/cluster.png">](https://observablehq.com/@d3/cluster-dendrogram)
 
-The **cluster layout** produces [dendrograms](http://en.wikipedia.org/wiki/Dendrogram): node-link diagrams that place leaf nodes of the tree at the same depth. Dendograms are typically less compact than [tidy trees](#tree), but are useful when all the leaves should be at the same level, such as for hierarchical clustering or [phylogenetic tree diagrams](https://observablehq.com/@mbostock/tree-of-life).
+The **cluster layout** produces [dendrograms](http://en.wikipedia.org/wiki/Dendrogram): node-link diagrams that place leaf nodes of the tree at the same depth. Dendrograms are typically less compact than [tidy trees](#tree), but are useful when all the leaves should be at the same level, such as for hierarchical clustering or [phylogenetic tree diagrams](https://observablehq.com/@mbostock/tree-of-life).
 
 <a name="cluster" href="#cluster">#</a> d3.<b>cluster</b>() · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/cluster.js), [Examples](https://observablehq.com/@d3/cluster-dendrogram)
 
@@ -333,7 +333,7 @@ The separation accessor is used to separate neighboring leaves. The separation f
 
 [<img alt="Tidy Tree" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/tree.png">](https://observablehq.com/@d3/tidy-tree)
 
-The **tree** layout produces tidy node-link diagrams of trees using the [Reingold–Tilford “tidy” algorithm](http://reingold.co/tidier-drawings.pdf), improved to run in linear time by [Buchheim *et al.*](http://dirk.jivas.de/papers/buchheim02improving.pdf) Tidy trees are typically more compact than [dendograms](#cluster).
+The **tree** layout produces tidy node-link diagrams of trees using the [Reingold–Tilford “tidy” algorithm](http://reingold.co/tidier-drawings.pdf), improved to run in linear time by [Buchheim *et al.*](http://dirk.jivas.de/papers/buchheim02improving.pdf) Tidy trees are typically more compact than [dendrograms](#cluster).
 
 <a name="tree" href="#tree">#</a> d3.<b>tree</b>() · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/tree.js), [Examples](https://observablehq.com/@d3/tidy-tree)
 
