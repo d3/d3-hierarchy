@@ -534,7 +534,7 @@ If *size* is specified, sets this pack layout’s size to the specified two-elem
 
 If *padding* is specified, sets this pack layout’s padding accessor to the specified number or function and returns this pack layout. If *padding* is not specified, returns the current padding accessor, which defaults to the constant zero. When siblings are packed, tangent siblings will be separated by approximately the specified padding; the enclosing parent circle will also be separated from its children by approximately the specified padding. If an [explicit radius](#pack_radius) is not specified, the padding is approximate because a two-pass algorithm is needed to fit within the [layout size](#pack_size): the circles are first packed without padding; a scaling factor is computed and applied to the specified padding; and lastly the circles are re-packed with padding.
 
-<a name="packSiblings" href="#packSiblings">#</a> d3.<b>packSiblings</b>(<i>circles</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/pack/siblings.js), [Examples](https://observablehq.com/@mbostock/miniball)
+<a name="packSiblings" href="#packSiblings">#</a> d3.<b>packSiblings</b>(<i>circles</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/pack/siblings.js)
 
 Packs the specified array of *circles*, each of which must have a *circle*.r property specifying the circle’s radius. Assigns the following properties to each circle:
 
@@ -543,6 +543,6 @@ Packs the specified array of *circles*, each of which must have a *circle*.r pro
 
 The circles are positioned according to the front-chain packing algorithm by [Wang *et al.*](https://dl.acm.org/citation.cfm?id=1124851)
 
-<a name="packEnclose" href="#packEnclose">#</a> d3.<b>packEnclose</b>(<i>circles</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/pack/enclose.js), [Examples](https://observablehq.com/@mbostock/miniball)
+<a name="packEnclose" href="#packEnclose">#</a> d3.<b>packEnclose</b>(<i>circles</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/pack/enclose.js), [Examples](https://observablehq.com/@d3/d3-packenclose)
 
 Computes the [smallest circle](https://en.wikipedia.org/wiki/Smallest-circle_problem) that encloses the specified array of *circles*, each of which must have a *circle*.r property specifying the circle’s radius, and *circle*.x and *circle*.y properties specifying the circle’s center. The enclosing circle is computed using the [Matoušek-Sharir-Welzl algorithm](http://www.inf.ethz.ch/personal/emo/PublFiles/SubexLinProg_ALG16_96.pdf). (See also [Apollonius’ Problem](https://bl.ocks.org/mbostock/751fdd637f4bc2e3f08b).)
