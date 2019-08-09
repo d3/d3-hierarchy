@@ -1,5 +1,5 @@
-import roundNode from "./treemap/round";
-import treemapDice from "./treemap/dice";
+import roundNode from "./treemap/round.js";
+import treemapDice from "./treemap/dice.js";
 
 export default function() {
   var dx = 1,

@@ -1,7 +1,7 @@
-import roundNode from "./round";
-import squarify from "./squarify";
-import {required} from "../accessors";
-import constant, {constantZero} from "../constant";
+import roundNode from "./round.js";
+import squarify from "./squarify.js";
+import {required} from "../accessors.js";
+import constant, {constantZero} from "../constant.js";
 
 export default function() {
   var tile = squarify,

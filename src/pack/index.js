@@ -1,6 +1,6 @@
-import {packEnclose} from "./siblings";
-import {optional} from "../accessors";
-import constant, {constantZero} from "../constant";
+import {packEnclose} from "./siblings.js";
+import {optional} from "../accessors.js";
+import constant, {constantZero} from "../constant.js";
 
 function defaultRadius(d) {
   return Math.sqrt(d.value);

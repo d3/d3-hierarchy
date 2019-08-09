@@ -1,4 +1,4 @@
-import enclose from "./enclose";
+import enclose from "./enclose.js";
 
 function place(b, a, c) {
   var dx = b.x - a.x, x, a2,

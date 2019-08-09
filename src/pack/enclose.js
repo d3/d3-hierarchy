@@ -1,4 +1,4 @@
-import {shuffle, slice} from "../array";
+import {shuffle, slice} from "../array.js";
 
 export default function(circles) {
   var i = 0, n = (circles = shuffle(slice.call(circles))).length, B = [], p, e;

@@ -1,6 +1,6 @@
-import treemapDice from "./dice";
-import treemapSlice from "./slice";
-import {phi, squarifyRatio} from "./squarify";
+import treemapDice from "./dice.js";
+import treemapSlice from "./slice.js";
+import {phi, squarifyRatio} from "./squarify.js";
 
 export default (function custom(ratio) {
 

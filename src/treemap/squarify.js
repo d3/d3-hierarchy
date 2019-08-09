@@ -1,5 +1,5 @@
-import treemapDice from "./dice";
-import treemapSlice from "./slice";
+import treemapDice from "./dice.js";
+import treemapSlice from "./slice.js";
 
 export var phi = (1 + Math.sqrt(5)) / 2;
 

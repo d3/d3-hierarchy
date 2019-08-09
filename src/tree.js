@@ -1,4 +1,4 @@
-import {Node} from "./hierarchy/index";
+import {Node} from "./hierarchy/index.js";
 
 function defaultSeparation(a, b) {
   return a.parent === b.parent ? 1 : 2;

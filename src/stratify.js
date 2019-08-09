@@ -1,5 +1,5 @@
-import {required} from "./accessors";
-import {Node, computeHeight} from "./hierarchy/index";
+import {required} from "./accessors.js";
+import {Node, computeHeight} from "./hierarchy/index.js";
 
 var keyPrefix = "$", // Protect against keys like “__proto__”.
     preroot = {depth: -1},
