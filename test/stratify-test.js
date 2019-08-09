@@ -409,10 +409,12 @@ tape("stratify.parentId(id) tests that id is a function", function(test) {
 function noparent(node) {
   var copy = {};
   for (var k in node) {
-    if (node.hasOwnProperty(k)) switch (k) {
-      case "children": copy.children = node.children.map(noparent); break;
-      case "parent": break;
-      default: copy[k] = node[k]; break;
+    if (node.hasOwnProperty(k)) { // eslint-disable-line no-prototype-builtins
+      switch (k) {
+        case "children": copy.children = node.children.map(noparent); break;
+        case "parent": break;
+        default: copy[k] = node[k]; break;
+      }
     }
   }
   return copy;
