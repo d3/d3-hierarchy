@@ -1,3 +1,4 @@
+import array from "../array.js";
 import enclose from "./enclose.js";
 
 function place(b, a, c) {
@@ -45,7 +46,7 @@ function Node(circle) {
 }
 
 export function packEnclose(circles) {
-  if (!(n = circles.length)) return 0;
+  if (!(n = (circles = array(circles)).length)) return 0;
 
   var a, b, c, n, aa, ca, i, j, k, sj, sk;
 
