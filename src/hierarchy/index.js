@@ -24,10 +24,10 @@ export default function hierarchy(data, children) {
 
   while (node = nodes.pop()) {
     if (valued) node.value = +node.data.value;
-    if ((childs = children(node.data)) && (n = childs.length)) {
-      node.children = new Array(n);
+    if ((childs = children(node.data)) && (n = (childs = Array.from(childs)).length)) {
+      node.children = childs;
       for (i = n - 1; i >= 0; --i) {
-        nodes.push(child = node.children[i] = new Node(childs[i]));
+        nodes.push(child = childs[i] = new Node(childs[i]));
         child.parent = node;
         child.depth = node.depth + 1;
       }
