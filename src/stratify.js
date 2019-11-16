@@ -1,8 +1,7 @@
 import {required} from "./accessors.js";
 import {Node, computeHeight} from "./hierarchy/index.js";
 
-var keyPrefix = "$", // Protect against keys like “__proto__”.
-    preroot = {depth: -1},
+var preroot = {depth: -1},
     ambiguous = {};
 
 function defaultId(d) {
@@ -18,37 +17,40 @@ export default function() {
       parentId = defaultParentId;
 
   function stratify(data) {
-    var d,
+    var nodes = Array.from(data),
+        n = nodes.length,
+        d,
         i,
-        n = data.length,
         root,
         parent,
         node,
-        nodes = new Array(n),
         nodeId,
         nodeKey,
-        nodeByKey = {};
+        nodeByKey = new Map;
 
     for (i = 0; i < n; ++i) {
-      d = data[i], node = nodes[i] = new Node(d);
+      d = nodes[i], node = nodes[i] = new Node(d);
       if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
-        nodeKey = keyPrefix + (node.id = nodeId);
-        nodeByKey[nodeKey] = nodeKey in nodeByKey ? ambiguous : node;
+        nodeKey = node.id = nodeId;
+        nodeByKey.set(nodeKey, nodeByKey.has(nodeKey) ? ambiguous : node);
+      }
+      if ((nodeId = parentId(d, i, data)) != null && (nodeId += "")) {
+        node.parent = nodeId;
       }
     }
 
     for (i = 0; i < n; ++i) {
-      node = nodes[i], nodeId = parentId(data[i], i, data);
-      if (nodeId == null || !(nodeId += "")) {
-        if (root) throw new Error("multiple roots");
-        root = node;
-      } else {
-        parent = nodeByKey[keyPrefix + nodeId];
+      node = nodes[i];
+      if (nodeId = node.parent) {
+        parent = nodeByKey.get(nodeId);
         if (!parent) throw new Error("missing: " + nodeId);
         if (parent === ambiguous) throw new Error("ambiguous: " + nodeId);
         if (parent.children) parent.children.push(node);
         else parent.children = [node];
         node.parent = parent;
+      } else {
+        if (root) throw new Error("multiple roots");
+        root = node;
       }
     }
 
