@@ -1,9 +1,11 @@
-export default function(callback) {
-  var node = this, nodes = [node], children, i;
+export default function(callback, that) {
+  var node = this, nodes = [node], children, i, index = -1;
   while (node = nodes.pop()) {
-    callback(node), children = node.children;
-    if (children) for (i = children.length - 1; i >= 0; --i) {
-      nodes.push(children[i]);
+    callback.call(that, node, ++index, this);
+    if (children = node.children) {
+      for (i = children.length - 1; i >= 0; --i) {
+        nodes.push(children[i]);
+      }
     }
   }
   return this;
