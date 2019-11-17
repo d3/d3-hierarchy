@@ -2,6 +2,7 @@ import node_count from "./count.js";
 import node_each from "./each.js";
 import node_eachBefore from "./eachBefore.js";
 import node_eachAfter from "./eachAfter.js";
+import node_find from "./find.js";
 import node_sum from "./sum.js";
 import node_sort from "./sort.js";
 import node_path from "./path.js";
@@ -9,6 +10,7 @@ import node_ancestors from "./ancestors.js";
 import node_descendants from "./descendants.js";
 import node_leaves from "./leaves.js";
 import node_links from "./links.js";
+import node_iterator from "./iterator.js";
 
 export default function hierarchy(data, children) {
   var root = new Node(data),
@@ -68,6 +70,7 @@ Node.prototype = hierarchy.prototype = {
   each: node_each,
   eachAfter: node_eachAfter,
   eachBefore: node_eachBefore,
+  find: node_find,
   sum: node_sum,
   sort: node_sort,
   path: node_path,
@@ -75,5 +78,6 @@ Node.prototype = hierarchy.prototype = {
   descendants: node_descendants,
   leaves: node_leaves,
   links: node_links,
-  copy: node_copy
+  copy: node_copy,
+  [Symbol.iterator]: node_iterator
 };

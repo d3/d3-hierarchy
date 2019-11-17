@@ -174,6 +174,16 @@ root
 
 You must call *node*.sort before invoking a hierarchical layout if you want the new sort order to affect the layout; see [*node*.sum](#node_sum) for an example.
 
+<a name="node_iterator" href="#node_iterator">#</a> <i>node</i>[<b>Symbol.iterator</b>]() [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/iterator.js "Source")
+
+Returns an iterator over the *node*’s descendants in breadth-first order. For example:
+
+```js
+for (const descendant of node) {
+  console.log(descendant);
+}
+```
+
 <a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>[, <i>that</i>]) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/each.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
 
 Invokes the specified *function* for *node* and each descendant in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser depth have already been visited, as well as all preceding nodes of the same depth. The specified function is passed the current *descendant*, the zero-based traversal *index*, and this *node*. If *that* is specified, it is the this context of the callback.
