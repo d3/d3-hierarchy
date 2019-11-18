@@ -13,12 +13,8 @@ import node_links from "./links.js";
 import node_iterator from "./iterator.js";
 
 export default function hierarchy(data, children) {
-  if (data instanceof Map) {
-    data = [undefined, data];
-    if (children === undefined) children = mapChildren;
-  } else if (children === undefined) {
-    children = objectChildren;
-  }
+  if (data instanceof Map) return hierarchy([undefined, data], children === undefined ? mapChildren : children).each(mapData);
+  if (children === undefined) children = objectChildren;
 
   var root = new Node(data),
       node,
@@ -39,11 +35,11 @@ export default function hierarchy(data, children) {
     }
   }
 
-  return root.eachBefore(computeHeight);
+  return root.each(computeHeight);
 }
 
 function node_copy() {
-  return hierarchy(this).eachBefore(copyData);
+  return hierarchy(this).each(copyData);
 }
 
 function objectChildren(d) {
@@ -52,6 +48,12 @@ function objectChildren(d) {
 
 function mapChildren(d) {
   return Array.isArray(d) ? d[1] : null;
+}
+
+function mapData(node) {
+  if (Array.isArray(node.data)) {
+    node.data = {name: node.data[0], value: node.data[1]};
+  }
 }
 
 function copyData(node) {
