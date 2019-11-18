@@ -70,7 +70,6 @@ export function Node(data) {
   this.depth =
   this.height = 0;
   this.parent = null;
-  this.value = undefined;
 }
 
 Node.prototype = hierarchy.prototype = {
