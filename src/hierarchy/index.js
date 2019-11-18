@@ -12,7 +12,7 @@ import node_leaves from "./leaves.js";
 import node_links from "./links.js";
 import node_iterator from "./iterator.js";
 
-export default function hierarchy(data, children) {
+export default function hierarchy(data, children = defaultChildren) {
   var root = new Node(data),
       valued = +data.value && (root.value = data.value),
       node,
@@ -21,8 +21,6 @@ export default function hierarchy(data, children) {
       childs,
       i,
       n;
-
-  if (children == null) children = defaultChildren;
 
   while (node = nodes.pop()) {
     if (valued) node.value = +node.data.value;
