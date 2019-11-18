@@ -21,18 +21,21 @@ tape("stratify(data) returns the root node", function(test) {
     id: "a",
     depth: 0,
     height: 2,
+    value: undefined,
     data: {id: "a"},
     children: [
       {
         id: "aa",
         depth: 1,
         height: 1,
+        value: undefined,
         data: {id: "aa", parentId: "a"},
         children: [
           {
             id: "aaa",
             depth: 2,
             height: 0,
+            value: undefined,
             data: {id: "aaa", parentId: "aa"}
           }
         ]
@@ -41,6 +44,7 @@ tape("stratify(data) returns the root node", function(test) {
         id: "ab",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "ab", parentId: "a"}
       }
     ]
@@ -60,18 +64,21 @@ tape("stratify(data) does not require the data to be in topological order", func
     id: "a",
     depth: 0,
     height: 2,
+    value: undefined,
     data: {id: "a"},
     children: [
       {
         id: "aa",
         depth: 1,
         height: 1,
+        value: undefined,
         data: {id: "aa", parentId: "a"},
         children: [
           {
             id: "aaa",
             depth: 2,
             height: 0,
+            value: undefined,
             data: {id: "aaa", parentId: "aa"}
           }
         ]
@@ -80,6 +87,7 @@ tape("stratify(data) does not require the data to be in topological order", func
         id: "ab",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "ab", parentId: "a"}
       }
     ]
@@ -99,24 +107,28 @@ tape("stratify(data) preserves the input order of siblings", function(test) {
     id: "a",
     depth: 0,
     height: 2,
+    value: undefined,
     data: {id: "a"},
     children: [
       {
         id: "ab",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "ab", parentId: "a"}
       },
       {
         id: "aa",
         depth: 1,
         height: 1,
+        value: undefined,
         data: {id: "aa", parentId: "a"},
         children: [
           {
             id: "aaa",
             depth: 2,
             height: 0,
+            value: undefined,
             data: {id: "aaa", parentId: "aa"}
           }
         ]
@@ -138,24 +150,28 @@ tape("stratify(data) accepts an iterable", function(test) {
     id: "a",
     depth: 0,
     height: 2,
+    value: undefined,
     data: {id: "a"},
     children: [
       {
         id: "ab",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "ab", parentId: "a"}
       },
       {
         id: "aa",
         depth: 1,
         height: 1,
+        value: undefined,
         data: {id: "aa", parentId: "a"},
         children: [
           {
             id: "aaa",
             depth: 2,
             height: 0,
+            value: undefined,
             data: {id: "aaa", parentId: "aa"}
           }
         ]
@@ -177,18 +193,21 @@ tape("stratify(data) treats an empty parentId as the root", function(test) {
     id: "a",
     depth: 0,
     height: 2,
+    value: undefined,
     data: {id: "a", parentId: ""},
     children: [
       {
         id: "aa",
         depth: 1,
         height: 1,
+        value: undefined,
         data: {id: "aa", parentId: "a"},
         children: [
           {
             id: "aaa",
             depth: 2,
             height: 0,
+            value: undefined,
             data: {id: "aaa", parentId: "aa"}
           }
         ]
@@ -197,6 +216,7 @@ tape("stratify(data) treats an empty parentId as the root", function(test) {
         id: "ab",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "ab", parentId: "a"}
       }
     ]
@@ -215,18 +235,21 @@ tape("stratify(data) does not treat a falsy but non-empty parentId as the root",
     id: "0",
     depth: 0,
     height: 1,
+    value: undefined,
     data: {id: 0, parentId: null},
     children: [
       {
         id: "1",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: 1, parentId: 0}
       },
       {
         id: "2",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: 2, parentId: 0}
       }
     ]
@@ -272,16 +295,19 @@ tape("stratify(data) allows the id to be undefined for leaf nodes", function(tes
     id: "a",
     depth: 0,
     height: 1,
+    value: undefined,
     data: {id: "a"},
     children: [
       {
         depth: 1,
         height: 0,
+        value: undefined,
         data: {parentId: "a"}
       },
       {
         depth: 1,
         height: 0,
+        value: undefined,
         data: {parentId: "a"}
       }
     ]
@@ -300,18 +326,21 @@ tape("stratify(data) allows the id to be non-unique for leaf nodes", function(te
     id: "a",
     depth: 0,
     height: 1,
+    value: undefined,
     data: {id: "a", parentId: null},
     children: [
       {
         id: "b",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "b", parentId: "a"}
       },
       {
         id: "b",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "b", parentId: "a"}
       }
     ]
@@ -337,11 +366,13 @@ tape("stratify(data) allows the id to be undefined for leaf nodes", function(tes
     id: "a",
     depth: 0,
     height: 1,
+    value: undefined,
     data: {id: "a"},
     children: [
       {
         depth: 1,
         height: 0,
+        value: undefined,
         data: o
       }
     ]
@@ -363,18 +394,21 @@ tape("stratify.id(id) observes the specified id function", function(test) {
     id: "a",
     depth: 0,
     height: 2,
+    value: undefined,
     data: {foo: "a"},
     children: [
       {
         id: "aa",
         depth: 1,
         height: 1,
+        value: undefined,
         data: {foo: "aa", parentId: "a"},
         children: [
           {
             id: "aaa",
             depth: 2,
             height: 0,
+            value: undefined,
             data: {foo: "aaa", parentId:"aa" }
           }
         ]
@@ -383,6 +417,7 @@ tape("stratify.id(id) observes the specified id function", function(test) {
         id: "ab",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {foo: "ab", parentId:"a" }
       }
     ]
@@ -411,18 +446,21 @@ tape("stratify.parentId(id) observes the specified parent id function", function
     id: "a",
     depth: 0,
     height: 2,
+    value: undefined,
     data: {id: "a"},
     children: [
       {
         id: "aa",
         depth: 1,
         height: 1,
+        value: undefined,
         data: {id: "aa", foo: "a"},
         children: [
           {
             id: "aaa",
             depth: 2,
             height: 0,
+            value: undefined,
             data: {id: "aaa", foo: "aa"}
           }
         ]
@@ -431,6 +469,7 @@ tape("stratify.parentId(id) observes the specified parent id function", function
         id: "ab",
         depth: 1,
         height: 0,
+        value: undefined,
         data: {id: "ab", foo: "a"}
       }
     ]

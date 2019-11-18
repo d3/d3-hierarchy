@@ -12,9 +12,15 @@ import node_leaves from "./leaves.js";
 import node_links from "./links.js";
 import node_iterator from "./iterator.js";
 
-export default function hierarchy(data, children = defaultChildren) {
+export default function hierarchy(data, children) {
+  if (data instanceof Map) {
+    data = [undefined, data];
+    if (children === undefined) children = mapChildren;
+  } else if (children === undefined) {
+    children = objectChildren;
+  }
+
   var root = new Node(data),
-      valued = +data.value && (root.value = data.value),
       node,
       nodes = [root],
       child,
@@ -23,7 +29,6 @@ export default function hierarchy(data, children = defaultChildren) {
       n;
 
   while (node = nodes.pop()) {
-    if (valued) node.value = +node.data.value;
     if ((childs = children(node.data)) && (n = (childs = Array.from(childs)).length)) {
       node.children = childs;
       for (i = n - 1; i >= 0; --i) {
@@ -41,11 +46,16 @@ function node_copy() {
   return hierarchy(this).eachBefore(copyData);
 }
 
-function defaultChildren(d) {
+function objectChildren(d) {
   return d.children;
 }
 
+function mapChildren(d) {
+  return Array.isArray(d) ? d[1] : null;
+}
+
 function copyData(node) {
+  if (node.data.value !== undefined) node.value = node.data.value;
   node.data = node.data.data;
 }
 
@@ -60,6 +70,7 @@ export function Node(data) {
   this.depth =
   this.height = 0;
   this.parent = null;
+  this.value = undefined;
 }
 
 Node.prototype = hierarchy.prototype = {

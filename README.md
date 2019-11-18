@@ -78,13 +78,23 @@ Constructs a root node from the specified hierarchical *data*. The specified *da
 }
 ```
 
-The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an array of data representing the children, or null if the current datum has no children. If *children* is not specified, it defaults to:
+The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an iterable of data representing the children, if any. If the children accessor is not specified, it defaults to:
 
 ```js
 function children(d) {
   return d.children;
 }
 ```
+
+If *data* is a Map, it is implicitly converted to the entry [undefined, *data*], and the children accessor instead defaults to:
+
+```js
+function children(d) {
+  return Array.isArray(d) ? d[1] : null;
+}
+```
+
+This allows you to pass the result of [d3.group](https://github.com/d3/d3-array/blob/master/README.md#group) or [d3.rollup](https://github.com/d3/d3-array/blob/master/README.md#rollup) to d3.hierarchy.
 
 The returned node and each descendant has the following properties:
 
