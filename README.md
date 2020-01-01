@@ -115,7 +115,7 @@ Returns the shortest path through the hierarchy from this *node* to the specifie
 
 <a name="node_links" href="#node_links">#</a> <i>node</i>.<b>links</b>() · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/links.js), [Examples](https://observablehq.com/@d3/d3-hierarchy)
 
-Returns an array of links for this *node*, where each *link* is an object that defines source and target properties. The source of each link is the parent node, and the target is a child node.
+Returns an array of links in a subtree starting at this *node*, where each *link* is an object that defines source and target properties. The source of each link is the parent node, and the target is a child node.
 
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/sum.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
 
