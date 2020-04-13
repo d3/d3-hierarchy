@@ -1,6 +1,6 @@
 # d3-hierarchy
 
-Many datasets are intrinsically hierarchical. Consider [geographic entities](https://www.census.gov/geo/reference/hierarchy.html), such as census blocks, census tracts, counties and states; the command structure of businesses and governments; file systems and software packages. And even non-hierarchical data may be arranged empirically into a hierarchy, as with [*k*-means clustering](https://en.wikipedia.org/wiki/K-means_clustering) or [phylogenetic trees](https://observablehq.com/@mbostock/tree-of-life).
+Many datasets are intrinsically hierarchical. Consider [geographic entities](https://www.census.gov/programs-surveys/geography/guidance/hierarchy.html), such as census blocks, census tracts, counties and states; the command structure of businesses and governments; file systems and software packages. And even non-hierarchical data may be arranged empirically into a hierarchy, as with [*k*-means clustering](https://en.wikipedia.org/wiki/K-means_clustering) or [phylogenetic trees](https://observablehq.com/@mbostock/tree-of-life).
 
 This module implements several popular techniques for visualizing hierarchical data:
 
