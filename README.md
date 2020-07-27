@@ -1,10 +1,10 @@
 # d3-hierarchy
 
-Many datasets are intrinsically hierarchical. Consider [geographic entities](https://www.census.gov/geo/reference/hierarchy.html), such as census blocks, census tracts, counties and states; the command structure of businesses and governments; file systems and software packages. And even non-hierarchical data may be arranged empirically into a hierarchy, as with [*k*-means clustering](https://en.wikipedia.org/wiki/K-means_clustering) or [phylogenetic trees](https://observablehq.com/@mbostock/tree-of-life).
+Many datasets are intrinsically hierarchical. Consider [geographic entities](https://www.census.gov/programs-surveys/geography/guidance/hierarchy.html), such as census blocks, census tracts, counties and states; the command structure of businesses and governments; file systems and software packages. And even non-hierarchical data may be arranged empirically into a hierarchy, as with [*k*-means clustering](https://en.wikipedia.org/wiki/K-means_clustering) or [phylogenetic trees](https://observablehq.com/@mbostock/tree-of-life).
 
 This module implements several popular techniques for visualizing hierarchical data:
 
-**Node-link diagrams** show topology using discrete marks for nodes and links, such as a circle for each node and a line connecting each parent and child. The [“tidy” tree](#tree) is delightfully compact, while the [dendrogram](#cluster) places leaves at the same level. (These have both polar and Cartesian forms.) [Indented trees](https://bl.ocks.org/mbostock/1093025) are useful for interactive browsing.
+**Node-link diagrams** show topology using discrete marks for nodes and links, such as a circle for each node and a line connecting each parent and child. The [“tidy” tree](#tree) is delightfully compact, while the [dendrogram](#cluster) places leaves at the same level. (These have both polar and Cartesian forms.) [Indented trees](https://observablehq.com/@d3/indented-tree) are useful for interactive browsing.
 
 **Adjacency diagrams** show topology through the relative placement of nodes. They may also encode a quantitative dimension in the area of each node, for example to show revenue or file size. The [“icicle” diagram](#partition) uses rectangles, while the “sunburst” uses annular segments.
 
@@ -125,7 +125,7 @@ Returns the shortest path through the hierarchy from this *node* to the specifie
 
 <a name="node_links" href="#node_links">#</a> <i>node</i>.<b>links</b>() · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/links.js), [Examples](https://observablehq.com/@d3/d3-hierarchy)
 
-Returns an array of links for this *node*, where each *link* is an object that defines source and target properties. The source of each link is the parent node, and the target is a child node.
+Returns an array of links for this *node* and its descendants, where each *link* is an object that defines source and target properties. The source of each link is the parent node, and the target is a child node.
 
 <a name="node_sum" href="#node_sum">#</a> <i>node</i>.<b>sum</b>(<i>value</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/sum.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
 
