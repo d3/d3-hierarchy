@@ -191,11 +191,6 @@ d3-dsv@1:
     iconv-lite "0.4"
     rw "1"
 
-d3-queue@3:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/d3-queue/-/d3-queue-3.0.7.tgz#c93a2e54b417c0959129d7d73f6cf7d4292e7618"
-  integrity sha1-yTouVLQXwJWRKdfXP2z31Ckudhg=
-
 "d3-random@1.1.0 - 2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/d3-random/-/d3-random-2.0.0.tgz#8395ef00e3ef059354130b7249ff87224ada990f"
