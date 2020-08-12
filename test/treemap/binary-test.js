@@ -28,3 +28,13 @@ tape("treemapBinary(parent, x0, y0, x1, y1) generates a binary treemap layout", 
   ]);
   test.end();
 });
+
+tape("treemapBinary does not break on 0-sized inputs", function(test) {
+  const data = ({children: [{value: 0}, {value: 0}, {value: 1}]});
+  const root = d3_hierarchy.hierarchy(data).sum(d => d.value);
+  const treemap = d3_hierarchy.treemap().tile(d3_hierarchy.treemapBinary);
+  treemap(root);
+  const a = root.leaves().map(d => [d.x0, d.x1, d.y0, d.y1]);
+  test.deepEqual(a, [[0, 1, 0, 0], [1, 1, 0, 0], [0, 1, 0, 1]]);
+  test.end();
+});
