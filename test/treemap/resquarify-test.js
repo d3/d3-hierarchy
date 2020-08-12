@@ -74,3 +74,13 @@ tape("treemapResquarify.ratio(ratio) is unstable if the ratio is changed", funct
   ]);
   test.end();
 });
+
+tape("treemapResquarify does not break on 0-sized inputs", function(test) {
+  var root = d3_hierarchy.hierarchy({children: [{children:[{value: 0}]}, {value: 1}]});
+  const treemap = d3_hierarchy.treemap().tile(d3_hierarchy.treemapResquarify);
+  treemap(root.sum(d => d.value));
+  treemap(root.sum(d => d.sum));
+  const a = root.leaves().map(d => [d.x0, d.x1, d.y0, d.y1]);
+  test.deepEqual(a, [[0, 1, 0, 0], [0, 1, 0, 0]]);
+  test.end();
+});
