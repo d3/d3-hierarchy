@@ -47,7 +47,8 @@ function enclosesNot(a, b) {
 }
 
 function enclosesWeak(a, b) {
-  var dr = a.r - b.r + 1e-6, dx = b.x - a.x, dy = b.y - a.y;
+  var scale = Math.max(a.r, b.r, 1) * 1e-9;
+  var dr = a.r - b.r + scale, dx = b.x - a.x, dy = b.y - a.y;
   return dr > 0 && dr * dr > dx * dx + dy * dy;
 }
 
