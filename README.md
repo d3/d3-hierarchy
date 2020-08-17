@@ -119,6 +119,10 @@ Returns the array of descendant nodes, starting with this node, then followed by
 
 Returns the array of leaf nodes in traversal order; leaves are nodes with no children.
 
+<a name="node_find" href="#node_find">#</a> <i>node</i>.<b>find</b>(<i>filter</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/find.js)<!-- , [Examples](https://observablehq.com/@d3/d3-hierarchy) -->
+
+Returns the first node in the hierarchy from this *node* for which the specified *filter* returns a truthy value. undefined if no such node is found.
+
 <a name="node_path" href="#node_path">#</a> <i>node</i>.<b>path</b>(<i>target</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/path.js), [Examples](https://observablehq.com/@d3/d3-hierarchy)
 
 Returns the shortest path through the hierarchy from this *node* to the specified *target* node. The path starts at this *node*, ascends to the least common ancestor of this *node* and the *target* node, and then descends to the *target* node. This is particularly useful for [hierarchical edge bundling](https://observablehq.com/@d3/hierarchical-edge-bundling).
