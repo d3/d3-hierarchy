@@ -33,6 +33,16 @@ tape("packSiblings(circles) can successfully pack a circle with a tiny radius", 
   test.end();
 });
 
+tape("packSiblings accepts large circles", function(test) {
+  test.deepEqual(d3.packSiblings([ {r: 1e+11}, {r: 1}, {r: 1} ]),
+    [{r: 1e+11, x: 0, y: 0}, {r: 1, x: 1e+11 + 1, y: 0}, {r: 1, x: 1e+11 + 1, y: 2}]
+  );
+  test.deepEqual(d3.packSiblings([ {r: 1e+16}, {r: 1}, {r: 1} ]),
+    [{r: 1e+16, x: 0, y: 0}, {r: 1, x: 1e+16 + 1, y: 0}, {r: 1, x: 1e+16 + 1, y: 2}]
+  );
+  test.end();
+});
+
 function swap(array, i, j) {
   var t = array[i];
   array[i] = array[j];
