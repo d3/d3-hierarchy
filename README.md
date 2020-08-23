@@ -17,7 +17,7 @@ A good hierarchical visualization facilitates rapid multiscale inference: micro-
 If you use NPM, `npm install d3-hierarchy`. Otherwise, download the [latest release](https://github.com/d3/d3-hierarchy/releases/latest). You can also load directly from [d3js.org](https://d3js.org), either as a [standalone library](https://d3js.org/d3-hierarchy.v1.min.js) or as part of [D3](https://github.com/d3/d3). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3` global is exported:
 
 ```html
-<script src="https://d3js.org/d3-hierarchy.v1.min.js"></script>
+<script src="https://d3js.org/d3-hierarchy.v2.min.js"></script>
 <script>
 
 var treemap = d3.treemap();
@@ -78,13 +78,23 @@ Constructs a root node from the specified hierarchical *data*. The specified *da
 }
 ```
 
-The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an array of data representing the children, or null if the current datum has no children. If *children* is not specified, it defaults to:
+The specified *children* accessor function is invoked for each datum, starting with the root *data*, and must return an iterable of data representing the children, if any. If the children accessor is not specified, it defaults to:
 
 ```js
 function children(d) {
   return d.children;
 }
 ```
+
+If *data* is a Map, it is implicitly converted to the entry [undefined, *data*], and the children accessor instead defaults to:
+
+```js
+function children(d) {
+  return Array.isArray(d) ? d[1] : null;
+}
+```
+
+This allows you to pass the result of [d3.group](https://github.com/d3/d3-array/blob/master/README.md#group) or [d3.rollup](https://github.com/d3/d3-array/blob/master/README.md#rollup) to d3.hierarchy.
 
 The returned node and each descendant has the following properties:
 
@@ -108,6 +118,10 @@ Returns the array of descendant nodes, starting with this node, then followed by
 <a name="node_leaves" href="#node_leaves">#</a> <i>node</i>.<b>leaves</b>() · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/leaves.js), [Examples](https://observablehq.com/@d3/d3-hierarchy)
 
 Returns the array of leaf nodes in traversal order; leaves are nodes with no children.
+
+<a name="node_find" href="#node_find">#</a> <i>node</i>.<b>find</b>(<i>filter</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/find.js)<!-- , [Examples](https://observablehq.com/@d3/d3-hierarchy) -->
+
+Returns the first node in the hierarchy from this *node* for which the specified *filter* returns a truthy value. undefined if no such node is found.
 
 <a name="node_path" href="#node_path">#</a> <i>node</i>.<b>path</b>(<i>target</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/path.js), [Examples](https://observablehq.com/@d3/d3-hierarchy)
 
@@ -174,17 +188,27 @@ root
 
 You must call *node*.sort before invoking a hierarchical layout if you want the new sort order to affect the layout; see [*node*.sum](#node_sum) for an example.
 
-<a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/each.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
+<a name="node_iterator" href="#node_iterator">#</a> <i>node</i>[<b>Symbol.iterator</b>]() [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/iterator.js "Source")
 
-Invokes the specified *function* for *node* and each descendant in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser depth have already been visited, as well as all preceding nodes of the same depth. The specified function is passed the current *node*.
+Returns an iterator over the *node*’s descendants in breadth-first order. For example:
 
-<a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/eachAfter.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
+```js
+for (const descendant of node) {
+  console.log(descendant);
+}
+```
 
-Invokes the specified *function* for *node* and each descendant in [post-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Post-order), such that a given *node* is only visited after all of its descendants have already been visited. The specified function is passed the current *node*.
+<a name="node_each" href="#node_each">#</a> <i>node</i>.<b>each</b>(<i>function</i>[, <i>that</i>]) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/each.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
 
-<a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/eachBefore.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
+Invokes the specified *function* for *node* and each descendant in [breadth-first order](https://en.wikipedia.org/wiki/Breadth-first_search), such that a given *node* is only visited if all nodes of lesser depth have already been visited, as well as all preceding nodes of the same depth. The specified function is passed the current *descendant*, the zero-based traversal *index*, and this *node*. If *that* is specified, it is the this context of the callback.
 
-Invokes the specified *function* for *node* and each descendant in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *node*.
+<a name="node_eachAfter" href="#node_eachAfter">#</a> <i>node</i>.<b>eachAfter</b>(<i>function</i>[, <i>that</i>]) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/eachAfter.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
+
+Invokes the specified *function* for *node* and each descendant in [post-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Post-order), such that a given *node* is only visited after all of its descendants have already been visited. The specified function is passed the current *descendant*, the zero-based traversal *index*, and this *node*. If *that* is specified, it is the this context of the callback.
+
+<a name="node_eachBefore" href="#node_eachBefore">#</a> <i>node</i>.<b>eachBefore</b>(<i>function</i>[, <i>that</i>]) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/eachBefore.js), [Examples](https://observablehq.com/@d3/visiting-a-d3-hierarchy)
+
+Invokes the specified *function* for *node* and each descendant in [pre-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order), such that a given *node* is only visited after all of its ancestors have already been visited. The specified function is passed the current *descendant*, the zero-based traversal *index*, and this *node*. If *that* is specified, it is the this context of the callback.
 
 <a name="node_copy" href="#node_copy">#</a> <i>node</i>.<b>copy</b>() · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/index.js), [Examples](https://observablehq.com/@d3/d3-hierarchy)
 

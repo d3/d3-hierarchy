@@ -1,7 +1,7 @@
-import {shuffle, slice} from "../array.js";
+import {shuffle} from "../array.js";
 
 export default function(circles) {
-  var i = 0, n = (circles = shuffle(slice.call(circles))).length, B = [], p, e;
+  var i = 0, n = (circles = shuffle(Array.from(circles))).length, B = [], p, e;
 
   while (i < n) {
     p = circles[i];
@@ -47,7 +47,7 @@ function enclosesNot(a, b) {
 }
 
 function enclosesWeak(a, b) {
-  var dr = a.r - b.r + 1e-6, dx = b.x - a.x, dy = b.y - a.y;
+  var dr = a.r - b.r + Math.max(a.r, b.r, 1) * 1e-9, dx = b.x - a.x, dy = b.y - a.y;
   return dr > 0 && dr * dr > dx * dx + dy * dy;
 }
 

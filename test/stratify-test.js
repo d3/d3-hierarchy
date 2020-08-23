@@ -126,6 +126,45 @@ tape("stratify(data) preserves the input order of siblings", function(test) {
   test.end();
 });
 
+tape("stratify(data) accepts an iterable", function(test) {
+  var s = d3_hierarchy.stratify(),
+      root = s(new Set([
+          {id: "aaa", parentId: "aa"},
+          {id: "ab", parentId: "a"},
+          {id: "aa", parentId: "a"},
+          {id: "a"}
+        ]));
+  test.deepEqual(noparent(root), {
+    id: "a",
+    depth: 0,
+    height: 2,
+    data: {id: "a"},
+    children: [
+      {
+        id: "ab",
+        depth: 1,
+        height: 0,
+        data: {id: "ab", parentId: "a"}
+      },
+      {
+        id: "aa",
+        depth: 1,
+        height: 1,
+        data: {id: "aa", parentId: "a"},
+        children: [
+          {
+            id: "aaa",
+            depth: 2,
+            height: 0,
+            data: {id: "aaa", parentId: "aa"}
+          }
+        ]
+      }
+    ]
+  });
+  test.end();
+});
+
 tape("stratify(data) treats an empty parentId as the root", function(test) {
   var s = d3_hierarchy.stratify(),
       root = s([

@@ -2,6 +2,7 @@ import node_count from "./count.js";
 import node_each from "./each.js";
 import node_eachBefore from "./eachBefore.js";
 import node_eachAfter from "./eachAfter.js";
+import node_find from "./find.js";
 import node_sum from "./sum.js";
 import node_sort from "./sort.js";
 import node_path from "./path.js";
@@ -9,10 +10,17 @@ import node_ancestors from "./ancestors.js";
 import node_descendants from "./descendants.js";
 import node_leaves from "./leaves.js";
 import node_links from "./links.js";
+import node_iterator from "./iterator.js";
 
 export default function hierarchy(data, children) {
+  if (data instanceof Map) {
+    data = [undefined, data];
+    if (children === undefined) children = mapChildren;
+  } else if (children === undefined) {
+    children = objectChildren;
+  }
+
   var root = new Node(data),
-      valued = +data.value && (root.value = data.value),
       node,
       nodes = [root],
       child,
@@ -20,14 +28,11 @@ export default function hierarchy(data, children) {
       i,
       n;
 
-  if (children == null) children = defaultChildren;
-
   while (node = nodes.pop()) {
-    if (valued) node.value = +node.data.value;
-    if ((childs = children(node.data)) && (n = childs.length)) {
-      node.children = new Array(n);
+    if ((childs = children(node.data)) && (n = (childs = Array.from(childs)).length)) {
+      node.children = childs;
       for (i = n - 1; i >= 0; --i) {
-        nodes.push(child = node.children[i] = new Node(childs[i]));
+        nodes.push(child = childs[i] = new Node(childs[i]));
         child.parent = node;
         child.depth = node.depth + 1;
       }
@@ -41,11 +46,16 @@ function node_copy() {
   return hierarchy(this).eachBefore(copyData);
 }
 
-function defaultChildren(d) {
+function objectChildren(d) {
   return d.children;
 }
 
+function mapChildren(d) {
+  return Array.isArray(d) ? d[1] : null;
+}
+
 function copyData(node) {
+  if (node.data.value !== undefined) node.value = node.data.value;
   node.data = node.data.data;
 }
 
@@ -68,6 +78,7 @@ Node.prototype = hierarchy.prototype = {
   each: node_each,
   eachAfter: node_eachAfter,
   eachBefore: node_eachBefore,
+  find: node_find,
   sum: node_sum,
   sort: node_sort,
   path: node_path,
@@ -75,5 +86,6 @@ Node.prototype = hierarchy.prototype = {
   descendants: node_descendants,
   leaves: node_leaves,
   links: node_links,
-  copy: node_copy
+  copy: node_copy,
+  [Symbol.iterator]: node_iterator
 };
