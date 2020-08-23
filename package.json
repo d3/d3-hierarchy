@@ -1,9 +1,6 @@
 {
   "name": "d3-hierarchy",
   "version": "2.0.0-rc.3",
-  "publishConfig": {
-    "tag": "next"
-  },
   "description": "Layout algorithms for visualizing hierarchical data.",
   "keywords": [
     "d3",
@@ -42,7 +39,7 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "d3-array": "1.2.0 - 2",
-    "d3-dsv": "1",
+    "d3-dsv": "1 - 2",
     "d3-random": "1.1.0 - 2",
     "eslint": "6",
     "rollup": "1",

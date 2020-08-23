@@ -178,23 +178,23 @@ cross-spawn@^6.0.5:
     which "^1.2.9"
 
 "d3-array@1.2.0 - 2":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-2.2.0.tgz#a9e966b8f8d78f0888d98db1fb840fc8da8ac5c7"
-  integrity sha512-eE0QmSh6xToqM3sxHiJYg/QFdNn52ZEgmFE8A8abU8GsHvsIOolqH8B70/8+VGAKm5MlwaExhqR3DLIjOJMLPA==
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-2.5.1.tgz#cc785e1c4b560a34b8c77af9e6709bdf3f2ee117"
+  integrity sha512-cKvAlQZUKhXInw5mosJMtAYsY3dDYwTess/WOFUQTGcr8xV04SZMJs6n6QznsqZC5vJTkvZuCgsH9fo981ysPA==
 
-d3-dsv@1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/d3-dsv/-/d3-dsv-1.1.1.tgz#aaa830ecb76c4b5015572c647cc6441e3c7bb701"
-  integrity sha512-1EH1oRGSkeDUlDRbhsFytAXU6cAmXFzc52YUe6MRlPClmWb85MP1J5x+YJRzya4ynZWnbELdSAvATFW/MbxaXw==
+"d3-dsv@1 - 2":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-dsv/-/d3-dsv-2.0.0.tgz#b37b194b6df42da513a120d913ad1be22b5fe7c5"
+  integrity sha512-E+Pn8UJYx9mViuIUkoc93gJGGYut6mSDKy2+XaPwccwkRGlR+LO97L2VCCRjQivTwLHkSnAJG7yo00BWY6QM+w==
   dependencies:
     commander "2"
     iconv-lite "0.4"
     rw "1"
 
 "d3-random@1.1.0 - 2":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/d3-random/-/d3-random-2.0.0.tgz#8395ef00e3ef059354130b7249ff87224ada990f"
-  integrity sha512-f8MVscoUbfFXBAx7M01PSjWSaIlViLxxEsKE4BdM75QsyjbjG2hPL3eNj9LaeMRsiblSYn+sE/I+qSHYu+doEQ==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/d3-random/-/d3-random-2.2.0.tgz#a5ef1e047267d8ab96aab491bb1fb9481bc63524"
+  integrity sha512-CPLYfjoR3IebCGAUH+Y+RX/XH7z8AQVgFobSklswVvNSHUdiiSN9vn6ymTVkvTc1lDbcjf+zay5fMxC0o7Y7/g==
 
 debug@^4.0.1:
   version "4.1.1"
