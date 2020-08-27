@@ -188,7 +188,7 @@ root
 
 You must call *node*.sort before invoking a hierarchical layout if you want the new sort order to affect the layout; see [*node*.sum](#node_sum) for an example.
 
-<a name="node_iterator" href="#node_iterator">#</a> <i>node</i>[<b>Symbol.iterator</b>]() [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/iterator.js "Source")
+<a name="node_iterator" href="#node_iterator">#</a> <i>node</i>\[<b>Symbol.iterator</b>\]() [<>](https://github.com/d3/d3-hierarchy/blob/master/src/hierarchy/iterator.js "Source")
 
 Returns an iterator over the *node*’s descendants in breadth-first order. For example:
 
