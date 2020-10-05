@@ -31,6 +31,7 @@ var treemap = d3.treemap();
 * [Cluster](#cluster)
 * [Tree](#tree)
 * [Treemap](#treemap) ([Treemap Tiling](#treemap-tiling))
+* [Stacked Tree](#stackedtree)
 * [Partition](#partition)
 * [Pack](#pack)
 
@@ -492,6 +493,54 @@ Like [d3.treemapSquarify](#treemapSquarify), except preserves the topology (node
 <a name="squarify_ratio" href="#squarify_ratio">#</a> <i>squarify</i>.<b>ratio</b>(<i>ratio</i>) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/treemap/squarify.js), [Examples](https://observablehq.com/@d3/treemap)
 
 Specifies the desired aspect ratio of the generated rectangles. The *ratio* must be specified as a number greater than or equal to one. Note that the orientation of the generated rectangles (tall or wide) is not implied by the ratio; for example, a ratio of two will attempt to produce a mixture of rectangles whose *width*:*height* ratio is either 2:1 or 1:2. (However, you can approximately achieve this result by generating a square treemap at different dimensions, and then [stretching the treemap](https://observablehq.com/@d3/stretched-treemap) to the desired aspect ratio.) Furthermore, the specified *ratio* is merely a hint to the tiling algorithm; the rectangles are not guaranteed to have the specified aspect ratio. If not specified, the aspect ratio defaults to the golden ratio, φ = (1 + sqrt(5)) / 2, per [Kong *et al.*](http://vis.stanford.edu/papers/perception-treemaps)
+
+### Stacked Tree
+
+The **stacked tree layout** produces a dendrogram-like diagram based on Bisson and Blanch (2012). Stacked trees are a more compact version of the [cluster](#cluster) layout, useful for very large hierarchical clusters.
+
+<a name="stackedtree" href="#stackedtree">#</a> d3.<b>stackedtree</b>() · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/stackedtree.js), [Examples](https://observablehq.com/@martialblog/d3-stacked-tree)
+
+Creates a new stacked tree layout with default settings.
+
+<a name="_stackedtree" href="#_stackedtree">#</a> <i>stackedtree</i>(<i>root</i>)
+
+Lays out the specified *root* [hierarchy](#hierarchy), assigning the following properties on *root* and its descendants:
+
+* *node*.x - the *x*-coordinate of the node
+* *node*.y - the *y*-coordinate of the node
+
+<a name="stackedtree_size" href="#stackedtree_size">#</a> <i>stackedtree</i>.<b>size</b>([<i>size</i>])
+
+If *size* is specified, sets this stacked tree layout’s size to the specified two-element array of numbers [*width*, *height*] and returns this stacked tree layout. If *size* is not specified, returns the current layout size, which defaults to [1, 1]. A layout size of null indicates that a [node size](#stackedtree_nodeSize) will be used instead.
+
+<a name="stackedtree_nodeSize" href="#stackedtree_nodeSize">#</a> <i>stackedtree</i>.<b>nodeSize</b>([<i>size</i>])
+
+If *size* is specified, sets this stackedtree layout’s node size to the specified two-element array of numbers [*width*, *height*] and returns this stackedtree layout. If *size* is not specified, returns the current node size, which defaults to null. A node size of null indicates that a [layout size](#stackedtree_size) will be used instead. When a node size is specified, the root node is always positioned at ⟨0, 0⟩.
+
+<a name="stackedtree_separation" href="#stackedtree_separation">#</a> <i>stackedtree</i>.<b>separation</b>([<i>separation</i>])
+
+If *separation* is specified, sets the separation accessor to the specified function and returns this stackedtree layout. If *separation* is not specified, returns the current separation accessor, which defaults to:
+
+```js
+function separation(a, b) {
+  return a.parent == b.parent ? 0 : 1;
+}
+```
+
+<a name="stackedtree_stacking" href="#stackedtree_stacking">#</a> <i>stackedtree</i>.<b>stacking</b>([<i>stacking</i>])
+
+If *stacking* is specified, sets the stacking accessor to the specified function and returns this stackedtree layout. If *stacking* is not specified, returns the current stacking accessor, which defaults to:
+
+```js
+function stacking(a, b, n) {
+    // With n being the length of the longest leaf array
+    return a.parent === b.parent ? 1 / n : 0;
+}
+```
+
+<a name="stackedtree_ratio" href="#stackedtree_ratio">#</a> <i>stackedtree</i>.<b>ratio</b>([<i>ratio</i>])
+
+If *ratio* is specified, sets the tree-to-stack ratio. Meaning, the lower the ratio the lower the focus on the tree. The ratio must be specified as a number between 0 and 1. If *ratio* is not specified, returns the current ratio, which defaults to: 1.
 
 ### Partition
 
