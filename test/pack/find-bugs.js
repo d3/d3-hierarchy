@@ -1,8 +1,9 @@
 /* eslint-disable */
 
-var d3 = Object.assign({}, require("../../"), require("d3-random"));
+import * as d3 from "../../src/index.js";
+import {randomLogNormal} from "d3-random";
 
-var n = 0, r = d3.randomLogNormal(4);
+let n = 0, r = randomLogNormal(4);
 
 while (true) {
   if (!(n % 100)) process.stdout.write(".");

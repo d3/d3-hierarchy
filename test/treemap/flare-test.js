@@ -1,33 +1,33 @@
-var fs = require("fs"),
-    tape = require("tape"),
-    d3_dsv = require("d3-dsv"),
-    d3_hierarchy = require("../../");
+import assert from "assert";
+import * as d3 from "../../src/index.js";
+import * as d3_dsv from "d3-dsv";
+import {readFileSync} from "fs";
 
-tape("treemap(flare) produces the expected result with a squarified ratio of φ", test(
+it("treemap(flare) produces the expected result with a squarified ratio of φ", test(
   "test/data/flare.csv",
   "test/data/flare-phi.json",
-  d3_hierarchy.treemapSquarify
+  d3.treemapSquarify
 ));
 
-tape("treemap(flare) produces the expected result with a squarified ratio of 1", test(
+it("treemap(flare) produces the expected result with a squarified ratio of 1", test(
   "test/data/flare.csv",
   "test/data/flare-one.json",
-  d3_hierarchy.treemapSquarify.ratio(1)
+  d3.treemapSquarify.ratio(1)
 ));
 
 function test(inputFile, expectedFile, tile) {
-  return function(test) {
-    const inputText = fs.readFileSync(inputFile, "utf8"),
-        expectedText = fs.readFileSync(expectedFile, "utf8");
+  return () => {
+    const inputText = readFileSync(inputFile, "utf8"),
+        expectedText = readFileSync(expectedFile, "utf8");
 
-    var stratify = d3_hierarchy.stratify()
-        .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; });
+    const stratify = d3.stratify()
+        .parentId(function(d) { const i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; });
 
-    var treemap = d3_hierarchy.treemap()
+    const treemap = d3.treemap()
         .tile(tile)
         .size([960, 500]);
 
-    var data = d3_dsv.csvParse(inputText),
+    const data = d3_dsv.csvParse(inputText),
         expected = JSON.parse(expectedText),
         actual = treemap(stratify(data)
             .sum(function(d) { return d.value; })
@@ -62,9 +62,8 @@ function test(inputFile, expectedFile, tile) {
       }
     })(expected);
 
-    test.deepEqual(actual, expected);
-    test.end();
-  }
+    assert.deepStrictEqual(actual, expected);
+}
 }
 
 function round(x) {

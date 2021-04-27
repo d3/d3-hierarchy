@@ -1,41 +1,37 @@
-var tape = require("tape"),
-    d3 = require("../../");
+import assert from "assert";
+import * as d3 from "../../src/index.js";
 
-var tree = {id: "root", children: [{id: "a", children: [{id: "ab"}]}, {id: "b", children: [{id: "ba"}]}]};
+const tree = {id: "root", children: [{id: "a", children: [{id: "ab"}]}, {id: "b", children: [{id: "ba"}]}]};
 
-tape("node.each() traverses a hierarchy in breadth-first order", function(test) {
-  var root = d3.hierarchy(tree);
+it("node.each() traverses a hierarchy in breadth-first order", () => {
+  const root = d3.hierarchy(tree);
   
-  var a = [];
+  const a = [];
   root.each(function(d) { a.push(d.data.id); });
-  test.deepEqual(a, [ 'root', 'a', 'b', 'ab', 'ba' ]);
-  test.end();
+  assert.deepStrictEqual(a, [ 'root', 'a', 'b', 'ab', 'ba' ]);
 });
 
-tape("node.eachBefore() traverses a hierarchy in pre-order traversal", function(test) {
-  var root = d3.hierarchy(tree);
+it("node.eachBefore() traverses a hierarchy in pre-order traversal", () => {
+  const root = d3.hierarchy(tree);
   
-  var a = [];
+  const a = [];
   root.eachBefore(function(d) { a.push(d.data.id); });
-  test.deepEqual(a, [ 'root', 'a', 'ab', 'b', 'ba' ]);
-  test.end();
+  assert.deepStrictEqual(a, [ 'root', 'a', 'ab', 'b', 'ba' ]);
 });
 
-tape("node.eachAfter() traverses a hierarchy in post-order traversal", function(test) {
-  var root = d3.hierarchy(tree);
+it("node.eachAfter() traverses a hierarchy in post-order traversal", () => {
+  const root = d3.hierarchy(tree);
   
-  var a = [];
+  const a = [];
   root.eachAfter(function(d) { a.push(d.data.id); });
-  test.deepEqual(a, [ 'ab', 'a', 'ba', 'b', 'root' ]);
-  test.end();
+  assert.deepStrictEqual(a, [ 'ab', 'a', 'ba', 'b', 'root' ]);
 });
 
-tape("a hierarchy is an iterable equivalent to *node*.each()", function(test) {
-  var root = d3.hierarchy(tree);
+it("a hierarchy is an iterable equivalent to *node*.each()", () => {
+  const root = d3.hierarchy(tree);
   
-  var a = [];
-  for (var d of root) a.push(d.data.id);
-  test.deepEqual(a, [ 'root', 'a', 'b', 'ab', 'ba' ]);
-  test.end();
+  const a = [];
+  for (const d of root) a.push(d.data.id);
+  assert.deepStrictEqual(a, [ 'root', 'a', 'b', 'ab', 'ba' ]);
 });
 

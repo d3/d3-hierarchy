@@ -1,9 +1,9 @@
-var tape = require("tape"),
-    d3_hierarchy = require("../../"),
-    round = require("./round");
+import assert from "assert";
+import * as d3 from "../../src/index.js";
+import {round} from "./round.js";
 
-tape("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", function(test) {
-  var tile = d3_hierarchy.treemapSlice,
+it("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", () => {
+  const tile = d3.treemapSlice,
       root = {
         value: 24,
         children: [
@@ -17,7 +17,7 @@ tape("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", function(
         ]
       };
   tile(root, 0, 0, 6, 4);
-  test.deepEqual(root.children.map(round), [
+  assert.deepStrictEqual(root.children.map(round), [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 1.00},
     {x0: 0.00, x1: 6.00, y0: 1.00, y1: 2.00},
     {x0: 0.00, x1: 6.00, y0: 2.00, y1: 2.67},
@@ -26,11 +26,10 @@ tape("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", function(
     {x0: 0.00, x1: 6.00, y0: 3.50, y1: 3.83},
     {x0: 0.00, x1: 6.00, y0: 3.83, y1: 4.00}
   ]);
-  test.end();
 });
 
-tape("treemapSlice(parent, x0, y0, x1, y1) handles a degenerate empty parent", function(test) {
-  var tile = d3_hierarchy.treemapSlice,
+it("treemapSlice(parent, x0, y0, x1, y1) handles a degenerate empty parent", () => {
+  const tile = d3.treemapSlice,
       root = {
         value: 0,
         children: [
@@ -39,9 +38,8 @@ tape("treemapSlice(parent, x0, y0, x1, y1) handles a degenerate empty parent", f
         ]
       };
   tile(root, 0, 0, 4, 0);
-  test.deepEqual(root.children.map(round), [
+  assert.deepStrictEqual(root.children.map(round), [
     {x0: 0.00, x1: 4.00, y0: 0.00, y1: 0.00},
     {x0: 0.00, x1: 4.00, y0: 0.00, y1: 0.00}
   ]);
-  test.end();
 });

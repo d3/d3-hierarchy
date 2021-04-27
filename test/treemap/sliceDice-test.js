@@ -1,9 +1,9 @@
-var tape = require("tape"),
-    d3_hierarchy = require("../../"),
-    round = require("./round");
+import assert from "assert";
+import * as d3 from "../../src/index.js";
+import {round} from "./round.js";
 
-tape("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", function(test) {
-  var tile = d3_hierarchy.treemapSliceDice,
+it("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", () => {
+  const tile = d3.treemapSliceDice,
       root = {
         depth: 1,
         value: 24,
@@ -18,7 +18,7 @@ tape("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", functi
         ]
       };
   tile(root, 0, 0, 6, 4);
-  test.deepEqual(root.children.map(round), [
+  assert.deepStrictEqual(root.children.map(round), [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 1.00},
     {x0: 0.00, x1: 6.00, y0: 1.00, y1: 2.00},
     {x0: 0.00, x1: 6.00, y0: 2.00, y1: 2.67},
@@ -27,11 +27,10 @@ tape("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", functi
     {x0: 0.00, x1: 6.00, y0: 3.50, y1: 3.83},
     {x0: 0.00, x1: 6.00, y0: 3.83, y1: 4.00}
   ]);
-  test.end();
 });
 
-tape("treemapSliceDice(parent, x0, y0, x1, y1) uses dice for even depth", function(test) {
-  var tile = d3_hierarchy.treemapSliceDice,
+it("treemapSliceDice(parent, x0, y0, x1, y1) uses dice for even depth", () => {
+  const tile = d3.treemapSliceDice,
       root = {
         depth: 2,
         value: 24,
@@ -46,7 +45,7 @@ tape("treemapSliceDice(parent, x0, y0, x1, y1) uses dice for even depth", functi
         ]
       };
   tile(root, 0, 0, 4, 6);
-  test.deepEqual(root.children.map(round), [
+  assert.deepStrictEqual(root.children.map(round), [
     {x0: 0.00, x1: 1.00, y0: 0.00, y1: 6.00},
     {x0: 1.00, x1: 2.00, y0: 0.00, y1: 6.00},
     {x0: 2.00, x1: 2.67, y0: 0.00, y1: 6.00},
@@ -55,5 +54,4 @@ tape("treemapSliceDice(parent, x0, y0, x1, y1) uses dice for even depth", functi
     {x0: 3.50, x1: 3.83, y0: 0.00, y1: 6.00},
     {x0: 3.83, x1: 4.00, y0: 0.00, y1: 6.00}
   ]);
-  test.end();
 });

@@ -1,15 +1,16 @@
 /* eslint-disable */
 
-var d3 = Object.assign({}, require("../../"), require("d3-array"), require("d3-random")),
-    benchmark = require("benchmark");
+import * as d3 from "../../src/index.js";
+import {randomLogNormal, randomUniform} from "d3-random";
+import {shuffle} from "d3-array";
+import benchmark from "benchmark";
 
-var slice = Array.prototype.slice,
-    shuffle = d3.shuffle;
+const slice = Array.prototype.slice;
 
-var n = 0,
+let n = 0,
     m = 1000,
-    r = d3.randomLogNormal(10),
-    x = d3.randomUniform(0, 100),
+    r = randomLogNormal(10),
+    x = randomUniform(0, 100),
     y = x,
     circles0,
     circles1;

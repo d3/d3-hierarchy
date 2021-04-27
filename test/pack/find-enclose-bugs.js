@@ -1,11 +1,13 @@
 /* eslint-disable */
 
-var d3 = Object.assign({}, require("../../"), require("d3-array"), require("d3-random"));
+import * as d3 from "../../src/index.js";
+import {randomLogNormal, randomUniform} from "d3-random";
+import {shuffle} from "d3-array";
 
-var n = 0,
+let n = 0,
     m = 1000,
-    r = d3.randomLogNormal(10),
-    x = d3.randomUniform(0, 100),
+    r = randomLogNormal(10),
+    x = randomUniform(0, 100),
     y = x;
 
 while (true) {
@@ -18,7 +20,7 @@ while (true) {
     console.log(JSON.stringify(circles));
   }
   for (var i = 0; i < m; ++i) {
-    if (!equals(enclose, enclose2 = d3.packEnclose(circles2 = d3.shuffle(circles.slice())))) {
+    if (!equals(enclose, enclose2 = d3.packEnclose(circles2 = shuffle(circles.slice())))) {
       console.log(JSON.stringify(enclose));
       console.log(JSON.stringify(enclose2));
       console.log(JSON.stringify(circles));
