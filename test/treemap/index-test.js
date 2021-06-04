@@ -1,22 +1,22 @@
 import assert from "assert";
-import * as d3 from "../../src/index.js";
-import {round} from "./round.js";
 import {readFileSync} from "fs";
+import {hierarchy, treemap, treemapSlice, treemapSquarify} from "../../src/index.js";
+import {round} from "./round.js";
 
 const simple = JSON.parse(readFileSync("./test/data/simple2.json"));
 
 it("treemap() has the expected defaults", () => {
-  const treemap = d3.treemap();
-  assert.strictEqual(treemap.tile(), d3.treemapSquarify);
-  assert.deepStrictEqual(treemap.size(), [1, 1]);
-  assert.deepStrictEqual(treemap.round(), false);
+  const t = treemap();
+  assert.strictEqual(t.tile(), treemapSquarify);
+  assert.deepStrictEqual(t.size(), [1, 1]);
+  assert.deepStrictEqual(t.round(), false);
 });
 
 it("treemap.round(round) observes the specified rounding", () => {
-  const treemap = d3.treemap().size([600, 400]).round(true),
-      root = treemap(d3.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
-      nodes = root.descendants().map(round);
-  assert.deepStrictEqual(treemap.round(), true);
+  const t = treemap().size([600, 400]).round(true);
+  const root = t(hierarchy(simple).sum(defaultValue).sort(descendingValue));
+  const nodes = root.descendants().map(round);
+  assert.deepStrictEqual(t.round(), true);
   assert.deepStrictEqual(nodes, [
     {x0:   0, x1: 600, y0:   0, y1: 400},
     {x0:   0, x1: 300, y0:   0, y1: 200},
@@ -30,27 +30,27 @@ it("treemap.round(round) observes the specified rounding", () => {
 });
 
 it("treemap.round(round) coerces the specified round to boolean", () => {
-  const treemap = d3.treemap().round("yes");
-  assert.strictEqual(treemap.round(), true);
+  const t = treemap().round("yes");
+  assert.strictEqual(t.round(), true);
 });
 
 it("treemap.padding(padding) sets the inner and outer padding to the specified value", () => {
-  const treemap = d3.treemap().padding("42");
-  assert.strictEqual(treemap.padding()(), 42);
-  assert.strictEqual(treemap.paddingInner()(), 42);
-  assert.strictEqual(treemap.paddingOuter()(), 42);
-  assert.strictEqual(treemap.paddingTop()(), 42);
-  assert.strictEqual(treemap.paddingRight()(), 42);
-  assert.strictEqual(treemap.paddingBottom()(), 42);
-  assert.strictEqual(treemap.paddingLeft()(), 42);
+  const t = treemap().padding("42");
+  assert.strictEqual(t.padding()(), 42);
+  assert.strictEqual(t.paddingInner()(), 42);
+  assert.strictEqual(t.paddingOuter()(), 42);
+  assert.strictEqual(t.paddingTop()(), 42);
+  assert.strictEqual(t.paddingRight()(), 42);
+  assert.strictEqual(t.paddingBottom()(), 42);
+  assert.strictEqual(t.paddingLeft()(), 42);
 });
 
 it("treemap.paddingInner(padding) observes the specified padding", () => {
-  const treemap = d3.treemap().size([6, 4]).paddingInner(0.5),
-      root = treemap(d3.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
-      nodes = root.descendants().map(round);
-  assert.strictEqual(treemap.paddingInner()(), 0.5);
-  assert.deepStrictEqual(treemap.size(), [6, 4]);
+  const t = treemap().size([6, 4]).paddingInner(0.5);
+  const root = t(hierarchy(simple).sum(defaultValue).sort(descendingValue));
+  const nodes = root.descendants().map(round);
+  assert.strictEqual(t.paddingInner()(), 0.5);
+  assert.deepStrictEqual(t.size(), [6, 4]);
   assert.deepStrictEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
     {x0: 0.00, x1: 2.75, y0: 0.00, y1: 1.75},
@@ -64,15 +64,15 @@ it("treemap.paddingInner(padding) observes the specified padding", () => {
 });
 
 it("treemap.paddingOuter(padding) observes the specified padding", () => {
-  const treemap = d3.treemap().size([6, 4]).paddingOuter(0.5),
-      root = treemap(d3.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
-      nodes = root.descendants().map(round);
-  assert.strictEqual(treemap.paddingOuter()(), 0.5);
-  assert.strictEqual(treemap.paddingTop()(), 0.5);
-  assert.strictEqual(treemap.paddingRight()(), 0.5);
-  assert.strictEqual(treemap.paddingBottom()(), 0.5);
-  assert.strictEqual(treemap.paddingLeft()(), 0.5);
-  assert.deepStrictEqual(treemap.size(), [6, 4]);
+  const t = treemap().size([6, 4]).paddingOuter(0.5);
+  const root = t(hierarchy(simple).sum(defaultValue).sort(descendingValue));
+  const nodes = root.descendants().map(round);
+  assert.strictEqual(t.paddingOuter()(), 0.5);
+  assert.strictEqual(t.paddingTop()(), 0.5);
+  assert.strictEqual(t.paddingRight()(), 0.5);
+  assert.strictEqual(t.paddingBottom()(), 0.5);
+  assert.strictEqual(t.paddingLeft()(), 0.5);
+  assert.deepStrictEqual(t.size(), [6, 4]);
   assert.deepStrictEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
     {x0: 0.50, x1: 3.00, y0: 0.50, y1: 2.00},
@@ -86,10 +86,10 @@ it("treemap.paddingOuter(padding) observes the specified padding", () => {
 });
 
 it("treemap.size(size) observes the specified size", () => {
-  const treemap = d3.treemap().size([6, 4]),
-      root = treemap(d3.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
-      nodes = root.descendants().map(round);
-  assert.deepStrictEqual(treemap.size(), [6, 4]);
+  const t = treemap().size([6, 4]);
+  const root = t(hierarchy(simple).sum(defaultValue).sort(descendingValue));
+  const nodes = root.descendants().map(round);
+  assert.deepStrictEqual(t.size(), [6, 4]);
   assert.deepStrictEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
     {x0: 0.00, x1: 3.00, y0: 0.00, y1: 2.00},
@@ -103,19 +103,19 @@ it("treemap.size(size) observes the specified size", () => {
 });
 
 it("treemap.size(size) coerces the specified size to numbers", () => {
-  const treemap = d3.treemap().size(["6", {valueOf: function() { return 4; }}]);
-  assert.strictEqual(treemap.size()[0], 6);
-  assert.strictEqual(treemap.size()[1], 4);
+  const t = treemap().size(["6", {valueOf: function() { return 4; }}]);
+  assert.strictEqual(t.size()[0], 6);
+  assert.strictEqual(t.size()[1], 4);
 });
 
 it("treemap.size(size) makes defensive copies", () => {
-  const size = [6, 4],
-      treemap = d3.treemap().size(size),
-      root = (size[1] = 100, treemap(d3.hierarchy(simple).sum(defaultValue).sort(descendingValue))),
-      nodes = root.descendants().map(round);
-  assert.deepStrictEqual(treemap.size(), [6, 4]);
-  treemap.size()[1] = 100;
-  assert.deepStrictEqual(treemap.size(), [6, 4]);
+  const size = [6, 4];
+  const t = treemap().size(size);
+  const root = (size[1] = 100, t(hierarchy(simple).sum(defaultValue).sort(descendingValue)));
+  const nodes = root.descendants().map(round);
+  assert.deepStrictEqual(t.size(), [6, 4]);
+  t.size()[1] = 100;
+  assert.deepStrictEqual(t.size(), [6, 4]);
   assert.deepStrictEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
     {x0: 0.00, x1: 3.00, y0: 0.00, y1: 2.00},
@@ -129,10 +129,10 @@ it("treemap.size(size) makes defensive copies", () => {
 });
 
 it("treemap.tile(tile) observes the specified tile function", () => {
-  const treemap = d3.treemap().size([6, 4]).tile(d3.treemapSlice),
-      root = treemap(d3.hierarchy(simple).sum(defaultValue).sort(descendingValue)),
-      nodes = root.descendants().map(round);
-  assert.strictEqual(treemap.tile(), d3.treemapSlice);
+  const t = treemap().size([6, 4]).tile(treemapSlice);
+  const root = t(hierarchy(simple).sum(defaultValue).sort(descendingValue));
+  const nodes = root.descendants().map(round);
+  assert.strictEqual(t.tile(), treemapSlice);
   assert.deepStrictEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 1.00},
@@ -146,11 +146,11 @@ it("treemap.tile(tile) observes the specified tile function", () => {
 });
 
 it("treemap(data) observes the specified values", () => {
-  const foo = function(d) { return d.foo; },
-      treemap = d3.treemap().size([6, 4]),
-      root = treemap(d3.hierarchy(JSON.parse(readFileSync("./test/data/simple3.json"))).sum(foo).sort(descendingValue)),
-      nodes = root.descendants().map(round);
-  assert.deepStrictEqual(treemap.size(), [6, 4]);
+  const foo = d => d.foo;
+  const t = treemap().size([6, 4]);
+  const root = t(hierarchy(JSON.parse(readFileSync("./test/data/simple3.json"))).sum(foo).sort(descendingValue));
+  const nodes = root.descendants().map(round);
+  assert.deepStrictEqual(t.size(), [6, 4]);
   assert.deepStrictEqual(nodes, [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 4.00},
     {x0: 0.00, x1: 3.00, y0: 0.00, y1: 2.00},
@@ -164,9 +164,9 @@ it("treemap(data) observes the specified values", () => {
 });
 
 it("treemap(data) observes the specified sibling order", () => {
-  const treemap = d3.treemap(),
-      root = treemap(d3.hierarchy(simple).sum(defaultValue).sort(ascendingValue));
-  assert.deepStrictEqual(root.descendants().map(function(d) { return d.value; }), [24, 1, 2, 2, 3, 4, 6, 6]);
+  const t = treemap();
+  const root = t(hierarchy(simple).sum(defaultValue).sort(ascendingValue));
+  assert.deepStrictEqual(root.descendants().map(d => d.value), [24, 1, 2, 2, 3, 4, 6, 6]);
 });
 
 function defaultValue(d) {

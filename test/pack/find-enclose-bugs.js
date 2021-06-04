@@ -1,26 +1,28 @@
 /* eslint-disable */
 
-import * as d3 from "../../src/index.js";
-import {randomLogNormal, randomUniform} from "d3-random";
 import {shuffle} from "d3-array";
+import {randomLogNormal, randomUniform} from "d3-random";
+import {packEnclose} from "../../src/index.js";
 
-let n = 0,
-    m = 1000,
-    r = randomLogNormal(10),
-    x = randomUniform(0, 100),
-    y = x;
+let n = 0;
+let m = 1000;
+let r = randomLogNormal(10);
+let x = randomUniform(0, 100);
+let y = x;
 
 while (true) {
   if (!(n % 10)) process.stdout.write(".");
   if (!(n % 1000)) process.stdout.write("\n" + n + " ");
   ++n;
-  var circles = new Array(20).fill().map(() => ({r: r(), x: x(), y: y()})), circles2,
-      enclose = d3.packEnclose(circles), enclose2;
+  let circles = new Array(20).fill().map(() => ({r: r(), x: x(), y: y()}));
+  let circles2;
+  let enclose = packEnclose(circles);
+  let enclose2;
   if (circles.some(circle => !encloses(enclose, circle))) {
     console.log(JSON.stringify(circles));
   }
-  for (var i = 0; i < m; ++i) {
-    if (!equals(enclose, enclose2 = d3.packEnclose(circles2 = shuffle(circles.slice())))) {
+  for (let i = 0; i < m; ++i) {
+    if (!equals(enclose, enclose2 = packEnclose(circles2 = shuffle(circles.slice())))) {
       console.log(JSON.stringify(enclose));
       console.log(JSON.stringify(enclose2));
       console.log(JSON.stringify(circles));

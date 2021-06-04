@@ -1,22 +1,22 @@
 import assert from "assert";
-import * as d3 from "../../src/index.js";
+import {treemapSliceDice} from "../../src/index.js";
 import {round} from "./round.js";
 
 it("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", () => {
-  const tile = d3.treemapSliceDice,
-      root = {
-        depth: 1,
-        value: 24,
-        children: [
-          {value: 6},
-          {value: 6},
-          {value: 4},
-          {value: 3},
-          {value: 2},
-          {value: 2},
-          {value: 1}
-        ]
-      };
+  const tile = treemapSliceDice;
+  const root = {
+    depth: 1,
+    value: 24,
+    children: [
+      {value: 6},
+      {value: 6},
+      {value: 4},
+      {value: 3},
+      {value: 2},
+      {value: 2},
+      {value: 1}
+    ]
+  };
   tile(root, 0, 0, 6, 4);
   assert.deepStrictEqual(root.children.map(round), [
     {x0: 0.00, x1: 6.00, y0: 0.00, y1: 1.00},
@@ -30,20 +30,20 @@ it("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", () => {
 });
 
 it("treemapSliceDice(parent, x0, y0, x1, y1) uses dice for even depth", () => {
-  const tile = d3.treemapSliceDice,
-      root = {
-        depth: 2,
-        value: 24,
-        children: [
-          {value: 6},
-          {value: 6},
-          {value: 4},
-          {value: 3},
-          {value: 2},
-          {value: 2},
-          {value: 1}
-        ]
-      };
+  const tile = treemapSliceDice;
+  const root = {
+    depth: 2,
+    value: 24,
+    children: [
+      {value: 6},
+      {value: 6},
+      {value: 4},
+      {value: 3},
+      {value: 2},
+      {value: 2},
+      {value: 1}
+    ]
+  };
   tile(root, 0, 0, 4, 6);
   assert.deepStrictEqual(root.children.map(round), [
     {x0: 0.00, x1: 1.00, y0: 0.00, y1: 6.00},

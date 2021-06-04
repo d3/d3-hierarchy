@@ -1,17 +1,18 @@
 /* eslint-disable */
 
-import * as d3 from "../../src/index.js";
 import {randomLogNormal} from "d3-random";
+import {packSiblings} from "../../src/index.js";
 
-let n = 0, r = randomLogNormal(4);
+let n = 0;
+let r = randomLogNormal(4);
 
 while (true) {
   if (!(n % 100)) process.stdout.write(".");
   if (!(n % 10000)) process.stdout.write("\n" + n + " ");
   ++n;
-  var radii = new Array(20).fill().map(r).map(Math.ceil);
+  let radii = new Array(20).fill().map(r).map(Math.ceil);
   try {
-    if (intersectsAny(d3.packSiblings(radii.map(r => ({r: r}))))) {
+    if (intersectsAny(packSiblings(radii.map(r => ({r: r}))))) {
       throw new Error("overlap");
     }
   } catch (error) {
@@ -23,8 +24,8 @@ while (true) {
 }
 
 function intersectsAny(circles) {
-  for (var i = 0, n = circles.length; i < n; ++i) {
-    for (var j = i + 1, ci = circles[i], cj; j < n; ++j) {
+  for (let i = 0, n = circles.length; i < n; ++i) {
+    for (let j = i + 1, ci = circles[i], cj; j < n; ++j) {
       if (intersects(ci, cj = circles[j])) {
         return true;
       }
@@ -34,6 +35,6 @@ function intersectsAny(circles) {
 }
 
 function intersects(a, b) {
-  var dr = a.r + b.r - 1e-6, dx = b.x - a.x, dy = b.y - a.y;
+  let dr = a.r + b.r - 1e-6, dx = b.x - a.x, dy = b.y - a.y;
   return dr * dr > dx * dx + dy * dy;
 }
