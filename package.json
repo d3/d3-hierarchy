@@ -36,14 +36,14 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "benchmark": "^2.1.4",
+    "benchmark": "2",
     "d3-array": "1.2.0 - 2",
     "d3-dsv": "1 - 2",
-    "d3-random": "1.1.0 - 2",
+    "d3-random": "1.1.0 - 3",
     "eslint": "7",
     "mocha": "8",
     "rollup": "2",
-    "rollup-plugin-terser": "5"
+    "rollup-plugin-terser": "7"
   },
   "scripts": {
     "test": "mocha 'test/**/*-test.js' && eslint src test",
