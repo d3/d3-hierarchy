@@ -27,8 +27,12 @@ export default [
     plugins: [
       ...config.plugins,
       terser({
-        output: {preamble: config.output.banner},
-        mangle: {reserved: ["Node"]}
+        output: {
+          preamble: config.output.banner
+        },
+        mangle: {
+          reserved: ["Node"]
+        }
       })
     ]
   }

@@ -1,21 +1,22 @@
 /* eslint-disable */
 
-var d3 = Object.assign({}, require("../../"), require("d3-array"), require("d3-random")),
-    benchmark = require("benchmark");
+import benchmark from "benchmark";
+import {shuffle} from "d3-array";
+import {randomLogNormal, randomUniform} from "d3-random";
+import {packSiblings} from "../../src/index.js";
 
-var slice = Array.prototype.slice,
-    shuffle = d3.shuffle;
+const slice = Array.prototype.slice;
 
-var n = 0,
-    m = 1000,
-    r = d3.randomLogNormal(10),
-    x = d3.randomUniform(0, 100),
-    y = x,
-    circles0,
-    circles1;
+let n = 0;
+let m = 1000;
+let r = randomLogNormal(10);
+let x = randomUniform(0, 100);
+let y = x;
+let circles0;
+let circles1;
 
 function extendBasis(B, p) {
-  var i, j;
+  let i, j;
 
   if (enclosesWeakAll(p, B)) return [p];
 
@@ -44,17 +45,17 @@ function extendBasis(B, p) {
 }
 
 function enclosesNot(a, b) {
-  var dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
+  let dr = a.r - b.r, dx = b.x - a.x, dy = b.y - a.y;
   return dr < 0 || dr * dr < dx * dx + dy * dy;
 }
 
 function enclosesWeak(a, b) {
-  var dr = a.r - b.r + 1e-6, dx = b.x - a.x, dy = b.y - a.y;
+  let dr = a.r - b.r + 1e-6, dx = b.x - a.x, dy = b.y - a.y;
   return dr > 0 && dr * dr > dx * dx + dy * dy;
 }
 
 function enclosesWeakAll(a, B) {
-  for (var i = 0; i < B.length; ++i) {
+  for (let i = 0; i < B.length; ++i) {
     if (!enclosesWeak(a, B[i])) {
       return false;
     }
@@ -79,7 +80,7 @@ function encloseBasis1(a) {
 }
 
 function encloseBasis2(a, b) {
-  var x1 = a.x, y1 = a.y, r1 = a.r,
+  let x1 = a.x, y1 = a.y, r1 = a.r,
       x2 = b.x, y2 = b.y, r2 = b.r,
       x21 = x2 - x1, y21 = y2 - y1, r21 = r2 - r1,
       l = Math.sqrt(x21 * x21 + y21 * y21);
@@ -91,7 +92,7 @@ function encloseBasis2(a, b) {
 }
 
 function encloseBasis3(a, b, c) {
-  var x1 = a.x, y1 = a.y, r1 = a.r,
+  let x1 = a.x, y1 = a.y, r1 = a.r,
       x2 = b.x, y2 = b.y, r2 = b.r,
       x3 = c.x, y3 = c.y, r3 = c.r,
       a2 = x1 - x2,
@@ -120,7 +121,7 @@ function encloseBasis3(a, b, c) {
 }
 
 function encloseCircular(L) {
-  var i = 0, n = L.length, j = 0, B = [], p, e, k = 0;
+  let i = 0, n = L.length, j = 0, B = [], p, e, k = 0;
 
   if (n) do {
     p = L[i];
@@ -136,7 +137,7 @@ function encloseCircular(L) {
 }
 
 function encloseCircularShuffle(L) {
-  var i = 0, n = shuffle(L = slice.call(L)).length, j = 0, B = [], p, e, k = 0;
+  let i = 0, n = shuffle(L = slice.call(L)).length, j = 0, B = [], p, e, k = 0;
 
   if (n) do {
     p = L[i];
@@ -152,7 +153,7 @@ function encloseCircularShuffle(L) {
 }
 
 function encloseLazyShuffle(L) {
-  var i = 0, j, n = (L = slice.call(L)).length, B = [], p, e;
+  let i = 0, j, n = (L = slice.call(L)).length, B = [], p, e;
 
   while (i < n) {
     p = L[j = i + (Math.random() * (n - i) | 0)], L[j] = L[i], L[i] = p;
@@ -164,7 +165,7 @@ function encloseLazyShuffle(L) {
 }
 
 function encloseNoShuffle(L) {
-  var i = 0, n = L.length, B = [], p, e;
+  let i = 0, n = L.length, B = [], p, e;
 
   while (i < n) {
     p = L[i];
@@ -176,7 +177,7 @@ function encloseNoShuffle(L) {
 }
 
 function encloseShuffle(L) {
-  var i = 0, n = shuffle(L = slice.call(L)).length, B = [], p, e;
+  let i = 0, n = shuffle(L = slice.call(L)).length, B = [], p, e;
 
   while (i < n) {
     p = L[i];
@@ -188,7 +189,7 @@ function encloseShuffle(L) {
 }
 
 function enclosePrePass(L) {
-  var i, n = L.length, B = [], p, e;
+  let i, n = L.length, B = [], p, e;
 
   for (i = 0; i < n; ++i) {
     p = L[i];
@@ -205,7 +206,7 @@ function enclosePrePass(L) {
 }
 
 function enclosePrePassThenLazyShuffle(L) {
-  var i, j, n = (L = slice.call(L)).length, B = [], p, e;
+  let i, j, n = (L = slice.call(L)).length, B = [], p, e;
 
   for (i = 0; i < n; ++i) {
     p = L[i];
@@ -222,7 +223,7 @@ function enclosePrePassThenLazyShuffle(L) {
 }
 
 function encloseShufflePrePass(L) {
-  var i, n = shuffle(L = slice.call(L)).length, B = [], p, e;
+  let i, n = shuffle(L = slice.call(L)).length, B = [], p, e;
 
   for (i = 0; i < n; ++i) {
     p = L[i];
@@ -239,7 +240,7 @@ function encloseShufflePrePass(L) {
 }
 
 function encloseCompletePasses(L) {
-  var i, n = L.length, B = [], p, e, dirty = false;
+  let i, n = L.length, B = [], p, e, dirty = false;
 
   do {
     for (i = 0, dirty = false; i < n; ++i) {
@@ -252,7 +253,7 @@ function encloseCompletePasses(L) {
 }
 
 function encloseShuffleCompletePasses(L) {
-  var i, n = shuffle(L = slice.call(L)).length, B = [], p, e, dirty = false;
+  let i, n = shuffle(L = slice.call(L)).length, B = [], p, e, dirty = false;
 
   do {
     for (i = 0, dirty = false; i < n; ++i) {
@@ -265,7 +266,7 @@ function encloseShuffleCompletePasses(L) {
 }
 
 function recycle(event) {
-  circles0 = d3.packSiblings(new Array(10).fill().map(() => ({r: r(), x: x(), y: y()})));
+  circles0 = packSiblings(new Array(10).fill().map(() => ({r: r(), x: x(), y: y()})));
   circles1 = circles0.slice().reverse();
 }
 

@@ -1,12 +1,12 @@
-module.exports = function(d) {
+export function round(d) {
   return {
-    x0: round(d.x0),
-    y0: round(d.y0),
-    x1: round(d.x1),
-    y1: round(d.y1)
+    x0: r(d.x0),
+    y0: r(d.y0),
+    x1: r(d.x1),
+    y1: r(d.y1)
   };
-};
+}
 
-function round(x) {
+function r(x) {
   return Math.round(x * 100) / 100;
 }

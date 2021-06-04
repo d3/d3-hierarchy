@@ -1,15 +1,14 @@
-var tape = require("tape"),
-    d3_hierarchy = require("../../");
+import assert from "assert";
+import {hierarchy} from "../../src/index.js";
 
-tape("node.links() returns an array of {source, target}", function(test) {
-  var root = d3_hierarchy.hierarchy({id: "root", children: [{id: "a"}, {id: "b", children: [{id: "ba"}]}]}),
-      a = root.children[0],
-      b = root.children[1],
-      ba = root.children[1].children[0];
-  test.deepEqual(root.links(), [
+it("node.links() returns an array of {source, target}", () => {
+  const root = hierarchy({id: "root", children: [{id: "a"}, {id: "b", children: [{id: "ba"}]}]});
+  const a = root.children[0];
+  const b = root.children[1];
+  const ba = root.children[1].children[0];
+  assert.deepStrictEqual(root.links(), [
     {source: root, target: a},
     {source: root, target: b},
     {source: b, target: ba}
   ]);
-  test.end();
 });

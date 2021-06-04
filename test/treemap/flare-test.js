@@ -1,37 +1,42 @@
-var fs = require("fs"),
-    tape = require("tape"),
-    d3_dsv = require("d3-dsv"),
-    d3_hierarchy = require("../../");
+import assert from "assert";
+import {csvParse} from "d3-dsv";
+import {readFileSync} from "fs";
+import {stratify, treemap, treemapSquarify, Node} from "../../src/index.js";
 
-tape("treemap(flare) produces the expected result with a squarified ratio of φ", test(
+it("treemap(flare) produces the expected result with a squarified ratio of φ", test(
   "test/data/flare.csv",
   "test/data/flare-phi.json",
-  d3_hierarchy.treemapSquarify
+  treemapSquarify
 ));
 
-tape("treemap(flare) produces the expected result with a squarified ratio of 1", test(
+it("treemap(flare) produces the expected result with a squarified ratio of 1", test(
   "test/data/flare.csv",
   "test/data/flare-one.json",
-  d3_hierarchy.treemapSquarify.ratio(1)
+  treemapSquarify.ratio(1)
 ));
 
 function test(inputFile, expectedFile, tile) {
-  return function(test) {
-    const inputText = fs.readFileSync(inputFile, "utf8"),
-        expectedText = fs.readFileSync(expectedFile, "utf8");
+  return () => {
+    const inputText = readFileSync(inputFile, "utf8"),
+        expectedText = readFileSync(expectedFile, "utf8");
 
-    var stratify = d3_hierarchy.stratify()
-        .parentId(function(d) { var i = d.id.lastIndexOf("."); return i >= 0 ? d.id.slice(0, i) : null; });
+    const stratifier = stratify()
+        .parentId((d) => {
+          const i = d.id.lastIndexOf(".");
+          return i >= 0 ? d.id.slice(0, i) : null;
+        });
 
-    var treemap = d3_hierarchy.treemap()
+    const treemaper = treemap()
         .tile(tile)
         .size([960, 500]);
 
-    var data = d3_dsv.csvParse(inputText),
-        expected = JSON.parse(expectedText),
-        actual = treemap(stratify(data)
-            .sum(function(d) { return d.value; })
-            .sort(function(a, b) { return b.value - a.value || a.data.id.localeCompare(b.data.id); }));
+    const data = csvParse(inputText);
+
+    const expected = JSON.parse(expectedText);
+
+    const actual = treemaper(stratifier(data)
+          .sum((d) => d.value)
+          .sort((a, b) => b.value - a.value || a.data.id.localeCompare(b.data.id)));
 
     (function visit(node) {
       node.name = node.data.id.slice(node.data.id.lastIndexOf(".") + 1);
@@ -48,6 +53,7 @@ function test(inputFile, expectedFile, tile) {
     })(actual);
 
     (function visit(node) {
+      Object.setPrototypeOf(node, Node.prototype);
       node.x0 = round(node.x);
       node.y0 = round(node.y);
       node.x1 = round(node.x + node.dx);
@@ -62,8 +68,7 @@ function test(inputFile, expectedFile, tile) {
       }
     })(expected);
 
-    test.deepEqual(actual, expected);
-    test.end();
+    assert.deepStrictEqual(actual, expected);
   }
 }
 

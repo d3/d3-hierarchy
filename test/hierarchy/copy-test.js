@@ -1,8 +1,7 @@
-var tape = require("tape"),
-    d3 = require("../../");
+import assert from "assert";
+import {hierarchy} from "../../src/index.js";
 
-tape("node.copy() copies values", function(test) {
-  var root = d3.hierarchy({id: "root", children: [{id: "a"}, {id: "b", children: [{id: "ba"}]}]}).count();
-  test.equal(root.copy().value, 2);
-  test.end();
+it("node.copy() copies values", () => {
+  const root = hierarchy({id: "root", children: [{id: "a"}, {id: "b", children: [{id: "ba"}]}]}).count();
+  assert.strictEqual(root.copy().value, 2);
 });
