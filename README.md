@@ -18,9 +18,11 @@ If you use npm, `npm install d3-hierarchy`. You can also download the [latest re
 
 ```html
 <script type="module">
+
 import {treemap} from "https://cdn.skypack.dev/d3-hierarchy@3";
 
 const tree = treemap();
+
 </script>
 ```
 
