@@ -34,9 +34,9 @@ export default function() {
     if (path != null) {
       const I = nodes.map((d, i) => normalize(path(d, i, data)));
       const P = I.map(parentof);
-      const S = new Set(I);
+      const S = new Set(I).add("");
       for (const i of P) {
-        if (!S.has(i) && i) {
+        if (!S.has(i)) {
           S.add(i);
           I.push(i);
           P.push(parentof(i));
