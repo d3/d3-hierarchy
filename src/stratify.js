@@ -1,4 +1,4 @@
-import {required} from "./accessors.js";
+import {optional} from "./accessors.js";
 import {Node, computeHeight} from "./hierarchy/index.js";
 
 var preroot = {depth: -1},
@@ -14,11 +14,14 @@ function defaultParentId(d) {
 
 export default function() {
   var id = defaultId,
-      parentId = defaultParentId;
+      parentId = defaultParentId,
+      path;
 
   function stratify(data) {
     var nodes = Array.from(data),
-        n = nodes.length,
+        currentId = id,
+        currentParentId = parentId,
+        n,
         d,
         i,
         root,
@@ -28,13 +31,29 @@ export default function() {
         nodeKey,
         nodeByKey = new Map;
 
-    for (i = 0; i < n; ++i) {
+    if (path != null) {
+      const I = nodes.map((d, i) => normalize(path(d, i, data)));
+      const P = I.map(parentof);
+      const S = new Set(I);
+      for (const i of P) {
+        if (!S.has(i) && i) {
+          S.add(i);
+          I.push(i);
+          P.push(parentof(i));
+          nodes.push({path: i});
+        }
+      }
+      currentId = (_, i) => I[i];
+      currentParentId = (_, i) => P[i];
+    }
+
+    for (i = 0, n = nodes.length; i < n; ++i) {
       d = nodes[i], node = nodes[i] = new Node(d);
-      if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
+      if ((nodeId = currentId(d, i, data)) != null && (nodeId += "")) {
         nodeKey = node.id = nodeId;
         nodeByKey.set(nodeKey, nodeByKey.has(nodeKey) ? ambiguous : node);
       }
-      if ((nodeId = parentId(d, i, data)) != null && (nodeId += "")) {
+      if ((nodeId = currentParentId(d, i, data)) != null && (nodeId += "")) {
         node.parent = nodeId;
       }
     }
@@ -64,12 +83,25 @@ export default function() {
   }
 
   stratify.id = function(x) {
-    return arguments.length ? (id = required(x), stratify) : id;
+    return arguments.length ? (id = optional(x), stratify) : id;
   };
 
   stratify.parentId = function(x) {
-    return arguments.length ? (parentId = required(x), stratify) : parentId;
+    return arguments.length ? (parentId = optional(x), stratify) : parentId;
+  };
+
+  stratify.path = function(x) {
+    return arguments.length ? (path = optional(x), stratify) : path;
   };
 
   return stratify;
+}
+
+function normalize(path) {
+  path = `${path}`.replace(/\/$/, ""); // coerce to string; strip trailing slash
+  return path.startsWith("/") ? path : `/${path}`; // add leading slash if needed
+}
+
+function parentof(path) {
+  return path === "/" ? "" : path.substring(0, Math.max(1, path.lastIndexOf("/")));
 }
