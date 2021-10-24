@@ -507,30 +507,22 @@ it("stratify.path(path) allows duplicate leaf paths", () => {
   ]);
   assert(root instanceof hierarchy);
   assert.deepStrictEqual(noparent(root), {
-    id: "/",
+    id: "/aa",
     depth: 0,
-    height: 2,
+    height: 1,
     data: null,
     children: [
       {
-        id: "/aa",
+        id: "/aa/aaa",
         depth: 1,
-        height: 1,
-        data: null,
-        children: [
-          {
-            id: "/aa/aaa",
-            depth: 2,
-            height: 0,
-            data: {path: "/aa/aaa", number: 1}
-          },
-          {
-            id: "/aa/aaa",
-            depth: 2,
-            height: 0,
-            data: {path: "/aa/aaa", number: 2}
-          }
-        ]
+        height: 0,
+        data: {path: "/aa/aaa", number: 1}
+      },
+      {
+        id: "/aa/aaa",
+        depth: 1,
+        height: 0,
+        data: {path: "/aa/aaa", number: 2}
       }
     ]
   });
@@ -624,7 +616,8 @@ it("stratify.path(path) implicitly trims trailing slashes", () => {
 
 it("stratify.path(path) trims at most one trailing slash", () => {
   const root = stratify().path(d => d.path)([
-    {path: "/aa///"}
+    {path: "/aa///"},
+    {path: "/b"}
   ]);
   assert(root instanceof hierarchy);
   assert.deepStrictEqual(noparent(root), {
@@ -633,6 +626,12 @@ it("stratify.path(path) trims at most one trailing slash", () => {
     height: 3,
     data: null,
     children: [
+      {
+        id: "/b",
+        depth: 1,
+        height: 0,
+        data: {path: "/b"}
+      },
       {
         id: "/aa",
         depth: 1,

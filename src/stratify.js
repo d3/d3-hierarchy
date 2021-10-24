@@ -2,7 +2,8 @@ import {optional} from "./accessors.js";
 import {Node, computeHeight} from "./hierarchy/index.js";
 
 var preroot = {depth: -1},
-    ambiguous = {};
+    ambiguous = {},
+    imputed = {};
 
 function defaultId(d) {
   return d.id;
@@ -40,7 +41,7 @@ export default function() {
           S.add(i);
           I.push(i);
           P.push(parentof(i));
-          nodes.push(null);
+          nodes.push(imputed);
         }
       }
       currentId = (_, i) => I[i];
@@ -74,6 +75,20 @@ export default function() {
     }
 
     if (!root) throw new Error("no root");
+
+    // When imputing internal nodes, only introduce roots if needed.
+    // Then replace the imputed marker data with null.
+    if (path != null) {
+      while (root.data === imputed && root.children.length === 1) {
+        root = root.children[0], --n;
+      }
+      for (let i = nodes.length - 1; i >= 0; --i) {
+        node = nodes[i];
+        if (node.data !== imputed) break;
+        node.data = null;
+      }
+    }
+
     root.parent = preroot;
     root.eachBefore(function(node) { node.depth = node.parent.depth + 1; --n; }).eachBefore(computeHeight);
     root.parent = null;
