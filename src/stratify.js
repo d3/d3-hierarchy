@@ -40,7 +40,7 @@ export default function() {
           S.add(i);
           I.push(i);
           P.push(parentof(i));
-          nodes.push({path: i});
+          nodes.push(null);
         }
       }
       currentId = (_, i) => I[i];

@@ -474,7 +474,7 @@ it("stratify.path(path) imputes internal nodes", () => {
     id: "/",
     depth: 0,
     height: 2,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/ab",
@@ -486,7 +486,7 @@ it("stratify.path(path) imputes internal nodes", () => {
         id: "/aa",
         depth: 1,
         height: 1,
-        data: {path: "/aa"},
+        data: null,
         children: [
           {
             id: "/aa/aaa",
@@ -502,33 +502,33 @@ it("stratify.path(path) imputes internal nodes", () => {
 
 it("stratify.path(path) allows duplicate leaf paths", () => {
   const root = stratify().path(d => d.path)([
-    {path: "/aa/aaa"},
-    {path: "/aa/aaa"},
+    {path: "/aa/aaa", number: 1},
+    {path: "/aa/aaa", number: 2},
   ]);
   assert(root instanceof hierarchy);
   assert.deepStrictEqual(noparent(root), {
     id: "/",
     depth: 0,
     height: 2,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/aa",
         depth: 1,
         height: 1,
-        data: {path: "/aa"},
+        data: null,
         children: [
           {
             id: "/aa/aaa",
             depth: 2,
             height: 0,
-            data: {path: "/aa/aaa"}
+            data: {path: "/aa/aaa", number: 1}
           },
           {
             id: "/aa/aaa",
             depth: 2,
             height: 0,
-            data: {path: "/aa/aaa"}
+            data: {path: "/aa/aaa", number: 2}
           }
         ]
       }
@@ -596,7 +596,7 @@ it("stratify.path(path) implicitly trims trailing slashes", () => {
     id: "/",
     depth: 0,
     height: 2,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/aa",
@@ -631,19 +631,19 @@ it("stratify.path(path) trims at most one trailing slash", () => {
     id: "/",
     depth: 0,
     height: 3,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/aa",
         depth: 1,
         height: 2,
-        data: {path: "/aa"},
+        data: null,
         children: [
           {
             id: "/aa/",
             depth: 2,
             height: 1,
-            data: {path: "/aa/"},
+            data: null,
             children: [
               {
                 id: "/aa//",
@@ -670,7 +670,7 @@ it("stratify.path(path) does not require the data to be in topological order", (
     id: "/",
     depth: 0,
     height: 2,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/aa",
@@ -707,7 +707,7 @@ it("stratify.path(path) preserves the input order of siblings", () => {
     id: "/",
     depth: 0,
     height: 2,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/ab",
@@ -744,7 +744,7 @@ it("stratify.path(path) accepts an iterable", () => {
     id: "/",
     depth: 0,
     height: 2,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/ab",
@@ -789,7 +789,7 @@ it("stratify.path(path) coerces paths to strings", () => {
     id: "/",
     depth: 0,
     height: 2,
-    data: {path: "/"},
+    data: null,
     children: [
       {
         id: "/ab",
