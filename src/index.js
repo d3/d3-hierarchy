@@ -1,4 +1,5 @@
 export {default as cluster} from "./cluster.js";
+export {default as hierarchify} from "./hierarchify.js";
 export {default as hierarchy, Node} from "./hierarchy/index.js";
 export {default as pack} from "./pack/index.js";
 export {default as packSiblings} from "./pack/siblings.js";
