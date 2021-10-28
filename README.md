@@ -326,6 +326,14 @@ function parentId(d) {
 
 The parent id accessor is invoked for each element in the input data passed to the [stratify operator](#_stratify), being passed the current datum (*d*) and the current index (*i*). The returned string is then used to identify the node’s relationships in conjunction with the [id](#stratify_id). For the root node, the parent id should be undefined. (Null and the empty string are equivalent to undefined.) There must be exactly one root node in the input data, and no circular relationships.
 
+<a name="stratify_path" href="#stratify_path">#</a> <i>stratify</i>.<b>path</b>([<i>path</i>]) · [Source](https://github.com/d3/d3-hierarchy/blob/master/src/stratify.js), [Examples](https://observablehq.com/@d3/d3-stratify)
+
+If *path* is specified, sets the path accessor to the given function and returns this stratify operator. Otherwise, returns the current path accessor, which defaults to undefined. If a path accessor is set, the id and parentId arguments are ignored, and a unix-like hierarchy is computed on the slash-delimited strings returned by the path accessor, imputing parent nodes and ids as necessary.
+
+```js
+d3.stratify().path(d => d)(["a/b", "a/c"]); // nodes with id "/a", "/a/b", "/a/c"
+```
+
 ### Cluster
 
 [<img alt="Dendrogram" src="https://raw.githubusercontent.com/d3/d3-hierarchy/master/img/cluster.png">](https://observablehq.com/@d3/cluster-dendrogram)
