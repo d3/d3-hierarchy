@@ -112,11 +112,34 @@ export default function() {
   return stratify;
 }
 
+// To normalize a path, we coerce to a string, strip trailing slash if present,
+// and add leading slash if missing. This requires counting the number of
+// preceding backslashes which may be used to escape the forward slash: an odd
+// number indicates an escaped forward slash.
 function normalize(path) {
-  path = `${path}`.replace(/\/$/, ""); // coerce to string; strip trailing slash
-  return path.startsWith("/") ? path : `/${path}`; // add leading slash if needed
+  path = `${path}`;
+  let i = path.length - 1;
+  if (path[i] === "/") {
+    let k = 0;
+    while (i > 0 && path[--i] === "\\") ++k;
+    if ((k & 1) === 0) path = path.slice(0, -1);
+  }
+  return path[0] === "/" ? path : `/${path}`;
 }
 
+// Walk backwards to find the first slash that is not the leading slash, e.g.:
+// "/foo/bar" ⇥ "/foo", "/foo" ⇥ "/", "/" ↦ "". (The root is special-cased
+// because the id of the root must be a truthy value.) The slash may be escaped,
+// which again requires counting the number of preceding backslashes. Note that
+// normalized paths cannot end with a slash except for the root.
 function parentof(path) {
-  return path === "/" ? "" : path.substring(0, Math.max(1, path.lastIndexOf("/")));
+  let i = path.length;
+  while (i > 2) {
+    if (path[--i] === "/") {
+      let j = i, k = 0;
+      while (j > 0 && path[--j] === "\\") ++k;
+      if ((k & 1) === 0) break;
+    }
+  }
+  return path.slice(0, i < 3 ? i - 1 : i);
 }

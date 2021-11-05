@@ -464,6 +464,42 @@ it("stratify.path(path) returns the root node", () => {
   });
 });
 
+it("stratify.path(path) allows slashes to be escaped", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/"},
+    {path: "/aa"},
+    {path: "\\/ab"},
+    {path: "/aa\\/aaa"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 1,
+    data: {path: "/"},
+    children: [
+      {
+        id: "/aa",
+        depth: 1,
+        height: 0,
+        data: {path: "/aa"}
+      },
+      {
+        id: "/\\/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "\\/ab"}
+      },
+      {
+        id: "/aa\\/aaa",
+        depth: 1,
+        height: 0,
+        data: {path: "/aa\\/aaa"}
+      }
+    ]
+  });
+});
+
 it("stratify.path(path) imputes internal nodes", () => {
   const root = stratify().path(d => d.path)([
     {path: "/aa/aaa"},
