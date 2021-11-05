@@ -33,14 +33,15 @@ export default function() {
         nodeByKey = new Map;
 
     if (path != null) {
-      const I = nodes.map((d, i) => normalize(path(d, i, data)));
-      const P = I.map(parentof);
-      const S = new Set(I).add("");
-      for (const i of P) {
-        if (!S.has(i)) {
-          S.add(i);
-          I.push(i);
-          P.push(parentof(i));
+      const V = nodes.map((d, i) => normalize(path(d, i, data)));
+      const I = V.map(idof);
+      const P = V.map(parentof);
+      const S = new Set(I).add(null);
+      for (const p of P) {
+        if (!S.has(p)) {
+          S.add(p);
+          I.push(p);
+          P.push(parentof(JSON.parse(p)));
           nodes.push(imputed);
         }
       }
@@ -113,10 +114,16 @@ export default function() {
 }
 
 function normalize(path) {
-  path = `${path}`.replace(/\/$/, ""); // coerce to string; strip trailing slash
-  return path.startsWith("/") ? path : `/${path}`; // add leading slash if needed
+  if (!Array.isArray(path)) path = [...path];
+  if (!path[0]) path = path.slice(1);
+  if (!path[path.length - 1]) path = path.slice(0, -1);
+  return path;
 }
 
-function parentof(path) {
-  return path === "/" ? "" : path.substring(0, Math.max(1, path.lastIndexOf("/")));
+function idof(p) {
+  return JSON.stringify(p);
+}
+
+function parentof(p) {
+  return p.length === 0 ? null : idof(p.slice(0, -1));
 }
