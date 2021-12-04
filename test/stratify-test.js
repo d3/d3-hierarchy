@@ -377,7 +377,7 @@ it("stratify.id(id) observes the specified id function", () => {
 it("stratify.id(id) tests that id is a function", () => {
   const s = stratify();
   assert.throws(() => void s.id(42));
-  assert.throws(() => void s.id(null));
+  assert.throws(() => void s.id("nope"));
 });
 
 it("stratify.parentId(id) observes the specified parent id function", () => {
@@ -423,7 +423,431 @@ it("stratify.parentId(id) observes the specified parent id function", () => {
 it("stratify.parentId(id) tests that id is a function", () => {
   const s = stratify();
   assert.throws(() => void s.parentId(42));
-  assert.throws(() => void s.parentId(null));
+  assert.throws(() => void s.parentId("nope"));
+});
+
+it("stratify.path(path) returns the root node", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/"},
+    {path: "/aa"},
+    {path: "/ab"},
+    {path: "/aa/aaa"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: {path: "/"},
+    children: [
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: {path: "/aa"},
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "/aa/aaa"}
+          }
+        ]
+      },
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "/ab"}
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) allows slashes to be escaped", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/"},
+    {path: "/aa"},
+    {path: "\\/ab"},
+    {path: "/aa\\/aaa"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 1,
+    data: {path: "/"},
+    children: [
+      {
+        id: "/aa",
+        depth: 1,
+        height: 0,
+        data: {path: "/aa"}
+      },
+      {
+        id: "/\\/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "\\/ab"}
+      },
+      {
+        id: "/aa\\/aaa",
+        depth: 1,
+        height: 0,
+        data: {path: "/aa\\/aaa"}
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) imputes internal nodes", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/aa/aaa"},
+    {path: "/ab"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: null,
+    children: [
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "/ab"}
+      },
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: null,
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "/aa/aaa"}
+          }
+        ]
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) allows duplicate leaf paths", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/aa/aaa", number: 1},
+    {path: "/aa/aaa", number: 2},
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/aa",
+    depth: 0,
+    height: 1,
+    data: null,
+    children: [
+      {
+        id: "/aa/aaa",
+        depth: 1,
+        height: 0,
+        data: {path: "/aa/aaa", number: 1}
+      },
+      {
+        id: "/aa/aaa",
+        depth: 1,
+        height: 0,
+        data: {path: "/aa/aaa", number: 2}
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) does not allow duplicate internal paths", () => {
+  assert.throws(() => {
+    stratify().path(d => d.path)([
+      {path: "/aa"},
+      {path: "/aa"},
+      {path: "/aa/aaa"},
+      {path: "/aa/aaa"},
+    ]);
+  }, /ambiguous/);
+});
+
+it("stratify.path(path) implicitly adds leading slashes", () => {
+  const root = stratify().path(d => d.path)([
+    {path: ""},
+    {path: "aa"},
+    {path: "ab"},
+    {path: "aa/aaa"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: {path: ""},
+    children: [
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: {path: "aa"},
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "aa/aaa"}
+          }
+        ]
+      },
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "ab"}
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) implicitly trims trailing slashes", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/aa/"},
+    {path: "/ab/"},
+    {path: "/aa/aaa/"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: null,
+    children: [
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: {path: "/aa/"},
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "/aa/aaa/"}
+          }
+        ]
+      },
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "/ab/"}
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) trims at most one trailing slash", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/aa///"},
+    {path: "/b"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 3,
+    data: null,
+    children: [
+      {
+        id: "/b",
+        depth: 1,
+        height: 0,
+        data: {path: "/b"}
+      },
+      {
+        id: "/aa",
+        depth: 1,
+        height: 2,
+        data: null,
+        children: [
+          {
+            id: "/aa/",
+            depth: 2,
+            height: 1,
+            data: null,
+            children: [
+              {
+                id: "/aa//",
+                depth: 3,
+                height: 0,
+                data: {path: "/aa///"},
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) does not require the data to be in topological order", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/aa/aaa"},
+    {path: "/aa"},
+    {path: "/ab"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: null,
+    children: [
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: {path: "/aa"},
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "/aa/aaa"}
+          }
+        ]
+      },
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "/ab"}
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) preserves the input order of siblings", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/ab"},
+    {path: "/aa"},
+    {path: "/aa/aaa"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: null,
+    children: [
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "/ab"}
+      },
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: {path: "/aa"},
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "/aa/aaa"}
+          }
+        ]
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) accepts an iterable", () => {
+  const root = stratify().path(d => d.path)(new Set([
+    {path: "/ab"},
+    {path: "/aa"},
+    {path: "/aa/aaa"}
+  ]));
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: null,
+    children: [
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "/ab"}
+      },
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: {path: "/aa"},
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "/aa/aaa"}
+          }
+        ]
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) coerces paths to strings", () => {
+  class Path {
+    constructor(path) {
+      this.path = path;
+    }
+    toString() {
+      return this.path;
+    }
+  }
+  const root = stratify().path(d => d.path)([
+    {path: "/ab"},
+    {path: "/aa"},
+    {path: "/aa/aaa"}
+  ], d => new Path(d.path));
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: null,
+    children: [
+      {
+        id: "/ab",
+        depth: 1,
+        height: 0,
+        data: {path: "/ab"}
+      },
+      {
+        id: "/aa",
+        depth: 1,
+        height: 1,
+        data: {path: "/aa"},
+        children: [
+          {
+            id: "/aa/aaa",
+            depth: 2,
+            height: 0,
+            data: {path: "/aa/aaa"}
+          }
+        ]
+      }
+    ]
+  });
 });
 
 function noparent(node) {
