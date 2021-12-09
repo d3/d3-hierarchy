@@ -464,6 +464,129 @@ it("stratify.path(path) returns the root node", () => {
   });
 });
 
+it("stratify.path(path) correctly handles single-character folders", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/"},
+    {path: "/d"},
+    {path: "/d/123"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: {path: "/"},
+    children: [
+      {
+        id: "/d",
+        depth: 1,
+        height: 1,
+        data: {path: "/d"},
+        children: [
+          {
+            id: "/d/123",
+            depth: 2,
+            height: 0,
+            data: {path: "/d/123"}
+          }
+        ]
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) correctly handles empty folders", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/"},
+    {path: "//"},
+    {path: "///"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: {path: "/"},
+    children: [
+      {
+        id: "//",
+        depth: 1,
+        height: 1,
+        data: {path: "//"},
+        children: [
+          {
+            id: "///",
+            depth: 2,
+            height: 0,
+            data: {path: "///"}
+          }
+        ]
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) correctly handles single-character folders with trailing slashes", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/"},
+    {path: "/d/"},
+    {path: "/d/123/"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: {path: "/"},
+    children: [
+      {
+        id: "/d",
+        depth: 1,
+        height: 1,
+        data: {path: "/d/"},
+        children: [
+          {
+            id: "/d/123",
+            depth: 2,
+            height: 0,
+            data: {path: "/d/123/"}
+          }
+        ]
+      }
+    ]
+  });
+});
+
+it("stratify.path(path) correctly handles imputed single-character folders", () => {
+  const root = stratify().path(d => d.path)([
+    {path: "/"},
+    {path: "/d/123"}
+  ]);
+  assert(root instanceof hierarchy);
+  assert.deepStrictEqual(noparent(root), {
+    id: "/",
+    depth: 0,
+    height: 2,
+    data: {path: "/"},
+    children: [
+      {
+        id: "/d",
+        depth: 1,
+        height: 1,
+        data: null,
+        children: [
+          {
+            id: "/d/123",
+            depth: 2,
+            height: 0,
+            data: {path: "/d/123"}
+          }
+        ]
+      }
+    ]
+  });
+});
+
 it("stratify.path(path) allows slashes to be escaped", () => {
   const root = stratify().path(d => d.path)([
     {path: "/"},
@@ -650,9 +773,9 @@ it("stratify.path(path) implicitly trims trailing slashes", () => {
   });
 });
 
-it("stratify.path(path) trims at most one trailing slash", () => {
+it("stratify.path(path) does not trim trailing slashes preceded by a slash", () => {
   const root = stratify().path(d => d.path)([
-    {path: "/aa///"},
+    {path: "/aa//"},
     {path: "/b"}
   ]);
   assert(root instanceof hierarchy);
@@ -684,7 +807,7 @@ it("stratify.path(path) trims at most one trailing slash", () => {
                 id: "/aa//",
                 depth: 3,
                 height: 0,
-                data: {path: "/aa///"},
+                data: {path: "/aa//"},
               }
             ]
           }
