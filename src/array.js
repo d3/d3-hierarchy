@@ -1,3 +1,5 @@
+import lcg from "./lcg.js";
+
 export default function(x) {
   return typeof x === "object" && "length" in x
     ? x // Array, TypedArray, NodeList, array-like
@@ -5,12 +7,13 @@ export default function(x) {
 }
 
 export function shuffle(array) {
-  var m = array.length,
+  const random = lcg();
+  let m = array.length,
       t,
       i;
 
   while (m) {
-    i = Math.random() * m-- | 0;
+    i = random() * m-- | 0;
     t = array[m];
     array[m] = array[i];
     array[i] = t;
