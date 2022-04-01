@@ -1,6 +1,7 @@
-import {packEnclose} from "./siblings.js";
 import {optional} from "../accessors.js";
 import constant, {constantZero} from "../constant.js";
+import lcg from "../lcg.js";
+import {packSiblingsRandom} from "./siblings.js";
 
 function defaultRadius(d) {
   return Math.sqrt(d.value);
@@ -13,15 +14,16 @@ export default function() {
       padding = constantZero;
 
   function pack(root) {
+    const random = lcg();
     root.x = dx / 2, root.y = dy / 2;
     if (radius) {
       root.eachBefore(radiusLeaf(radius))
-          .eachAfter(packChildren(padding, 0.5))
+          .eachAfter(packChildrenRandom(padding, 0.5, random))
           .eachBefore(translateChild(1));
     } else {
       root.eachBefore(radiusLeaf(defaultRadius))
-          .eachAfter(packChildren(constantZero, 1))
-          .eachAfter(packChildren(padding, root.r / Math.min(dx, dy)))
+          .eachAfter(packChildrenRandom(constantZero, 1, random))
+          .eachAfter(packChildrenRandom(padding, root.r / Math.min(dx, dy), random))
           .eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
     }
     return root;
@@ -50,7 +52,7 @@ function radiusLeaf(radius) {
   };
 }
 
-function packChildren(padding, k) {
+function packChildrenRandom(padding, k, random) {
   return function(node) {
     if (children = node.children) {
       var children,
@@ -60,7 +62,7 @@ function packChildren(padding, k) {
           e;
 
       if (r) for (i = 0; i < n; ++i) children[i].r += r;
-      e = packEnclose(children);
+      e = packSiblingsRandom(children, random);
       if (r) for (i = 0; i < n; ++i) children[i].r -= r;
       node.r = e + r;
     }

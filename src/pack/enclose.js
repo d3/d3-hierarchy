@@ -1,7 +1,12 @@
 import {shuffle} from "../array.js";
+import lcg from "../lcg.js";
 
 export default function(circles) {
-  var i = 0, n = (circles = shuffle(Array.from(circles))).length, B = [], p, e;
+  return packEncloseRandom(circles, lcg());
+}
+
+export function packEncloseRandom(circles, random) {
+  var i = 0, n = (circles = shuffle(Array.from(circles), random)).length, B = [], p, e;
 
   while (i < n) {
     p = circles[i];

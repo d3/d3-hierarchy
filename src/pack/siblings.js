@@ -1,5 +1,6 @@
 import array from "../array.js";
-import enclose from "./enclose.js";
+import lcg from "../lcg.js";
+import {packEncloseRandom} from "./enclose.js";
 
 function place(b, a, c) {
   var dx = b.x - a.x, x, a2,
@@ -45,7 +46,7 @@ function Node(circle) {
   this.previous = null;
 }
 
-export function packEnclose(circles) {
+export function packSiblingsRandom(circles, random) {
   if (!(n = (circles = array(circles)).length)) return 0;
 
   var a, b, c, n, aa, ca, i, j, k, sj, sk;
@@ -105,7 +106,7 @@ export function packEnclose(circles) {
   }
 
   // Compute the enclosing circle of the front chain.
-  a = [b._], c = b; while ((c = c.next) !== b) a.push(c._); c = enclose(a);
+  a = [b._], c = b; while ((c = c.next) !== b) a.push(c._); c = packEncloseRandom(a, random);
 
   // Translate the circles to put the enclosing circle around the origin.
   for (i = 0; i < n; ++i) a = circles[i], a.x -= c.x, a.y -= c.y;
@@ -114,6 +115,6 @@ export function packEnclose(circles) {
 }
 
 export default function(circles) {
-  packEnclose(circles);
+  packSiblingsRandom(circles, lcg());
   return circles;
 }
