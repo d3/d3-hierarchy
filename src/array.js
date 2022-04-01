@@ -4,7 +4,7 @@ export default function(x) {
     : Array.from(x); // Map, Set, iterable, string, or anything else
 }
 
-export function shuffle(array, random = Math.random) {
+export function shuffle(array, random) {
   let m = array.length,
       t,
       i;
