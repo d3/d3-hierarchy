@@ -114,7 +114,7 @@ function encloseBasis3(a, b, c) {
       A = xb * xb + yb * yb - 1,
       B = 2 * (r1 + xa * xb + ya * yb),
       C = xa * xa + ya * ya - r1 * r1,
-      r = -(A ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
+      r = -(Math.abs(A) > 1e-6 ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
   return {
     x: x1 + xa + xb * r,
     y: y1 + ya + yb * r,
