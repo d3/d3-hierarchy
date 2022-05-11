@@ -4,6 +4,7 @@ export {default as pack} from "./pack/index.js";
 export {default as packSiblings} from "./pack/siblings.js";
 export {default as packEnclose} from "./pack/enclose.js";
 export {default as partition} from "./partition.js";
+export {default as stackedtree} from "./stackedtree.js";
 export {default as stratify} from "./stratify.js";
 export {default as tree} from "./tree.js";
 export {default as treemap} from "./treemap/index.js";
