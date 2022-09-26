@@ -283,8 +283,8 @@ To convert to a hierarchy:
 
 ```js
 var root = d3.stratify()
-    .id(function(d) { return d.name; })
-    .parentId(function(d) { return d.parent; })
+    .id((d) => d.name)
+    .parentId((d) => d.parent)
     (table);
 ```
 
