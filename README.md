@@ -148,7 +148,7 @@ Returns an array of links for this *node* and its descendants, where each *link*
 Evaluates the specified *value* function for this *node* and each descendant in [post-order traversal](#node_eachAfter), and returns this *node*. The *node*.value property of each node is set to the numeric value returned by the specified function plus the combined value of all children. The function is passed the node’s data, and must return a non-negative number. The *value* accessor is evaluated for *node* and every descendant, including internal nodes; if you only want leaf nodes to have internal value, then return zero for any node with children. [For example](https://observablehq.com/@d3/treemap-by-count), as an alternative to [*node*.count](#node_count):
 
 ```js
-root.sum(function(d) { return d.value ? 1 : 0; });
+root.sum(d => d.value ? 1 : 0);
 ```
 
 You must call *node*.sum or [*node*.count](#node_count) before invoking a hierarchical layout that requires *node*.value, such as [d3.treemap](#treemap). Since the API supports [method chaining](https://en.wikipedia.org/wiki/Method_chaining), you can invoke *node*.sum and [*node*.sort](#node_sort) before computing the layout, and then subsequently generate an array of all [descendant nodes](#node_descendants) like so:
@@ -159,8 +159,8 @@ var treemap = d3.treemap()
     .padding(2);
 
 var nodes = treemap(root
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.height - a.height || b.value - a.value; }))
+    .sum(d => d.value)
+    .sort((a, b) => b.height - a.height || b.value - a.value))
   .descendants();
 ```
 
@@ -178,24 +178,24 @@ Unlike [*node*.sum](#node_sum), the *compare* function is passed two [nodes](#hi
 
 ```js
 root
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.value - a.value; });
+    .sum(d => d.value)
+    .sort((a, b) => b.value - a.value);
 ``````
 
 Similarly, to sort nodes by descending height (greatest distance from any descendant leaf) and then descending value, as is recommended for [treemaps](#treemap) and [icicles](#partition):
 
 ```js
 root
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.height - a.height || b.value - a.value; });
+    .sum(d => d.value)
+    .sort((a, b) => b.height - a.height || b.value - a.value);
 ```
 
 To sort nodes by descending height and then ascending id, as is recommended for [trees](#tree) and [dendrograms](#cluster):
 
 ```js
 root
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.height - a.height || a.id.localeCompare(b.id); });
+    .sum(d => d.value)
+    .sort((a, b) => b.height - a.height || a.id.localeCompare(b.id));
 ```
 
 You must call *node*.sort before invoking a hierarchical layout if you want the new sort order to affect the layout; see [*node*.sum](#node_sum) for an example.
@@ -283,8 +283,8 @@ To convert to a hierarchy:
 
 ```js
 var root = d3.stratify()
-    .id(function(d) { return d.name; })
-    .parentId(function(d) { return d.parent; })
+    .id(d => d.name)
+    .parentId(d => d.parent)
     (table);
 ```
 
