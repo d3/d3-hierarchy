@@ -16,6 +16,7 @@ function defaultParentId(d) {
 export default function() {
   var id = defaultId,
       parentId = defaultParentId,
+      imputeLeaf = false,
       path;
 
   function stratify(data) {
@@ -94,6 +95,20 @@ export default function() {
     root.parent = null;
     if (n > 0) throw new Error("cycle");
 
+    if (imputeLeaf) {
+      root.each(node => {
+        if (node.children && node.children.length && node.data != null) {
+          const child = new Node(node.data);
+          node.data = null;
+          child.depth = node.depth + 1;
+          child.height = 0;
+          child.parent = node;
+          child.id = node.id + "/";
+          node.children.unshift(child);
+        }
+      });
+    }
+
     return root;
   }
 
@@ -108,6 +123,10 @@ export default function() {
   stratify.path = function(x) {
     return arguments.length ? (path = optional(x), stratify) : path;
   };
+
+  stratify.imputeLeaf = function (x) {
+    return arguments.length ? (imputeLeaf = !!x, stratify) : this.imputeLeaf;
+  }
 
   return stratify;
 }

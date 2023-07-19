@@ -334,6 +334,14 @@ If *path* is specified, sets the path accessor to the given function and returns
 d3.stratify().path(d => d)(["a/b", "a/c"]); // nodes with id "/a", "/a/b", "/a/c"
 ```
 
+<a name="stratify_imputeleaf" href="#stratify_imputeleaf">#</a> <i>stratify</i>.<b>imputeLeaf</b>([<i>impute</i>]) · [Source](https://github.com/d3/d3-hierarchy/blob/main/src/stratify.js), [Examples](https://observablehq.com/@d3/d3-stratify)
+
+If *impute* is specified as a boolean, sets the imputeLeaf option to the given value and returns this stratify operator. Otherwise, returns the current impute option, which defaults to false. If the option is true, a node that has children and a value will be represented as a branching node with no data, with a child node bearing the data. The child node’s id will be the parent id suffixed with a slash.
+
+```js
+d3.stratify().path(d => d).imputeLeaf(true)(["a", "a/b"]); // nodes with id "/a", "/a/", "/a/b"
+```
+
 ### Cluster
 
 [<img alt="Dendrogram" src="https://raw.githubusercontent.com/d3/d3-hierarchy/main/img/cluster.png">](https://observablehq.com/@d3/cluster-dendrogram)

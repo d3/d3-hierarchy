@@ -227,6 +227,41 @@ it("stratify(data) does not treat a falsy but non-empty parentId as the root", (
   });
 });
 
+it("stratify(data).imputeLeaf(true) imputes leaves when branch nodes have a value", () => {
+  const s = stratify().path(d => d.path).imputeLeaf(true);
+  const root = s([
+    {path: "/gallery", visits: 4},
+    {path: "/gallery/a", visits: 2},
+    {path: "/gallery/b", visits: 1}
+  ]);
+  assert.deepStrictEqual(noparent(root), {
+    "id": "/gallery",
+    "depth": 0,
+    "height": 1,
+    "data": null,
+    "children": [
+      {
+        "id": "/gallery/",
+        "depth": 1,
+        "height": 0,
+        "data": {"path": "/gallery", "visits": 4},
+      },
+      {
+        "id": "/gallery/a",
+        "depth": 1,
+        "height": 0,
+        "data": {"path": "/gallery/a", "visits": 2}
+      },
+      {
+        "id": "/gallery/b",
+        "depth": 1,
+        "height": 0,
+        "data": {"path": "/gallery/b", "visits": 1}
+      }
+    ]
+  });
+});
+
 it("stratify(data) throws an error if the data does not have a single root", () => {
   const s = stratify();
   assert.throws(() => { s([{id: "a"}, {id: "b"}]); }, /\bmultiple roots\b/);
