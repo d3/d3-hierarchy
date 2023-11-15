@@ -145,7 +145,7 @@ export default function() {
     var children = v.children,
         siblings = v.parent.children,
         w = v.i ? siblings[v.i - 1] : null;
-    if (children) {
+    if (children && children.length) {
       executeShifts(v);
       var midpoint = (children[0].z + children[children.length - 1].z) / 2;
       if (w) {
