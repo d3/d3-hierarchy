@@ -94,9 +94,10 @@ function encloseBasis2(a, b) {
 }
 
 function encloseBasis3(a, b, c) {
-  var x1 = a.x, y1 = a.y, r1 = a.r,
-      x2 = b.x, y2 = b.y, r2 = b.r,
-      x3 = c.x, y3 = c.y, r3 = c.r,
+  var cx = (a.x + b.x + c.x) / 3, cy = (a.y + b.y + c.y) / 3;
+  var x1 = a.x - cx, y1 = a.y - cy, r1 = a.r,
+      x2 = b.x - cx, y2 = b.y - cy, r2 = b.r,
+      x3 = c.x - cx, y3 = c.y - cy, r3 = c.r,
       a2 = x1 - x2,
       a3 = x1 - x3,
       b2 = y1 - y2,
@@ -116,8 +117,8 @@ function encloseBasis3(a, b, c) {
       C = xa * xa + ya * ya - r1 * r1,
       r = -(Math.abs(A) > 1e-6 ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
   return {
-    x: x1 + xa + xb * r,
-    y: y1 + ya + yb * r,
+    x: cx + x1 + xa + xb * r,
+    y: cy + y1 + ya + yb * r,
     r: r
   };
 }
