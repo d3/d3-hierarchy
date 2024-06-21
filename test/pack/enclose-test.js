@@ -17,7 +17,7 @@ it("packEnclose(circles) handles a tricky case", () => {
   );
 });
 
-it('packEnclose(circles) handles big numbers', () => {
+it('packEnclose(circles) handles large values', () => {
   const circles = [
     { "x": 531214.7271532917, "y": 360738.8204573899, "r": 10 },
     { "x": 531242.0429781883, "y": 360764.87727581244, "r": 10 },
