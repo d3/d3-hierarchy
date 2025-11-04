@@ -50,11 +50,11 @@ export default function() {
 
     for (i = 0, n = nodes.length; i < n; ++i) {
       d = nodes[i], node = nodes[i] = new Node(d);
-      if ((nodeId = currentId(d, i, data)) != null && (nodeId += "")) {
+      if (nodeId = currentId(d, i, data)) {
         nodeKey = node.id = nodeId;
         nodeByKey.set(nodeKey, nodeByKey.has(nodeKey) ? ambiguous : node);
       }
-      if ((nodeId = currentParentId(d, i, data)) != null && (nodeId += "")) {
+      if (nodeId = currentParentId(d, i, data)) {
         node.parent = nodeId;
       }
     }
