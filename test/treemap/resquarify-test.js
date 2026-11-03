@@ -1,8 +1,9 @@
+import {test} from "vitest";
 import assert from "assert";
 import {hierarchy, treemap, treemapResquarify} from "../../src/index.js";
 import {round} from "./round.js";
 
-it("treemapResquarify(parent, x0, y0, x1, y1) produces a stable update", () => {
+test("treemapResquarify(parent, x0, y0, x1, y1) produces a stable update", () => {
   const tile = treemapResquarify;
   const root = {value: 20, children: [{value: 10}, {value: 10}]};
   tile(root, 0, 0, 20, 10);
@@ -17,7 +18,7 @@ it("treemapResquarify(parent, x0, y0, x1, y1) produces a stable update", () => {
   ]);
 });
 
-it("treemapResquarify.ratio(ratio) observes the specified ratio", () => {
+test("treemapResquarify.ratio(ratio) observes the specified ratio", () => {
   const tile = treemapResquarify.ratio(1);
   const root = {
     value: 24,
@@ -43,7 +44,7 @@ it("treemapResquarify.ratio(ratio) observes the specified ratio", () => {
   ]);
 });
 
-it("treemapResquarify.ratio(ratio) is stable if the ratio is unchanged", () => {
+test("treemapResquarify.ratio(ratio) is stable if the ratio is unchanged", () => {
   const root = {value: 20, children: [{value: 10}, {value: 10}]};
   treemapResquarify(root, 0, 0, 20, 10);
   assert.deepStrictEqual(root.children.map(round), [
@@ -57,7 +58,7 @@ it("treemapResquarify.ratio(ratio) is stable if the ratio is unchanged", () => {
   ]);
 });
 
-it("treemapResquarify.ratio(ratio) is unstable if the ratio is changed", () => {
+test("treemapResquarify.ratio(ratio) is unstable if the ratio is changed", () => {
   const root = {value: 20, children: [{value: 10}, {value: 10}]};
   treemapResquarify(root, 0, 0, 20, 10);
   assert.deepStrictEqual(root.children.map(round), [
@@ -71,7 +72,7 @@ it("treemapResquarify.ratio(ratio) is unstable if the ratio is changed", () => {
   ]);
 });
 
-it("treemapResquarify does not break on 0-sized inputs", () => {
+test("treemapResquarify does not break on 0-sized inputs", () => {
   const root = hierarchy({children: [{children:[{value: 0}]}, {value: 1}]});
   const treemapper = treemap().tile(treemapResquarify);
   treemapper(root.sum(d => d.value));

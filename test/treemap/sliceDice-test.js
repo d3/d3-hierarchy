@@ -1,8 +1,9 @@
+import {test} from "vitest";
 import assert from "assert";
 import {treemapSliceDice} from "../../src/index.js";
 import {round} from "./round.js";
 
-it("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", () => {
+test("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", () => {
   const tile = treemapSliceDice;
   const root = {
     depth: 1,
@@ -29,7 +30,7 @@ it("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", () => {
   ]);
 });
 
-it("treemapSliceDice(parent, x0, y0, x1, y1) uses dice for even depth", () => {
+test("treemapSliceDice(parent, x0, y0, x1, y1) uses dice for even depth", () => {
   const tile = treemapSliceDice;
   const root = {
     depth: 2,

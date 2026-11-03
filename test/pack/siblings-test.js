@@ -1,7 +1,8 @@
+import {test} from "vitest";
 import assert from "assert";
 import {packSiblings} from "../../src/index.js";
 
-it("packSiblings(circles) produces a non-overlapping layout of circles", () => {
+test("packSiblings(circles) produces a non-overlapping layout of circles", () => {
   permute([100, 200, 500, 70, 3].map(circleValue), p => intersectsAny(packSiblings(p)) && assert.fail(p.map(c => c.r)));
   permute([3, 30, 50, 400, 600].map(circleValue), p => intersectsAny(packSiblings(p)) && assert.fail(p.map(c => c.r)));
   permute([1, 1, 3, 30, 50, 400, 600].map(circleValue), p => intersectsAny(packSiblings(p)) && assert.fail(p.map(c => c.r)));
@@ -13,7 +14,7 @@ it("packSiblings(circles) produces a non-overlapping layout of circles", () => {
   assert.strictEqual(intersectsAny(packSiblings([2.23606797749979, 52.07088264296293, 5.196152422706632, 20.09975124224178, 357.11557267679996, 4.898979485566356, 14.7648230602334, 17.334875731491763].map(circleRadius))), false);
 });
 
-it("packSiblings(circles) can successfully pack a circle with a tiny radius", () => {
+test("packSiblings(circles) can successfully pack a circle with a tiny radius", () => {
   assert.strictEqual(intersectsAny(packSiblings([
     0.5672035864083508,
     0.6363498687452267,
@@ -31,7 +32,7 @@ it("packSiblings(circles) can successfully pack a circle with a tiny radius", ()
   ].map(circleRadius))), false);
 });
 
-it("packSiblings accepts large circles", () => {
+test("packSiblings accepts large circles", () => {
   assert.deepStrictEqual(packSiblings([ {r: 1e+11}, {r: 1}, {r: 1} ]),
     [{r: 1e+11, x: 0, y: 0}, {r: 1, x: 1e+11 + 1, y: 0}, {r: 1, x: 1e+11 + 1, y: 2}]
   );

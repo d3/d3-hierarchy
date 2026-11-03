@@ -1,13 +1,14 @@
+import {test} from "vitest";
 import assert from "assert";
 import {hierarchy, stratify} from "../src/index.js";
 
-it("stratify() has the expected defaults", () => {
+test("stratify() has the expected defaults", () => {
   const s = stratify();
   assert.strictEqual(s.id()({id: "foo"}), "foo");
   assert.strictEqual(s.parentId()({parentId: "bar"}), "bar");
 });
 
-it("stratify(data) returns the root node", () => {
+test("stratify(data) returns the root node", () => {
   const s = stratify();
   const root = s([
     {id: "a"},
@@ -46,7 +47,7 @@ it("stratify(data) returns the root node", () => {
   });
 });
 
-it("stratify(data) does not require the data to be in topological order", () => {
+test("stratify(data) does not require the data to be in topological order", () => {
   const s = stratify();
   const root = s([
     {id: "aaa", parentId: "aa"},
@@ -84,7 +85,7 @@ it("stratify(data) does not require the data to be in topological order", () => 
   });
 });
 
-it("stratify(data) preserves the input order of siblings", () => {
+test("stratify(data) preserves the input order of siblings", () => {
   const s = stratify();
   const root = s([
     {id: "aaa", parentId: "aa"},
@@ -122,7 +123,7 @@ it("stratify(data) preserves the input order of siblings", () => {
   });
 });
 
-it("stratify(data) accepts an iterable", () => {
+test("stratify(data) accepts an iterable", () => {
   const s = stratify();
   const root = s(new Set([
     {id: "aaa", parentId: "aa"},
@@ -160,7 +161,7 @@ it("stratify(data) accepts an iterable", () => {
   });
 });
 
-it("stratify(data) treats an empty parentId as the root", () => {
+test("stratify(data) treats an empty parentId as the root", () => {
   const s = stratify();
   const root = s([
     {id: "a", parentId: ""},
@@ -198,7 +199,7 @@ it("stratify(data) treats an empty parentId as the root", () => {
   });
 });
 
-it("stratify(data) does not treat a falsy but non-empty parentId as the root", () => {
+test("stratify(data) does not treat a falsy but non-empty parentId as the root", () => {
   const s = stratify();
   const root = s([
     {id: 0, parentId: null},
@@ -227,30 +228,30 @@ it("stratify(data) does not treat a falsy but non-empty parentId as the root", (
   });
 });
 
-it("stratify(data) throws an error if the data does not have a single root", () => {
+test("stratify(data) throws an error if the data does not have a single root", () => {
   const s = stratify();
   assert.throws(() => { s([{id: "a"}, {id: "b"}]); }, /\bmultiple roots\b/);
   assert.throws(() => { s([{id: "a", parentId: "a"}]); }, /\bno root\b/);
   assert.throws(() => { s([{id: "a", parentId: "b"}, {id: "b", parentId: "a"}]); }, /\bno root\b/);
 });
 
-it("stratify(data) throws an error if the hierarchy is cyclical", () => {
+test("stratify(data) throws an error if the hierarchy is cyclical", () => {
   const s = stratify();
   assert.throws(() => { s([{id: "root"}, {id: "a", parentId: "a"}]); }, /\bcycle\b/);
   assert.throws(() => { s([{id: "root"}, {id: "a", parentId: "b"}, {id: "b", parentId: "a"}]); }, /\bcycle\b/);
 });
 
-it("stratify(data) throws an error if multiple parents have the same id", () => {
+test("stratify(data) throws an error if multiple parents have the same id", () => {
   const s = stratify();
   assert.throws(() => { s([{id: "a"}, {id: "b", parentId: "a"}, {id: "b", parentId: "a"}, {id: "c", parentId: "b"}]); }, /\bambiguous\b/);
 });
 
-it("stratify(data) throws an error if the specified parent is not found", () => {
+test("stratify(data) throws an error if the specified parent is not found", () => {
   const s = stratify();
   assert.throws(() => { s([{id: "a"}, {id: "b", parentId: "c"}]); }, /\bmissing\b/);
 });
 
-it("stratify(data) allows the id to be undefined for leaf nodes", () => {
+test("stratify(data) allows the id to be undefined for leaf nodes", () => {
   const s = stratify();
   const root = s([
     {id: "a"},
@@ -277,7 +278,7 @@ it("stratify(data) allows the id to be undefined for leaf nodes", () => {
   });
 });
 
-it("stratify(data) allows the id to be non-unique for leaf nodes", () => {
+test("stratify(data) allows the id to be non-unique for leaf nodes", () => {
   const s = stratify();
   const root = s([
     {id: "a", parentId: null},
@@ -306,7 +307,7 @@ it("stratify(data) allows the id to be non-unique for leaf nodes", () => {
   });
 });
 
-it("stratify(data) coerces the id to a string, if not null and not empty", () => {
+test("stratify(data) coerces the id to a string, if not null and not empty", () => {
   const s = stratify();
   assert.strictEqual(s([{id: {toString() { return "a"}}}]).id, "a");
   assert.strictEqual(s([{id: ""}]).id, undefined);
@@ -315,7 +316,7 @@ it("stratify(data) coerces the id to a string, if not null and not empty", () =>
   assert.strictEqual(s([{}]).id, undefined);
 });
 
-it("stratify(data) allows the id to be undefined for leaf nodes", () => {
+test("stratify(data) allows the id to be undefined for leaf nodes", () => {
   const s = stratify();
   const o = {parentId: {toString() { return "a"; }}};
   const root = s([{id: "a"}, o]);
@@ -334,7 +335,7 @@ it("stratify(data) allows the id to be undefined for leaf nodes", () => {
   });
 });
 
-it("stratify.id(id) observes the specified id function", () => {
+test("stratify.id(id) observes the specified id function", () => {
   const foo = (d) => d.foo;
   const s = stratify().id(foo);
   const root = s([
@@ -374,13 +375,13 @@ it("stratify.id(id) observes the specified id function", () => {
   });
 });
 
-it("stratify.id(id) tests that id is a function", () => {
+test("stratify.id(id) tests that id is a function", () => {
   const s = stratify();
   assert.throws(() => void s.id(42));
   assert.throws(() => void s.id("nope"));
 });
 
-it("stratify.parentId(id) observes the specified parent id function", () => {
+test("stratify.parentId(id) observes the specified parent id function", () => {
   const foo = (d) => d.foo;
   const s = stratify().parentId(foo);
   const root = s([
@@ -420,13 +421,13 @@ it("stratify.parentId(id) observes the specified parent id function", () => {
   });
 });
 
-it("stratify.parentId(id) tests that id is a function", () => {
+test("stratify.parentId(id) tests that id is a function", () => {
   const s = stratify();
   assert.throws(() => void s.parentId(42));
   assert.throws(() => void s.parentId("nope"));
 });
 
-it("stratify.path(path) returns the root node", () => {
+test("stratify.path(path) returns the root node", () => {
   const root = stratify().path(d => d.path)([
     {path: "/"},
     {path: "/aa"},
@@ -464,7 +465,7 @@ it("stratify.path(path) returns the root node", () => {
   });
 });
 
-it("stratify.path(path) correctly handles single-character folders", () => {
+test("stratify.path(path) correctly handles single-character folders", () => {
   const root = stratify().path(d => d.path)([
     {path: "/"},
     {path: "/d"},
@@ -495,7 +496,7 @@ it("stratify.path(path) correctly handles single-character folders", () => {
   });
 });
 
-it("stratify.path(path) correctly handles empty folders", () => {
+test("stratify.path(path) correctly handles empty folders", () => {
   const root = stratify().path(d => d.path)([
     {path: "/"},
     {path: "//"},
@@ -526,7 +527,7 @@ it("stratify.path(path) correctly handles empty folders", () => {
   });
 });
 
-it("stratify.path(path) correctly handles single-character folders with trailing slashes", () => {
+test("stratify.path(path) correctly handles single-character folders with trailing slashes", () => {
   const root = stratify().path(d => d.path)([
     {path: "/"},
     {path: "/d/"},
@@ -557,7 +558,7 @@ it("stratify.path(path) correctly handles single-character folders with trailing
   });
 });
 
-it("stratify.path(path) correctly handles imputed single-character folders", () => {
+test("stratify.path(path) correctly handles imputed single-character folders", () => {
   const root = stratify().path(d => d.path)([
     {path: "/"},
     {path: "/d/123"}
@@ -587,7 +588,7 @@ it("stratify.path(path) correctly handles imputed single-character folders", () 
   });
 });
 
-it("stratify.path(path) allows slashes to be escaped", () => {
+test("stratify.path(path) allows slashes to be escaped", () => {
   const root = stratify().path(d => d.path)([
     {path: "/"},
     {path: "/aa"},
@@ -623,7 +624,7 @@ it("stratify.path(path) allows slashes to be escaped", () => {
   });
 });
 
-it("stratify.path(path) imputes internal nodes", () => {
+test("stratify.path(path) imputes internal nodes", () => {
   const root = stratify().path(d => d.path)([
     {path: "/aa/aaa"},
     {path: "/ab"}
@@ -659,7 +660,7 @@ it("stratify.path(path) imputes internal nodes", () => {
   });
 });
 
-it("stratify.path(path) allows duplicate leaf paths", () => {
+test("stratify.path(path) allows duplicate leaf paths", () => {
   const root = stratify().path(d => d.path)([
     {path: "/aa/aaa", number: 1},
     {path: "/aa/aaa", number: 2},
@@ -687,7 +688,7 @@ it("stratify.path(path) allows duplicate leaf paths", () => {
   });
 });
 
-it("stratify.path(path) does not allow duplicate internal paths", () => {
+test("stratify.path(path) does not allow duplicate internal paths", () => {
   assert.throws(() => {
     stratify().path(d => d.path)([
       {path: "/aa"},
@@ -698,7 +699,7 @@ it("stratify.path(path) does not allow duplicate internal paths", () => {
   }, /ambiguous/);
 });
 
-it("stratify.path(path) implicitly adds leading slashes", () => {
+test("stratify.path(path) implicitly adds leading slashes", () => {
   const root = stratify().path(d => d.path)([
     {path: ""},
     {path: "aa"},
@@ -736,7 +737,7 @@ it("stratify.path(path) implicitly adds leading slashes", () => {
   });
 });
 
-it("stratify.path(path) implicitly trims trailing slashes", () => {
+test("stratify.path(path) implicitly trims trailing slashes", () => {
   const root = stratify().path(d => d.path)([
     {path: "/aa/"},
     {path: "/ab/"},
@@ -773,7 +774,7 @@ it("stratify.path(path) implicitly trims trailing slashes", () => {
   });
 });
 
-it("stratify.path(path) does not trim trailing slashes preceded by a slash", () => {
+test("stratify.path(path) does not trim trailing slashes preceded by a slash", () => {
   const root = stratify().path(d => d.path)([
     {path: "/aa//"},
     {path: "/b"}
@@ -817,7 +818,7 @@ it("stratify.path(path) does not trim trailing slashes preceded by a slash", () 
   });
 });
 
-it("stratify.path(path) does not require the data to be in topological order", () => {
+test("stratify.path(path) does not require the data to be in topological order", () => {
   const root = stratify().path(d => d.path)([
     {path: "/aa/aaa"},
     {path: "/aa"},
@@ -854,7 +855,7 @@ it("stratify.path(path) does not require the data to be in topological order", (
   });
 });
 
-it("stratify.path(path) preserves the input order of siblings", () => {
+test("stratify.path(path) preserves the input order of siblings", () => {
   const root = stratify().path(d => d.path)([
     {path: "/ab"},
     {path: "/aa"},
@@ -891,7 +892,7 @@ it("stratify.path(path) preserves the input order of siblings", () => {
   });
 });
 
-it("stratify.path(path) accepts an iterable", () => {
+test("stratify.path(path) accepts an iterable", () => {
   const root = stratify().path(d => d.path)(new Set([
     {path: "/ab"},
     {path: "/aa"},
@@ -928,7 +929,7 @@ it("stratify.path(path) accepts an iterable", () => {
   });
 });
 
-it("stratify.path(path) coerces paths to strings", () => {
+test("stratify.path(path) coerces paths to strings", () => {
   class Path {
     constructor(path) {
       this.path = path;

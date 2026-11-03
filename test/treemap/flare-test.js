@@ -1,21 +1,22 @@
+import {test} from "vitest";
 import assert from "assert";
 import {csvParse} from "d3-dsv";
 import {readFileSync} from "fs";
 import {stratify, treemap, treemapSquarify, Node} from "../../src/index.js";
 
-it("treemap(flare) produces the expected result with a squarified ratio of φ", test(
+test("treemap(flare) produces the expected result with a squarified ratio of φ", flareTest(
   "test/data/flare.csv",
   "test/data/flare-phi.json",
   treemapSquarify
 ));
 
-it("treemap(flare) produces the expected result with a squarified ratio of 1", test(
+test("treemap(flare) produces the expected result with a squarified ratio of 1", flareTest(
   "test/data/flare.csv",
   "test/data/flare-one.json",
   treemapSquarify.ratio(1)
 ));
 
-function test(inputFile, expectedFile, tile) {
+function flareTest(inputFile, expectedFile, tile) {
   return () => {
     const inputText = readFileSync(inputFile, "utf8"),
         expectedText = readFileSync(expectedFile, "utf8");

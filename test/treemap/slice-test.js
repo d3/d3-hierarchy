@@ -1,8 +1,9 @@
+import {test} from "vitest";
 import assert from "assert";
 import {treemapSlice} from "../../src/index.js";
 import {round} from "./round.js";
 
-it("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", () => {
+test("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", () => {
   const tile = treemapSlice;
   const root = {
     value: 24,
@@ -28,7 +29,7 @@ it("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", () => {
   ]);
 });
 
-it("treemapSlice(parent, x0, y0, x1, y1) handles a degenerate empty parent", () => {
+test("treemapSlice(parent, x0, y0, x1, y1) handles a degenerate empty parent", () => {
   const tile = treemapSlice;
   const root = {
     value: 0,

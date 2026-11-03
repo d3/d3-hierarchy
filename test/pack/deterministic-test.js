@@ -1,7 +1,8 @@
+import {test} from "vitest";
 import assert from "assert";
 import {hierarchy, stratify, pack} from "../../src/index.js";
 
-it("pack is deterministic", () => {
+test("pack is deterministic", () => {
   const data = stratify().path((d) => d)(
     [41, 41, 11, 11, 4, 4]
       .flatMap((n, i) => Array.from({length: n}, (_, j) => ({i, j})))
