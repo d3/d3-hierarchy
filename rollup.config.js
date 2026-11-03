@@ -62,7 +62,7 @@ export default [
   config({
     output: {
       file: `dist/${meta.name}.js`,
-      format: "umd",
+      format: "umd"
     }
   }),
   config({
