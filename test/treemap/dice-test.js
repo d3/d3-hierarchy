@@ -1,9 +1,9 @@
-import {test} from "vitest";
+import {it} from "vitest";
 import assert from "assert";
 import {treemapDice} from "../../src/index.js";
 import {round} from "./round.js";
 
-test("treemapDice(parent, x0, y0, x1, y1) generates a diced layout", () => {
+it("treemapDice(parent, x0, y0, x1, y1) generates a diced layout", () => {
   const tile = treemapDice;
   const root = {
     value: 24,
@@ -29,7 +29,7 @@ test("treemapDice(parent, x0, y0, x1, y1) generates a diced layout", () => {
   ]);
 });
 
-test("treemapDice(parent, x0, y0, x1, y1) handles a degenerate empty parent", () => {
+it("treemapDice(parent, x0, y0, x1, y1) handles a degenerate empty parent", () => {
   const tile = treemapDice;
   const root = {
     value: 0,

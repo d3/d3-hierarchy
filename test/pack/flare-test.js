@@ -1,15 +1,15 @@
-import {test} from "vitest";
+import {it} from "vitest";
 import assert from "assert";
 import {csvParse} from "d3-dsv";
 import {readFileSync} from "fs";
 import {stratify, pack, Node} from "../../src/index.js";
 
-test("pack(flare) produces the expected result", flareTest(
+it("pack(flare) produces the expected result", test(
   "test/data/flare.csv",
   "test/data/flare-pack.json"
 ));
 
-function flareTest(inputFile, expectedFile) {
+function test(inputFile, expectedFile) {
   return () => {
     const inputText = readFileSync(inputFile, "utf8");
     const expectedText = readFileSync(expectedFile, "utf8");

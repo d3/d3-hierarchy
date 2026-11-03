@@ -1,9 +1,9 @@
-import {test} from "vitest";
+import {it} from "vitest";
 import assert from "assert";
 import {treemapSquarify} from "../../src/index.js";
 import {round} from "./round.js";
 
-test("treemapSquarify(parent, x0, y0, x1, y1) generates a squarified layout", () => {
+it("treemapSquarify(parent, x0, y0, x1, y1) generates a squarified layout", () => {
   const tile = treemapSquarify;
   const root = {
     value: 24,
@@ -29,7 +29,7 @@ test("treemapSquarify(parent, x0, y0, x1, y1) generates a squarified layout", ()
   ]);
 });
 
-test("treemapSquarify(parent, x0, y0, x1, y1) does not produce a stable update", () => {
+it("treemapSquarify(parent, x0, y0, x1, y1) does not produce a stable update", () => {
   const tile = treemapSquarify;
   const root = {value: 20, children: [{value: 10}, {value: 10}]};
   tile(root, 0, 0, 20, 10);
@@ -44,7 +44,7 @@ test("treemapSquarify(parent, x0, y0, x1, y1) does not produce a stable update",
   ]);
 });
 
-test("treemapSquarify.ratio(ratio) observes the specified ratio", () => {
+it("treemapSquarify.ratio(ratio) observes the specified ratio", () => {
   const tile = treemapSquarify.ratio(1);
   const root = {
     value: 24,
@@ -70,7 +70,7 @@ test("treemapSquarify.ratio(ratio) observes the specified ratio", () => {
   ]);
 });
 
-test("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate tall empty parent", () => {
+it("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate tall empty parent", () => {
   const tile = treemapSquarify;
   const root = {
     value: 0,
@@ -86,7 +86,7 @@ test("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate tall empty pa
   ]);
 });
 
-test("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate wide empty parent", () => {
+it("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate wide empty parent", () => {
   const tile = treemapSquarify;
   const root = {
     value: 0,
@@ -102,7 +102,7 @@ test("treemapSquarify(parent, x0, y0, x1, y1) handles a degenerate wide empty pa
   ]);
 });
 
-test("treemapSquarify(parent, x0, y0, x1, y1) handles a leading zero value", () => {
+it("treemapSquarify(parent, x0, y0, x1, y1) handles a leading zero value", () => {
   const tile = treemapSquarify;
   const root = {
     value: 24,

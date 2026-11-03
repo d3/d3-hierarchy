@@ -1,8 +1,8 @@
-import {test} from "vitest";
+import {it} from "vitest";
 import assert from "assert";
 import {hierarchy} from "../../src/index.js";
 
-test("node.links() returns an array of {source, target}", () => {
+it("node.links() returns an array of {source, target}", () => {
   const root = hierarchy({id: "root", children: [{id: "a"}, {id: "b", children: [{id: "ba"}]}]});
   const a = root.children[0];
   const b = root.children[1];

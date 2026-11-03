@@ -1,9 +1,9 @@
-import {test} from "vitest";
+import {it} from "vitest";
 import assert from "assert";
 import {hierarchy, treemap, treemapBinary} from "../../src/index.js";
 import {round} from "./round.js";
 
-test("treemapBinary(parent, x0, y0, x1, y1) generates a binary treemap layout", () => {
+it("treemapBinary(parent, x0, y0, x1, y1) generates a binary treemap layout", () => {
   const tile = treemapBinary;
   const root = {
     value: 24,
@@ -29,7 +29,7 @@ test("treemapBinary(parent, x0, y0, x1, y1) generates a binary treemap layout", 
   ]);
 });
 
-test("treemapBinary does not break on 0-sized inputs", () => {
+it("treemapBinary does not break on 0-sized inputs", () => {
   const data = {children: [{value: 0}, {value: 0}, {value: 1}]};
   const root = hierarchy(data).sum(d => d.value);
   const treemapper = treemap().tile(treemapBinary);
