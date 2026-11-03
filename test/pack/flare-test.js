@@ -1,7 +1,8 @@
-import assert from "assert";
+import assert from "node:assert";
+import {readFileSync} from "node:fs";
+import {it} from "vitest";
 import {csvParse} from "d3-dsv";
-import {readFileSync} from "fs";
-import {stratify, pack, Node} from "../../src/index.js";
+import {stratify, pack, Node} from "d3-hierarchy";
 
 it("pack(flare) produces the expected result", test(
   "test/data/flare.csv",

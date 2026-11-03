@@ -1,5 +1,6 @@
-import assert from "assert";
-import {treemapDice} from "../../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {treemapDice} from "d3-hierarchy";
 import {round} from "./round.js";
 
 it("treemapDice(parent, x0, y0, x1, y1) generates a diced layout", () => {

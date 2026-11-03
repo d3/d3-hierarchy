@@ -1,5 +1,6 @@
-import assert from "assert";
-import {packSiblings} from "../../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {packSiblings} from "d3-hierarchy";
 
 it("packSiblings(circles) produces a non-overlapping layout of circles", () => {
   permute([100, 200, 500, 70, 3].map(circleValue), p => intersectsAny(packSiblings(p)) && assert.fail(p.map(c => c.r)));

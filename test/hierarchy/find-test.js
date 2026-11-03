@@ -1,5 +1,6 @@
-import assert from "assert";
-import {hierarchy} from "../../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {hierarchy} from "d3-hierarchy";
 
 it("node.find() finds nodes", () => {
   const root = hierarchy({id: "root", children: [{id: "a"}, {id: "b", children: [{id: "ba"}]}]}).count();

@@ -1,5 +1,6 @@
-import assert from "assert";
-import {hierarchy, stratify} from "../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {hierarchy, stratify} from "d3-hierarchy";
 
 it("stratify() has the expected defaults", () => {
   const s = stratify();

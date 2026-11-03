@@ -1,7 +1,8 @@
-import assert from "assert";
+import assert from "node:assert";
+import {readFileSync} from "node:fs";
+import {it} from "vitest";
 import {csvParse} from "d3-dsv";
-import {readFileSync} from "fs";
-import {stratify, treemap, treemapSquarify, Node} from "../../src/index.js";
+import {stratify, treemap, treemapSquarify, Node} from "d3-hierarchy";
 
 it("treemap(flare) produces the expected result with a squarified ratio of φ", test(
   "test/data/flare.csv",

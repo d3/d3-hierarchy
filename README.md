@@ -7,6 +7,6 @@ This module implements several popular techniques for visualizing hierarchical d
 ## Resources
 
 - [Documentation](https://d3js.org/d3-hierarchy)
-- [Examples](https://observablehq.com/collection/@d3/d3-hierarchy)
+- [Examples](https://observablehq.com/@d3/-/collection/d3-hierarchy)
 - [Releases](https://github.com/d3/d3-hierarchy/releases)
 - [Getting help](https://d3js.org/community)

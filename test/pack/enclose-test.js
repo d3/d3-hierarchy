@@ -1,5 +1,6 @@
-import assert from "assert";
-import {packEnclose} from "../../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {packEnclose} from "d3-hierarchy";
 
 // https://github.com/d3/d3-hierarchy/issues/188
 it("packEnclose(circles) handles a tricky case", () => {

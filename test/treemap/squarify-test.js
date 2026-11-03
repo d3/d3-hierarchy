@@ -1,5 +1,6 @@
-import assert from "assert";
-import {treemapSquarify} from "../../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {treemapSquarify} from "d3-hierarchy";
 import {round} from "./round.js";
 
 it("treemapSquarify(parent, x0, y0, x1, y1) generates a squarified layout", () => {

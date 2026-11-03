@@ -1,5 +1,6 @@
-import assert from "assert";
-import {hierarchy, stratify, pack} from "../../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {hierarchy, stratify, pack} from "d3-hierarchy";
 
 it("pack is deterministic", () => {
   const data = stratify().path((d) => d)(

@@ -1,5 +1,6 @@
-import assert from "assert";
-import {hierarchy} from "../../src/index.js";
+import assert from "node:assert";
+import {it} from "vitest";
+import {hierarchy} from "d3-hierarchy";
 
 const tree = {id: "root", children: [{id: "a", children: [{id: "ab"}]}, {id: "b", children: [{id: "ba"}]}]};
 

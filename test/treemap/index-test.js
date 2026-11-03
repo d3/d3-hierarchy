@@ -1,6 +1,7 @@
-import assert from "assert";
-import {readFileSync} from "fs";
-import {hierarchy, treemap, treemapSlice, treemapSquarify} from "../../src/index.js";
+import assert from "node:assert";
+import {readFileSync} from "node:fs";
+import {it} from "vitest";
+import {hierarchy, treemap, treemapSlice, treemapSquarify} from "d3-hierarchy";
 import {round} from "./round.js";
 
 const simple = JSON.parse(readFileSync("./test/data/simple2.json"));
