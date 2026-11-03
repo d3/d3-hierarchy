@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import {it} from "vitest";
-import {hierarchy, treemap, treemapBinary} from "../../src/index.js";
+import {hierarchy, treemap, treemapBinary} from "d3-hierarchy";
 import {round} from "./round.js";
 
 it("treemapBinary(parent, x0, y0, x1, y1) generates a binary treemap layout", () => {

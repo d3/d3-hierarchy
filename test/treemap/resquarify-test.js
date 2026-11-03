@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import {it} from "vitest";
-import {hierarchy, treemap, treemapResquarify} from "../../src/index.js";
+import {hierarchy, treemap, treemapResquarify} from "d3-hierarchy";
 import {round} from "./round.js";
 
 it("treemapResquarify(parent, x0, y0, x1, y1) produces a stable update", () => {

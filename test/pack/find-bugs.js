@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import {randomLogNormal} from "d3-random";
-import {packSiblings} from "../../src/index.js";
+import {packSiblings} from "d3-hierarchy";
 
 let n = 0;
 let r = randomLogNormal(4);

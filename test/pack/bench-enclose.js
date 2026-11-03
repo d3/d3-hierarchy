@@ -3,7 +3,7 @@
 import benchmark from "benchmark";
 import {shuffle} from "d3-array";
 import {randomLogNormal, randomUniform} from "d3-random";
-import {packSiblings} from "../../src/index.js";
+import {packSiblings} from "d3-hierarchy";
 
 const slice = Array.prototype.slice;
 

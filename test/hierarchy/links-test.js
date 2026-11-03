@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import {it} from "vitest";
-import {hierarchy} from "../../src/index.js";
+import {hierarchy} from "d3-hierarchy";
 
 it("node.links() returns an array of {source, target}", () => {
   const root = hierarchy({id: "root", children: [{id: "a"}, {id: "b", children: [{id: "ba"}]}]});

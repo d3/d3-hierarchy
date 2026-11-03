@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import {it} from "vitest";
-import {treemapSlice} from "../../src/index.js";
+import {treemapSlice} from "d3-hierarchy";
 import {round} from "./round.js";
 
 it("treemapSlice(parent, x0, y0, x1, y1) generates a sliced layout", () => {

@@ -2,7 +2,7 @@
 
 import {shuffle} from "d3-array";
 import {randomLogNormal, randomUniform} from "d3-random";
-import {packEnclose} from "../../src/index.js";
+import {packEnclose} from "d3-hierarchy";
 
 let n = 0;
 let m = 1000;

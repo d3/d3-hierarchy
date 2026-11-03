@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import {it} from "vitest";
-import {treemapSliceDice} from "../../src/index.js";
+import {treemapSliceDice} from "d3-hierarchy";
 import {round} from "./round.js";
 
 it("treemapSliceDice(parent, x0, y0, x1, y1) uses slice for odd depth", () => {
