@@ -1,5 +1,5 @@
+import assert from "node:assert";
 import {it} from "vitest";
-import assert from "assert";
 import {packSiblings} from "../../src/index.js";
 
 it("packSiblings(circles) produces a non-overlapping layout of circles", () => {

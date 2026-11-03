@@ -1,5 +1,5 @@
+import assert from "node:assert";
 import {it} from "vitest";
-import assert from "assert";
 import {hierarchy, treemap, treemapResquarify} from "../../src/index.js";
 import {round} from "./round.js";
 

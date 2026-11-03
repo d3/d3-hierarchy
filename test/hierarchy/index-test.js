@@ -1,5 +1,5 @@
+import assert from "node:assert";
 import {it} from "vitest";
-import assert from "assert";
 import {hierarchy} from "../../src/index.js";
 
 it("d3.hierarchy(data, children) supports iterable children", () => {

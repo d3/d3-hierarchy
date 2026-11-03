@@ -1,5 +1,5 @@
+import assert from "node:assert";
 import {it} from "vitest";
-import assert from "assert";
 import {hierarchy, stratify} from "../src/index.js";
 
 it("stratify() has the expected defaults", () => {

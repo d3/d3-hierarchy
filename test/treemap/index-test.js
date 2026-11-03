@@ -1,6 +1,6 @@
+import assert from "node:assert";
+import {readFileSync} from "node:fs";
 import {it} from "vitest";
-import assert from "assert";
-import {readFileSync} from "fs";
 import {hierarchy, treemap, treemapSlice, treemapSquarify} from "../../src/index.js";
 import {round} from "./round.js";
 

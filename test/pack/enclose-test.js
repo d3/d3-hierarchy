@@ -1,5 +1,5 @@
+import assert from "node:assert";
 import {it} from "vitest";
-import assert from "assert";
 import {packEnclose} from "../../src/index.js";
 
 // https://github.com/d3/d3-hierarchy/issues/188
